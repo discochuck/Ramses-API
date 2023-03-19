@@ -14,3 +14,7 @@ cache = Cache(app)
 @cache.cached(60 * 60)
 def test():
     return jsonify(get_apr())
+
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0")
