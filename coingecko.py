@@ -73,10 +73,11 @@ def get_prices(symbols):
     ids_array = list(ids.values()) + ['ethereum', 'ramses-exchange']
 
     response = requests.get(
-        url="https://api.coingecko.com/api/v3/simple/price",
+        url="https://pro-api.coingecko.com/api/v3/simple/price",
         params={
             'ids': ','.join(ids_array),
             'vs_currencies': 'usd'
+            'x_cg_pro_api_key': 'CG-AyFXDTk59MkkPukojFceCjTo'
         }
     ).json()
 
