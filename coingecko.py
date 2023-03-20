@@ -76,7 +76,7 @@ def get_prices(symbols):
         url="https://pro-api.coingecko.com/api/v3/simple/price",
         params={
             'ids': ','.join(ids_array),
-            'vs_currencies': 'usd'
+            'vs_currencies': 'usd',
             'x_cg_pro_api_key': 'CG-AyFXDTk59MkkPukojFceCjTo'
         }
     ).json()
