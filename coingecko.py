@@ -12,7 +12,7 @@ local_coin_ids = {
     'bifi': 'beefy-finance',
     'magic': 'magic',
     'ram': 'ramses-exchange',
-    'fbomb': 'fbomb'
+    'fbomb': 'fbomb',
     'fs': 'fantom-starter'
 }
 
