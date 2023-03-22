@@ -14,7 +14,8 @@ local_coin_ids = {
     'ram': 'ramses-exchange',
     'fbomb': 'fbomb',
     'fs': 'fantomstarter',
-    'arc': 'arcadeum'
+    'arc': 'arcadeum',
+    'qi': 'qi-dao'
 }
 
 stable_coins = [
