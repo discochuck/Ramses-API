@@ -29,12 +29,12 @@ stable_coins = [
     'dai+',
     'mim',
     'lusd',
-    'dai+'
+    'dai+',
+    'arb'
 ]
 
 constant_prices = {
     'elr': 0,
-    'arb': 0
 }
 
 
