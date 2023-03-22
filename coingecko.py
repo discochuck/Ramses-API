@@ -51,6 +51,7 @@ def get_coins_ids(symbols):
             if len(coin) == 1:
                 ids[symbol] = coin[0]
             else:
+                ids[symbol] = None
                 print(f"{symbol} not found in coingecko or found more than one")
 
     return ids
