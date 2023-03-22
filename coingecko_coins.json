@@ -2915,21 +2915,6 @@
     "name": "ArbiRoul Casino Chip"
   },
   {
-    "id": "arbis-finance",
-    "symbol": "arbis",
-    "name": "Arbis Finance"
-  },
-  {
-    "id": "arbismart-token",
-    "symbol": "rbis",
-    "name": "ArbiSmart"
-  },
-  {
-    "id": "arbiswap-42983059-37e1-4a8f-b46e-0d908c0d4cc0",
-    "symbol": "arbi",
-    "name": "ArbiSwap"
-  },
-  {
     "id": "arbitrum",
     "symbol": "arb",
     "name": "Arbitrum"
@@ -2938,11 +2923,6 @@
     "id": "arbi-wiz",
     "symbol": "awiz",
     "name": "Arbi Wiz"
-  },
-  {
-    "id": "arb-protocol",
-    "symbol": "arb",
-    "name": "ARB Protocol"
   },
   {
     "id": "arbucks",
@@ -40005,40 +39985,11 @@
     "name": "QChain QDT"
   },
   {
-    "id": "qian-second-generation-dollar",
-    "symbol": "qsd",
-    "name": "QIAN Second Generation Dollar"
-  },
-  {
     "id": "qi-dao",
     "symbol": "qi",
     "name": "Qi Dao"
   },
-  {
-    "id": "qie",
-    "symbol": "qie",
-    "name": "QI Blockchain"
-  },
-  {
-    "id": "qiswap",
-    "symbol": "qi",
-    "name": "QiSwap"
-  },
-  {
-    "id": "qitchain-network",
-    "symbol": "qtc",
-    "name": "Qitcoin"
-  },
-  {
-    "id": "qitmeer-network",
-    "symbol": "meer",
-    "name": "Qitmeer Network"
-  },
-  {
-    "id": "qiusd",
-    "symbol": "qiusd",
-    "name": "QiUSD"
-  },
+
   {
     "id": "qlindo",
     "symbol": "qlindo",
