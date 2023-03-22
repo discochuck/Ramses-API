@@ -1,16 +1,15 @@
 import datetime
+import json
 from pprint import pprint
 
 import requests
-from web3 import Web3
 
 from coingecko import get_prices
 from multicall import Call, Multicall
+from utils import w3, db
 
 
 def get_apr():
-    w3 = Web3(Web3.HTTPProvider('https://arbitrum.blockpi.network/v1/rpc/public'))
-
     response = requests.post(
         url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
         json={
@@ -97,6 +96,8 @@ def get_apr():
             # print(address, pair['symbol'], round(pair['apr']))
 
     # pprint(pairs['0xec6b34307ce7e83de1b053560ee9974a54c5804d'])
+
+    db.set('apr', json.dumps(pairs))
 
     return pairs
 
