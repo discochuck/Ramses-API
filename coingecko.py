@@ -13,7 +13,7 @@ local_coin_ids = {
     'magic': 'magic',
     'ram': 'ramses-exchange',
     'fbomb': 'fbomb',
-    'fs': 'fantom-starter',
+    'fs': 'fantomstarter',
     'arc': 'arcadeum'
 }
 
