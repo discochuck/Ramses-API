@@ -2930,9 +2930,9 @@
     "name": "ArbiSwap"
   },
   {
-    "id": "arbitrum-iou",
+    "id": "arbitrum",
     "symbol": "arb",
-    "name": "Arbitrum IOU"
+    "name": "Arbitrum"
   },
   {
     "id": "arbi-wiz",
