@@ -33,7 +33,7 @@ stable_coins = [
 ]
 
 constant_prices = {
-    'elr': 0
+    'elr': 0,
     'arb': 0
 }
 
