@@ -15,8 +15,6 @@ local_coin_ids = {
     'fbomb': 'fbomb',
     'fs': 'fantomstarter',
     'arc': 'arcadeum',
-    'qi': 'qi-dao',
-    'arb': 'arbitrum'
 }
 
 stable_coins = [
@@ -34,7 +32,9 @@ stable_coins = [
 ]
 
 constant_prices = {
-    'elr': 0
+    'elr': 0,
+    'qi': 0,
+    'arb': 0
 }
 
 
