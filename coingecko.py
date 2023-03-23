@@ -17,7 +17,8 @@ local_coin_ids = {
     'arc': 'arcadeum',
     'qi': 'qi-dao',
     'arb': 'arbitrum',
-    'hop': 'hop-protocol'
+    'hop': 'hop-protocol',
+    'spa': 'sperax'
 }
 
 stable_coins = [
