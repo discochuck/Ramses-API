@@ -128,7 +128,7 @@ def _fetch_pairs():
     gauges = subgraph_data['gaugeEntities']
 
     week = 7 * 24 * 60 * 60
-    period = int(datetime.datetime.now().timestamp() // week * week + week)
+    period = int(datetime.datetime.now().timestamp() // week * week)
 
     pairs = {}
     calls = []
@@ -315,4 +315,4 @@ def get_pairs():
 
 if __name__ == '__main__':
     p = get_pairs()
-    pprint(p['0x1E50482e9185D9DAC418768D14b2F2AC2b4DAF39'.lower()])
+    pprint(p['0xeb9153afbaa3a6cfbd4fce39988cea786d3f62bb'.lower()])
