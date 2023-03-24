@@ -6,7 +6,7 @@ from flask_caching import Cache
 from flask_cors import CORS
 
 from claimable_rewards import get_voter_claimable_rewards
-from get_apr import get_apr
+from get_apr import get_apr, get_pairs
 from utils import db
 
 app = Flask(__name__)
@@ -25,6 +25,12 @@ def apr():
         apr = json.loads(db.get('apr'))
 
     return jsonify(apr)
+
+
+@app.route("/pairs")
+@cache.cached(60 * 60)
+def pairs():
+    return jsonify(get_pairs())
 
 
 @app.route("/firebird")
