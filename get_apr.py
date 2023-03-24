@@ -20,7 +20,7 @@ def get_apr():
     fee_distributors = response.json()['data']['bribeEntities']
 
     week = 7 * 24 * 60 * 60
-    period = int(datetime.datetime.now().timestamp() // week * week + week)
+    period = int(datetime.datetime.now().timestamp() // week * week)
 
     pairs = {}
     calls = []
@@ -128,7 +128,7 @@ def _fetch_pairs():
     gauges = subgraph_data['gaugeEntities']
 
     week = 7 * 24 * 60 * 60
-    period = int(datetime.datetime.now().timestamp() // week * week + week)
+    period = int(datetime.datetime.now().timestamp() // week * week - week)
 
     pairs = {}
     calls = []
@@ -141,7 +141,15 @@ def _fetch_pairs():
                 w3,
                 fee_distributor_address,
                 ["totalVeShareByPeriod(uint256)(uint256)", period],
-                [[pair_address, lambda v: v[0]]]
+                [[pair_address + '-' + str(period), lambda v: v[0]]]
+            )
+        )
+        calls.append(
+            Call(
+                w3,
+                fee_distributor_address,
+                ["totalVeShareByPeriod(uint256)(uint256)", period + week],
+                [[pair_address + '-' + str(period + week), lambda v: v[0]]]
             )
         )
 
@@ -173,8 +181,10 @@ def _fetch_pairs():
         }
 
     for address, value in Multicall(w3, calls)().items():
-        pairs[address]['totalVeShareByPeriod'] = value
+        address = address.split('-')[0]
+        pairs[address]['totalVeShareByPeriod'] += value
 
+    calls = []
     for gauge in gauges:
         gauge_address = gauge['id']
         pair_address = gauge['pair']['id']
@@ -204,7 +214,15 @@ def _fetch_pairs():
                     w3,
                     fee_distributor_address,
                     ["tokenTotalSupplyByPeriod(uint256,address)(uint256)", period, token_address],
-                    [[key, lambda v: v[0]]]
+                    [[key + '|' + str(period), lambda v: v[0]]]
+                )
+            )
+            calls.append(
+                Call(
+                    w3,
+                    fee_distributor_address,
+                    ["tokenTotalSupplyByPeriod(uint256,address)(uint256)", period + week, token_address],
+                    [[key + '|' + str(period + week), lambda v: v[0]]]
                 )
             )
             fee_distributor_tokens[key] = {
@@ -216,7 +234,8 @@ def _fetch_pairs():
             }
 
     for key, value in Multicall(w3, calls)().items():
-        fee_distributor_tokens[key]['tokenTotalSupplyByPeriod'] = value
+        key = key.split('|')[0]
+        fee_distributor_tokens[key]['tokenTotalSupplyByPeriod'] += value
 
     gauge_tokens = {}
     calls = []
@@ -291,7 +310,7 @@ def _fetch_pairs():
             totalUSD = 0
             for token in pair['fee_distributor_tokens']:
                 totalUSD += token['tokenTotalSupplyByPeriod'] / 10 ** token['decimals'] * token['price']
-            pair['vote_apr'] = totalUSD / 7 * 36500 / (pair['totalVeShareByPeriod'] * prices['RAM'] / 1e18)
+            pair['vote_apr'] = totalUSD / 14 * 36500 / (pair['totalVeShareByPeriod'] * prices['RAM'] / 1e18)
 
         if pair['derivedSupply'] > 0:
             totalUSD = 0
@@ -314,5 +333,5 @@ def get_pairs():
 
 
 if __name__ == '__main__':
-    p = get_pairs()
-    pprint(p['0xeb9153afbaa3a6cfbd4fce39988cea786d3f62bb'.lower()])
+    p = _fetch_pairs()
+    pprint(p['0x1e50482e9185d9dac418768d14b2f2ac2b4daf39'.lower()])
