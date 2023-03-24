@@ -18,7 +18,8 @@ local_coin_ids = {
     'qi': 'qi-dao',
     'arb': 'arbitrum',
     'hop': 'hop-protocol',
-    'spa': 'sperax'
+    'spa': 'sperax',
+    'ldo': 'lido-dao'
 }
 
 stable_coins = [
@@ -32,7 +33,8 @@ stable_coins = [
     'dai+',
     'mim',
     'lusd',
-    'dai+'
+    'dai+',
+    'usds'
 ]
 
 constant_prices = {
