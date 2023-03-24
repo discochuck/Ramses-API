@@ -7,12 +7,12 @@ from flask_cors import CORS
 
 from claimable_rewards import get_voter_claimable_rewards
 from get_apr import get_apr, get_pairs
-from utils import db
+from utils import db, cache_config
 
 app = Flask(__name__)
 
 CORS(app)
-cache = Cache(app)
+cache = Cache(app, config=cache_config)
 
 
 @app.route("/")
@@ -30,6 +30,7 @@ def apr():
 @app.route("/pairs")
 @cache.cached(60 * 60)
 def pairs():
+    print('function call')
     return jsonify(get_pairs())
 
 
