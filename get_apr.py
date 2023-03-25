@@ -230,7 +230,8 @@ def _fetch_pairs():
                 'address': token_address,
                 'symbol': token['symbol'],
                 'tokenTotalSupplyByPeriod': 0,
-                'decimals': int(token['decimals'])
+                'decimals': int(token['decimals']),
+                'totalUSD': 0
             }
 
     for key, value in Multicall(w3, calls)().items():
@@ -296,6 +297,7 @@ def _fetch_pairs():
         pair = pairs[pair_address]
 
         token['price'] = prices[token['symbol']]
+        token['totalUSD'] = token['tokenTotalSupplyByPeriod'] / 10 ** token['decimals'] * token['price']
         pair['fee_distributor_tokens'].append(token)
 
     for key, token in gauge_tokens.items():
