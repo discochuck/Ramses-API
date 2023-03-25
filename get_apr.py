@@ -20,7 +20,7 @@ def get_apr():
     fee_distributors = response.json()['data']['bribeEntities']
 
     week = 7 * 24 * 60 * 60
-    period = int(datetime.datetime.now().timestamp() // week * week)
+    period = int(datetime.datetime.now().timestamp() // week * week + week)
 
     pairs = {}
     calls = []
