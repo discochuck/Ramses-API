@@ -173,6 +173,7 @@ def _fetch_pairs():
             },
             'fee_distributor_address': fee_distributor_address,
             'gauge_address': '',
+            'gaugeTotalSupply': '',
             'totalVeShareByPeriod': 0,
             'vote_apr': 0,
             'lp_apr': 0,
@@ -200,7 +201,7 @@ def _fetch_pairs():
             ),
         )
     for address, value in Multicall(w3, calls)().items():
-        pairs[address]['totalSupply'] = value
+        pairs[address]['gaugeTotalSupply'] = value
 
     fee_distributor_tokens = {}
     calls = []
@@ -353,15 +354,15 @@ def _fetch_pairs():
             for token in pair['fee_distributor_tokens']:
                 totalUSD += token['tokenTotalSupplyByPeriod'] / 10 ** token['decimals'] * token['price']
             pair['total_vote_reward_usd'] = totalUSD / 2
-            pair['vote_apr'] = totalUSD / 14 * 36500 / (pair['totalVeShareByPeriod'] * prices['RAM'] / 1e18)
+            pair['vote_apr'] = totalUSD / 14 * 36500 / (pair['totalVeShareByPeriod'] * prices['RAM'])
 
-        if pair['totalSupply'] > 0:
+        if pair['gaugeTotalSupply'] > 0:
             totalUSD = 0
             for token in pair['gauge_tokens']:
                 totalUSD += token['rewardRate'] * week / 10 ** token['decimals'] * token['price']
 
             pair['total_lp_reward_usd'] = totalUSD
-            pair['lp_apr'] = totalUSD / 7 * 36500 / (pair['totalSupply'] * pair['price'] / 1e18)
+            pair['lp_apr'] = totalUSD / 7 * 36500 / (pair['gaugeTotalSupply'] * pair['price'] / 1e18)
 
     return pairs
 
@@ -378,4 +379,7 @@ def get_pairs():
 
 if __name__ == '__main__':
     p = _fetch_pairs()
-    pprint(p['0x1e50482e9185d9dac418768d14b2f2ac2b4daf39'.lower()])
+    pair = p['0x00d61bcc9541e3027fea534d92cc8cc097c7a51c'.lower()]
+    print(pair['total_lp_reward_usd'] / 7 * 36500)
+    print((pair['gaugeTotalSupply'] * pair['price'] / 1e18))
+    pprint(pair)
