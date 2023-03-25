@@ -354,7 +354,7 @@ def _fetch_pairs():
             for token in pair['fee_distributor_tokens']:
                 totalUSD += token['tokenTotalSupplyByPeriod'] / 10 ** token['decimals'] * token['price']
             pair['total_vote_reward_usd'] = totalUSD / 2
-            pair['vote_apr'] = totalUSD / 14 * 36500 / (pair['totalVeShareByPeriod'] * prices['RAM'])
+            pair['vote_apr'] = totalUSD / 14 * 36500 / (pair['totalVeShareByPeriod'] * prices['RAM'] / 1e18)
 
         if pair['gaugeTotalSupply'] > 0:
             totalUSD = 0
@@ -380,6 +380,4 @@ def get_pairs():
 if __name__ == '__main__':
     p = _fetch_pairs()
     pair = p['0x00d61bcc9541e3027fea534d92cc8cc097c7a51c'.lower()]
-    print(pair['total_lp_reward_usd'] / 7 * 36500)
-    print((pair['gaugeTotalSupply'] * pair['price'] / 1e18))
     pprint(pair)
