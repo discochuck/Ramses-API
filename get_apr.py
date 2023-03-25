@@ -177,7 +177,9 @@ def _fetch_pairs():
             'vote_apr': 0,
             'lp_apr': 0,
             'fee_distributor_tokens': [],
-            'gauge_tokens': []
+            'gauge_tokens': [],
+            'total_vote_reward_usd': 0,
+            'total_lp_reward_usd': 0
         }
 
     for address, value in Multicall(w3, calls)().items():
@@ -312,6 +314,7 @@ def _fetch_pairs():
             totalUSD = 0
             for token in pair['fee_distributor_tokens']:
                 totalUSD += token['tokenTotalSupplyByPeriod'] / 10 ** token['decimals'] * token['price']
+            pair['total_vote_reward_usd'] = totalUSD / 2
             pair['vote_apr'] = totalUSD / 14 * 36500 / (pair['totalVeShareByPeriod'] * prices['RAM'] / 1e18)
 
         if pair['derivedSupply'] > 0:
@@ -319,6 +322,7 @@ def _fetch_pairs():
             for token in pair['gauge_tokens']:
                 totalUSD += token['rewardRate'] * week / 10 ** token['decimals'] * token['price']
 
+            pair['total_lp_reward_usd'] = totalUSD
             pair['lp_apr'] = totalUSD / 7 * 36500 / pair['price']
 
     return pairs
