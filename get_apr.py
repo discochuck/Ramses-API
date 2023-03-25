@@ -128,7 +128,7 @@ def _fetch_pairs():
     gauges = subgraph_data['gaugeEntities']
 
     week = 7 * 24 * 60 * 60
-    period = int(datetime.datetime.now().timestamp() // week * week - week)
+    period = int(datetime.datetime.now().timestamp() // week * week)
 
     pairs = {}
     calls = []
@@ -148,8 +148,8 @@ def _fetch_pairs():
             Call(
                 w3,
                 fee_distributor_address,
-                ["totalVeShareByPeriod(uint256)(uint256)", period + week],
-                [[pair_address + '-' + str(period + week), lambda v: v[0]]]
+                ["totalVeShareByPeriod(uint256)(uint256)", period - week],
+                [[pair_address + '-' + str(period - week), lambda v: v[0]]]
             )
         )
 
@@ -178,6 +178,7 @@ def _fetch_pairs():
             'lp_apr': 0,
             'fee_distributor_tokens': [],
             'gauge_tokens': [],
+            'current_vote_bribes': [],
             'total_vote_reward_usd': 0,
             'total_lp_reward_usd': 0
         }
@@ -223,8 +224,8 @@ def _fetch_pairs():
                 Call(
                     w3,
                     fee_distributor_address,
-                    ["tokenTotalSupplyByPeriod(uint256,address)(uint256)", period + week, token_address],
-                    [[key + '|' + str(period + week), lambda v: v[0]]]
+                    ["tokenTotalSupplyByPeriod(uint256,address)(uint256)", period - week, token_address],
+                    [[key + '|' + str(period - week), lambda v: v[0]]]
                 )
             )
             fee_distributor_tokens[key] = {
@@ -286,6 +287,42 @@ def _fetch_pairs():
         log("Error on prices")
         prices = json.loads(db.get('v2_prices'))
 
+    current_bribe_tokens = {}
+    calls = []
+    for fee_distributor in fee_distributors:
+        fee_distributor_address = fee_distributor['id']
+        pair_address = fee_distributor['pair']['id']
+        for token in fee_distributor['bribeTokens']:
+            token = token['token']
+            token_address = token['id']
+            key = f'{pair_address}-{token_address}'
+
+            calls.append(
+                Call(
+                    w3,
+                    fee_distributor_address,
+                    ["tokenTotalSupplyByPeriod(uint256,address)(uint256)", period + week, token_address],
+                    [[key, lambda v: v[0]]]
+                )
+            )
+            current_bribe_tokens[key] = {
+                'address': token_address,
+                'symbol': token['symbol'],
+                'tokenTotalSupplyByPeriod': 0,
+                'decimals': int(token['decimals']),
+                'totalUSD': 0
+            }
+
+    for key, value in Multicall(w3, calls)().items():
+        pair_address = key.split('-')[0]
+        token = current_bribe_tokens[key]
+
+        token['price'] = prices[token['symbol']]
+        token['tokenTotalSupplyByPeriod'] = value
+        token['totalUSD'] = token['tokenTotalSupplyByPeriod'] / 10 ** token['decimals'] * token['price']
+
+        pairs[pair_address]['current_vote_bribes'].append(token)
+
     for address, pair in pairs.items():
         pair['token0']['price'] = prices[pair['token0']['symbol']]
         pair['token1']['price'] = prices[pair['token1']['symbol']]
@@ -340,4 +377,4 @@ def get_pairs():
 
 if __name__ == '__main__':
     p = _fetch_pairs()
-    pprint(p['0x1e50482e9185d9dac418768d14b2f2ac2b4daf39'.lower()])
+    pprint(p['0x7052992202c4308e64880d56b3f30a483371db6b'.lower()])
