@@ -321,7 +321,8 @@ def _fetch_pairs():
         token['tokenTotalSupplyByPeriod'] = value
         token['totalUSD'] = token['tokenTotalSupplyByPeriod'] / 10 ** token['decimals'] * token['price']
 
-        pairs[pair_address]['current_vote_bribes'].append(token)
+        if token['totalUSD'] > 0:
+            pairs[pair_address]['current_vote_bribes'].append(token)
 
     for address, pair in pairs.items():
         pair['token0']['price'] = prices[pair['token0']['symbol']]
