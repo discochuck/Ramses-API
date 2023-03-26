@@ -128,7 +128,7 @@ def _fetch_pairs():
     gauges = subgraph_data['gaugeEntities']
 
     week = 7 * 24 * 60 * 60
-    period = int(datetime.datetime.now().timestamp() // week * week)
+    period = int(datetime.datetime.now().timestamp() // week * week + week)
 
     pairs = {}
     calls = []
@@ -144,14 +144,14 @@ def _fetch_pairs():
                 [[pair_address + '-' + str(period), lambda v: v[0]]]
             )
         )
-        calls.append(
-            Call(
-                w3,
-                fee_distributor_address,
-                ["totalVeShareByPeriod(uint256)(uint256)", period - week],
-                [[pair_address + '-' + str(period - week), lambda v: v[0]]]
-            )
-        )
+        # calls.append(
+        #     Call(
+        #         w3,
+        #         fee_distributor_address,
+        #         ["totalVeShareByPeriod(uint256)(uint256)", period - week],
+        #         [[pair_address + '-' + str(period - week), lambda v: v[0]]]
+        #     )
+        # )
 
         pairs[pair_address] = {
             'pair_address': pair_address,
@@ -222,14 +222,14 @@ def _fetch_pairs():
                     [[key + '|' + str(period), lambda v: v[0]]]
                 )
             )
-            calls.append(
-                Call(
-                    w3,
-                    fee_distributor_address,
-                    ["tokenTotalSupplyByPeriod(uint256,address)(uint256)", period - week, token_address],
-                    [[key + '|' + str(period - week), lambda v: v[0]]]
-                )
-            )
+            # calls.append(
+            #     Call(
+            #         w3,
+            #         fee_distributor_address,
+            #         ["tokenTotalSupplyByPeriod(uint256,address)(uint256)", period - week, token_address],
+            #         [[key + '|' + str(period - week), lambda v: v[0]]]
+            #     )
+            # )
             fee_distributor_tokens[key] = {
                 'type': 'ft',
                 'address': token_address,
@@ -303,7 +303,7 @@ def _fetch_pairs():
                 Call(
                     w3,
                     fee_distributor_address,
-                    ["tokenTotalSupplyByPeriod(uint256,address)(uint256)", period + week, token_address],
+                    ["tokenTotalSupplyByPeriod(uint256,address)(uint256)", period, token_address],
                     [[key, lambda v: v[0]]]
                 )
             )
@@ -355,8 +355,8 @@ def _fetch_pairs():
             totalUSD = 0
             for token in pair['fee_distributor_tokens']:
                 totalUSD += token['tokenTotalSupplyByPeriod'] / 10 ** token['decimals'] * token['price']
-            pair['total_vote_reward_usd'] = totalUSD / 2
-            pair['vote_apr'] = totalUSD / 14 * 36500 / (pair['totalVeShareByPeriod'] * prices['RAM'] / 1e18)
+            pair['total_vote_reward_usd'] = totalUSD
+            pair['vote_apr'] = totalUSD / 7 * 36500 / (pair['totalVeShareByPeriod'] * prices['RAM'] / 1e18)
 
         if pair['gaugeTotalSupply'] > 0:
             totalUSD = 0
