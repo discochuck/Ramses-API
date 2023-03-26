@@ -19,7 +19,8 @@ local_coin_ids = {
     'arb': 'arbitrum',
     'hop': 'hop-protocol',
     'spa': 'sperax',
-    'ldo': 'lido-dao'
+    'ldo': 'lido-dao',
+    'ring': 'onering'
 }
 
 stable_coins = [
