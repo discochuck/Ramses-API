@@ -8,7 +8,7 @@ import requests
 local_coin_ids = {
     'dao': 'dao-maker',
     'gmd': 'gmd-protocol',
-    'yfx': 'yfx',
+    'yfx': 'yieldfarming-index',
     'bifi': 'beefy-finance',
     'magic': 'magic',
     'ram': 'ramses-exchange',
