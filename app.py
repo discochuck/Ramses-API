@@ -28,7 +28,7 @@ def apr():
 
 
 @app.route("/pairs")
-@cache.cached(60 * 60)
+# @cache.cached(60 * 60)
 def pairs():
     print('function call')
     return jsonify(get_pairs())
