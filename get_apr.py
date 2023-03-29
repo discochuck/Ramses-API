@@ -111,10 +111,9 @@ def _fetch_pairs():
         response = requests.post(
             url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
             json={
-                "query": "{  gaugeEntities {    id,    pair {      id      symbol    }    rewardTokens {      token {        id        symbol decimals      }    }  }  bribeEntities {    id,    pair {      id      symbol reserve0 reserve1 totalSupply  token0 {id symbol} token1 {id symbol}   }    bribeTokens {      token {        id        symbol  decimals    }    }  }}"
+                "query": """{ gaugeEntities { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } rewardTokens { token { id symbol decimals } } } bribeEntities { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } bribeTokens { token { id symbol decimals } } } }"""
             }
         )
-
         if response.status_code == 200:
             data = response.json()['data']
             db.set('v2_subgraph_data', json.dumps(data))
@@ -173,7 +172,7 @@ def _fetch_pairs():
             },
             'fee_distributor_address': fee_distributor_address,
             'gauge_address': '',
-            'gaugeTotalSupply': '',
+            'gaugeTotalSupply': 0,
             'totalVeShareByPeriod': 0,
             'vote_apr': 0,
             'lp_apr': 0,
@@ -201,6 +200,40 @@ def _fetch_pairs():
                 [[pair_address, lambda v: v[0]]]
             ),
         )
+
+        if pair_address not in pairs:
+            pairs[pair_address] = {
+                'pair_address': pair_address,
+                'symbol': gauge['pair']['symbol'],
+                'totalSupply': float(gauge['pair']['totalSupply']),
+                'price': 0,
+                'tvl': 0,
+                'token0': {
+                    'reserve': float(gauge['pair']['reserve0']),
+                    'address': gauge['pair']['token0']['id'],
+                    'symbol': gauge['pair']['token0']['symbol'],
+                    'price': 0
+                },
+                'token1': {
+                    'reserve': float(gauge['pair']['reserve1']),
+                    'address': gauge['pair']['token1']['id'],
+                    'symbol': fee_distributor['pair']['token1']['symbol'],
+                    'price': 0
+                },
+                'fee_distributor_address': '',
+                'gauge_address': gauge_address,
+                'gaugeTotalSupply': 0,
+                'totalVeShareByPeriod': 0,
+                'vote_apr': 0,
+                'lp_apr': 0,
+                'fee_distributor_tokens': [],
+                'gauge_tokens': [],
+                'current_vote_bribes': [],
+                'total_vote_reward_usd': 0,
+                'total_current_vote_bribe_usd': 0,
+                'total_lp_reward_usd': 0
+            }
+
     for address, value in Multicall(w3, calls)().items():
         pairs[address]['gaugeTotalSupply'] = value
 
