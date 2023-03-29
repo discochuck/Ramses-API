@@ -20,7 +20,8 @@ local_coin_ids = {
     'hop': 'hop-protocol',
     'spa': 'sperax',
     'ldo': 'lido-dao',
-    'ring': 'onering'
+    'ring': 'onering',
+    'gns': 'gains-network'
 }
 
 stable_coins = [
