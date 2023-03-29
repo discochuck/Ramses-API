@@ -40,7 +40,8 @@ stable_coins = [
 
 constant_prices = {
     'elr': 0,
-    'ets epsilon': 0
+    'ets epsilon': 1,
+    'neadram': 0
 }
 
 
