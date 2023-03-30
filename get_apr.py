@@ -108,14 +108,26 @@ def log(msg):
 
 def _fetch_pairs():
     def get_subgraph_data():
-        response = requests.post(
+        gauge_response = requests.post(
             url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
             json={
-                "query": """{ gaugeEntities { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } rewardTokens { token { id symbol decimals } } } bribeEntities { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } bribeTokens { token { id symbol decimals } } } }"""
+                "query": """{ gaugeEntities (skip: 0, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } rewardTokens { token { id symbol decimals } } } }"""
             }
         )
-        if response.status_code == 200:
-            data = response.json()['data']
+        bribe_response = requests.post(
+            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
+            json={
+                "query": """{ bribeEntities (skip: 0, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } bribeTokens { token { id symbol decimals } } } }"""
+            }
+        )
+
+        if gauge_response.status_code == bribe_response.status_code == 200:
+            gauge_data = gauge_response.json()['data']
+            bribe_data = bribe_response.json()['data']
+            data = {
+                **gauge_data,
+                **bribe_data
+            }
             db.set('v2_subgraph_data', json.dumps(data))
             return data
         else:
@@ -183,9 +195,6 @@ def _fetch_pairs():
             'total_current_vote_bribe_usd': 0,
             'total_lp_reward_usd': 0
         }
-
-        if pair_address == '0x1850e96550d6716d43ba4d7df815ffc32bd0d03e':
-            pairs[pair_address]['gauge_address'] = '0xF8719BC4a1A81969F00233a8D9409755d4366d28'.lower()
 
     for address, value in Multicall(w3, calls)().items():
         address = address.split('-')[0]
@@ -417,5 +426,5 @@ def get_pairs():
 
 if __name__ == '__main__':
     p = _fetch_pairs()
-    pair = p['0x8ac36fbce743b632d228f9c2ea5e3bb8603141c7'.lower()]
-    pprint(pair)
+    # pair = p['0x8ac36fbce743b632d228f9c2ea5e3bb8603141c7'.lower()]
+    # pprint(pair)
