@@ -35,14 +35,15 @@ stable_coins = [
     'dai+',
     'mim',
     'lusd',
-    'dai+',
-    'usds'
+    'usds',
+    'frax'
 ]
 
 constant_prices = {
-    'elr': 0,
+    'elr': 0.08,
     'ets epsilon': 1,
-    'neadram': 0
+    'neadram': 0.08,
+    'grain': 0
 }
 
 
