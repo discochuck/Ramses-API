@@ -69,9 +69,11 @@ def calculate_total_lost():
 
 
 def main():
-    voted_pairs = json.loads(db.get('voted_pairs'))
+    voted_pairs = db.get('voted_pairs')
     if voted_pairs is None:
         voted_pairs = {}
+    else:
+        voted_pairs = json.loads(voted_pairs)
 
     for i in range(1, 1400, 50):
         print(i, i + 20)
