@@ -60,13 +60,5 @@ def voter_claimable_rewards():
     )
 
 
-@app.route("/db")
-def fetch_from_db():
-    key = request.args.get('key')
-    return jsonify(
-        json.loads(db.get(key))
-    )
-
-
 if __name__ == "__main__":
     app.run(host="0.0.0.0")

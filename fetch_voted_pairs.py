@@ -1,7 +1,7 @@
+import csv
 import json
+import math
 from pprint import pprint
-
-import requests
 
 from coingecko import get_prices
 from multicall import Call, Multicall
@@ -112,21 +112,150 @@ def process_lost():
     with open('./lost.json', 'r') as file:
         data = json.load(file)
 
-    total_lost_usd = 0
+    pairs = {}
+    symbols = []
     for pair_address, pair in data.items():
+
         if pair_address not in lost_pairs:
             continue
 
-        pair_lost = 0
+        pairs[pair_address] = {
+            'pair_address': pair_address,
+            'symbol': pair['symbol'],
+            'fee_distributor_address': pair['fee_distributor_address'],
+            'tokens': []
+        }
         for token_address, token in pair['lost'].items():
             if token['lost'] > 0:
-                print(token['symbol'], token['lost'], token['decimals'], token['price'])
-                pair_lost += token['lost'] / 10 ** token['decimals'] * token['price']
-        print(pair['symbol'], pair_address, pair_lost, pair['fee_distributor_address'])
+                symbols.append(token['symbol'])
+                lost_usd = token['lost'] / 10 ** token['decimals'] * token['price']
+                pairs[pair_address]['tokens'].append({
+                    'address': token_address,
+                    'decimals': token['decimals'],
+                    'symbol': token['symbol'],
+                    'lost': token['lost'],
+                    'lost_usd': lost_usd
+                })
 
-        total_lost_usd += pair_lost
+    with open('simplified_lost.json', 'w') as file:
+        file.write(json.dumps(pairs))
 
-    print(total_lost_usd)
+    symbols = list(set(symbols))
+    rows = []
+    text_output = ''
+    for symbol in symbols:
+        text_output += f'\n{symbol}\n'
+        total = 0
+        unscaled_total = 0
+        rows.append(["Pair", "Fee Distributor", f"{symbol} Amount", "Unscaled Amount"])
+        for pair_address, pair in pairs.items():
+            for token in pair['tokens']:
+                if token['symbol'] == symbol:
+                    text_output += f"erc20,{token['address']},{pair['fee_distributor_address']},{token['lost'] / 10 ** token['decimals']},\n"
+                    rows.append([
+                        pair['symbol'], pair['fee_distributor_address'], token['lost'], token['lost'] / 10 ** token['decimals']
+                    ])
+                    total += token['lost']
+                    unscaled_total += token['lost'] / 10 ** token['decimals']
+        rows.append(['', '', total, unscaled_total])
+        rows.append([])
+        rows.append([])
+
+    with open(f"transfers/transfers.csv", 'w', newline='') as file:
+        csv.writer(file).writerows(rows)
+
+    with open(f"transfers/transfers.txt", 'w') as file:
+        file.write(text_output)
+
+
+def calculate_rewards():
+    with open('./lost.json', 'r') as file:
+        lost_data = json.load(file)
+
+    with open('./voted_pairs.json', 'r') as file:
+        voted_pairs = json.load(file)
+
+    symbols = []
+
+    rewards = {}
+    rewards_human_readable = {}
+    for token_id, votes in voted_pairs.items():
+        token_id = int(token_id)
+        rewards[token_id] = {}
+        rewards_human_readable[token_id] = {}
+        for pair_address, ve_share in votes.items():
+            pair_symbol = lost_data[pair_address]['symbol']
+
+            rewards[token_id][pair_address] = {}
+            rewards_human_readable[token_id][pair_symbol] = {}
+            for token in lost_data[pair_address]['fee_distributor_tokens']:
+                token_symbol = token['symbol']
+                symbols.append(token_symbol)
+
+                correct_reward = wrong_reward = 0
+                if lost_data[pair_address]['correctTotalVeShareByPeriod'] > 0:
+                    correct_reward = ve_share * token['tokenTotalSupplyByPeriod'] / lost_data[pair_address]['correctTotalVeShareByPeriod'] / 10 ** token[
+                        'decimals']
+                if lost_data[pair_address]['totalVeShareByPeriod'] > 0:
+                    wrong_reward = ve_share * token['tokenTotalSupplyByPeriod'] / lost_data[pair_address]['totalVeShareByPeriod'] / 10 ** token['decimals']
+
+                token_rewards = {
+                    'correct_reward': correct_reward,
+                    'wrong_reward': wrong_reward
+                }
+                rewards[token_id][pair_address][token['address']] = token_rewards
+                rewards_human_readable[token_id][pair_symbol][token_symbol] = token_rewards
+
+    # pprint(rewards_human_readable[3])
+
+    symbols = list(set(symbols))
+    prices = get_prices(symbols)
+
+    total_lost = 0
+    token_extra_reward = []
+    for token_id, pairs in rewards_human_readable.items():
+        token_total_extra_reward = 0
+        for pair_symbol, tokens in pairs.items():
+            for token_symbol, token_rewards in tokens.items():
+                if token_symbol != 'RAM':
+                    continue
+                diff = token_rewards['wrong_reward'] - token_rewards['correct_reward']
+                assert diff >= 0
+                token_total_extra_reward += diff * prices[token_symbol]
+                total_lost += diff * prices[token_symbol]
+        token_extra_reward.append([token_id, int(token_total_extra_reward)])
+
+    print(total_lost)
+    token_extra_reward = sorted(token_extra_reward, key=lambda x: x[1])
+    prev = 0
+    for row in token_extra_reward:
+        row.append(prev + row[1])
+        prev += row[1]
+
+    for row in token_extra_reward:
+        row[1] //= prices['RAM']
+        row[2] //= prices['RAM']
+
+    pprint(
+        sorted(token_extra_reward, key=lambda x: x[1])
+    )
+
+
+def double_check():
+    with open('./lost.json', 'r') as file:
+        data1 = json.load(file)
+
+    with open('./lost_double_check.py', 'r') as file:
+        data2 = json.load(file)
+
+    for pair_address, pair in data1.items():
+        for token_address, _ in pair.get('lost', {}).items():
+            token1 = data1[pair_address]['lost'][token_address]
+            token2 = data2[pair_address]['lost'][token_address]
+            if token1['lost'] != token2['lost'] > 0:
+                print(pair['symbol'], token1['symbol'])
+                print(token1['lost'] / 10 ** token1['decimals'], token2['lost'] / 10 ** token2['decimals'])
+                print()
 
 
 def main():
@@ -157,5 +286,7 @@ def main():
 
 
 if __name__ == '__main__':
-    # process_lost()
-    main()
+    # calculate_rewards()
+    process_lost()
+    # main()
+    # double_check()
