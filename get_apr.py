@@ -184,6 +184,9 @@ def _fetch_pairs():
             'total_lp_reward_usd': 0
         }
 
+        if pair_address == '0x1850e96550d6716d43ba4d7df815ffc32bd0d03e':
+            pairs[pair_address]['gauge_address'] = '0xF8719BC4a1A81969F00233a8D9409755d4366d28'.lower()
+
     for address, value in Multicall(w3, calls)().items():
         address = address.split('-')[0]
         pairs[address]['totalVeShareByPeriod'] += value
