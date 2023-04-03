@@ -21,7 +21,8 @@ local_coin_ids = {
     'spa': 'sperax',
     'ldo': 'lido-dao',
     'ring': 'onering',
-    'gns': 'gains-network'
+    'gns': 'gains-network',
+    'cbeth': 'coinbase-wrapped-staked-eth'
 }
 
 stable_coins = [
