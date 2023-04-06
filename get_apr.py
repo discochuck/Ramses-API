@@ -108,10 +108,17 @@ def log(msg):
 
 def _fetch_pairs():
     def get_subgraph_data():
+        # todo: limit quick fix
         gauge_response = requests.post(
             url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
             json={
                 "query": """{ gaugeEntities (skip: 0, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } rewardTokens { token { id symbol decimals } } } }"""
+            }
+        )
+        gauge_response_2 = requests.post(
+            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
+            json={
+                "query": """{ gaugeEntities (skip: 1000, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } rewardTokens { token { id symbol decimals } } } }"""
             }
         )
         bribe_response = requests.post(
@@ -120,13 +127,17 @@ def _fetch_pairs():
                 "query": """{ bribeEntities (skip: 0, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } bribeTokens { token { id symbol decimals } } } }"""
             }
         )
+        bribe_response_2 = requests.post(
+            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
+            json={
+                "query": """{ bribeEntities (skip: 1000, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } bribeTokens { token { id symbol decimals } } } }"""
+            }
+        )
 
-        if gauge_response.status_code == bribe_response.status_code == 200:
-            gauge_data = gauge_response.json()['data']
-            bribe_data = bribe_response.json()['data']
+        if gauge_response.status_code == bribe_response.status_code == 200 == gauge_response_2.status_code == bribe_response_2.status_code:
             data = {
-                **gauge_data,
-                **bribe_data
+                'gaugeEntities': gauge_response.json()['data']['gaugeEntities'] + gauge_response_2.json()['data']['gaugeEntities'],
+                'bribeEntities': bribe_response.json()['data']['bribeEntities'] + bribe_response_2.json()['data']['bribeEntities']
             }
             db.set('v2_subgraph_data', json.dumps(data))
             return data
