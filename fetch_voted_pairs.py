@@ -7,7 +7,7 @@ from coingecko import get_prices
 from multicall import Call, Multicall
 from utils import w3, db
 
-period = 1680134400 + 7 * 24 * 60 * 60
+period = 1680739200
 
 lost_pairs = ['0x93d98b4caac02385a0ae7caaeadc805f48553f76', '0xba9f17ca67d1c8416bb9b132d50232191e27b45e', '0x040da64a9347c9786069eee1d191a1b9062edc0f',
               '0xeb9153afbaa3a6cfbd4fce39988cea786d3f62bb', '0xce63c58c83ed2aff21c1d5bb85bad93869c632f7', '0xe25c248ee2d3d5b428f1388659964446b4d78599',
@@ -53,6 +53,55 @@ def get_voted_pairs(token_ids):
     return voted_pairs
 
 
+def check_balance(fee_distributor_address, token_address):
+    calls = []
+    for token_id in range(1, 1400):
+        calls.append(
+            Call(
+                w3,
+                fee_distributor_address,
+                ["earned(address,uint256)(uint256)", token_address, token_id],
+                [[token_id, lambda v: int(v[0])]]
+            )
+        )
+    calls.append(
+        Call(
+            w3,
+            token_address,
+            ["balanceOf(address)(uint256)", fee_distributor_address],
+            [[token_address, lambda v: int(v[0])]]
+        )
+    )
+
+    result = Multicall(w3, calls)()
+    balance = result[token_address]
+    del result[token_address]
+
+    required_balance = 0
+    for token_id, earned in result.items():
+        required_balance += earned
+
+    return {
+        'balance': balance,
+        'required_balance': required_balance,
+        'diff': balance - required_balance
+    }
+
+
+def store_voted_pairs():
+    voted_pairs = {}
+
+    for i in range(1, 1400, 50):
+        print(i, i + 50)
+        if i in voted_pairs:
+            continue
+
+        for key, value in get_voted_pairs(range(i, i + 50)).items():
+            voted_pairs[key] = value
+
+    db.set('voted_pairs', json.dumps(voted_pairs))
+
+
 def calculate_lost(pair):
     fee_distributor_address = pair['fee_distributor_address']
 
@@ -94,41 +143,33 @@ def calculate_lost(pair):
     return lost
 
 
-def store_voted_pairs():
-    voted_pairs = {}
-
-    for i in range(1, 1400, 50):
-        print(i, i + 50)
-        if i in voted_pairs:
-            continue
-
-        for key, value in get_voted_pairs(range(i, i + 50)).items():
-            voted_pairs[key] = value
-
-    db.set('voted_pairs', json.dumps(voted_pairs))
-
-
 def process_lost():
     with open('./lost.json', 'r') as file:
         data = json.load(file)
 
+    total_lost_usd = 0
     pairs = {}
     symbols = []
     for pair_address, pair in data.items():
 
-        if pair_address not in lost_pairs:
+        if 'lost' not in pair:
+            continue
+
+        if pair['totalVeShareByPeriod'] == 0:
             continue
 
         pairs[pair_address] = {
             'pair_address': pair_address,
             'symbol': pair['symbol'],
             'fee_distributor_address': pair['fee_distributor_address'],
-            'tokens': []
+            'tokens': [],
+            'pair_lost_usd': 0
         }
         for token_address, token in pair['lost'].items():
             if token['lost'] > 0:
                 symbols.append(token['symbol'])
                 lost_usd = token['lost'] / 10 ** token['decimals'] * token['price']
+                total_lost_usd += lost_usd
                 pairs[pair_address]['tokens'].append({
                     'address': token_address,
                     'decimals': token['decimals'],
@@ -136,7 +177,16 @@ def process_lost():
                     'lost': token['lost'],
                     'lost_usd': lost_usd
                 })
+                pairs[pair_address]['pair_lost_usd'] += lost_usd
+            else:
+                if abs(token['lost'] / 1e18) > 10:
+                    print(pair['symbol'], token['symbol'], token['lost'] / 1e18)
 
+        pair_lost = pairs[pair_address].get('pair_lost_usd')
+        # if pair_lost:
+        # print(pairs[pair_address]['symbol'], pair_lost, total_lost_usd)
+
+    print('total lost usd:', total_lost_usd)
     with open('simplified_lost.json', 'w') as file:
         file.write(json.dumps(pairs))
 
@@ -258,18 +308,44 @@ def double_check():
                 print()
 
 
-def main():
-    # lusd lqty
-    #  0x0f9a90636c778f6a583f7d2212e4921715af4900
-
+def get_pairs():
     with open('./pairs.json', 'r') as file:
         pairs = json.load(file)
 
-    # with open('./voted_pairs.json', 'r') as file:
-    #     voted_pairs = json.load(file)
+    calls = []
+    for pair_address, pair in pairs.items():
+        fee_distributor_address = pair['fee_distributor_address']
+        calls.append(
+            Call(
+                w3,
+                fee_distributor_address,
+                ["totalVeShareByPeriod(uint256)(uint256)", period],
+                [[pair_address, lambda v: v[0]]]
+            )
+        )
 
-    store_voted_pairs()
-    voted_pairs = json.loads(db.get('voted_pairs'))
+    for pair_address, total_ve_share in Multicall(w3, calls)().items():
+        pairs[pair_address]['totalVeShareByPeriod'] = total_ve_share
+
+    with open('./pairs.json', 'w') as file:
+        file.write(json.dumps(pairs))
+
+    return pairs
+
+
+def check_ve_share():
+    # lusd lqty
+    #  0x0f9a90636c778f6a583f7d2212e4921715af4900
+
+    # pairs = get_pairs()
+    with open('./pairs.json', 'r') as file:
+        pairs = json.load(file)
+
+    with open('./voted_pairs.json', 'r') as file:
+        voted_pairs = json.load(file)
+
+    # store_voted_pairs()
+    # voted_pairs = json.loads(db.get('voted_pairs'))
 
     for pair_address, pair in pairs.items():
         pair['correctTotalVeShareByPeriod'] = 0
@@ -286,14 +362,43 @@ def main():
             print(
                 pair['symbol'],
                 len(pair['voters']),
-                pair['lost']
+                pair['totalVeShareByPeriod'],
+                pair['correctTotalVeShareByPeriod'],
+                abs(pair['totalVeShareByPeriod'] - pair['correctTotalVeShareByPeriod']) / 1e18
+
             )
 
     db.set('lost', json.dumps(dict(pairs)))
 
 
+def store_balance_check():
+    balance_checks = {}
+    pairs = json.loads(db.get('pairs'))
+    for pair_address, pair in pairs.items():
+        pair_symbol = pair['symbol']
+        print(pair_symbol)
+        balance_checks[pair_symbol] = {}
+        for token in pair['fee_distributor_tokens']:
+            token_symbol = token['symbol']
+            print('-', token_symbol, end=' ')
+            check_result = check_balance(pair['fee_distributor_address'], token['address'])
+            print(check_result)
+            balance_checks[pair_symbol][token_symbol] = check_result
+
+        db.set('balance_checks', json.dumps(balance_checks))
+
+
+def main():
+    with open('balance_check1.json', 'r') as file:
+        balance_checks = json.load(file)
+
+    with open('./pairs.json', 'r') as file:
+        pairs = json.load(file)
+
+
 if __name__ == '__main__':
     # calculate_rewards()
+    # main()
     # process_lost()
-    main()
     # double_check()
+    store_balance_check()
