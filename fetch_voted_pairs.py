@@ -7,7 +7,7 @@ from coingecko import get_prices
 from multicall import Call, Multicall
 from utils import w3, db
 
-period = 1680134400
+period = 1680134400 + 7 * 24 * 60 * 60
 
 lost_pairs = ['0x93d98b4caac02385a0ae7caaeadc805f48553f76', '0xba9f17ca67d1c8416bb9b132d50232191e27b45e', '0x040da64a9347c9786069eee1d191a1b9062edc0f',
               '0xeb9153afbaa3a6cfbd4fce39988cea786d3f62bb', '0xce63c58c83ed2aff21c1d5bb85bad93869c632f7', '0xe25c248ee2d3d5b428f1388659964446b4d78599',
@@ -265,8 +265,11 @@ def main():
     with open('./pairs.json', 'r') as file:
         pairs = json.load(file)
 
-    with open('./voted_pairs.json', 'r') as file:
-        voted_pairs = json.load(file)
+    # with open('./voted_pairs.json', 'r') as file:
+    #     voted_pairs = json.load(file)
+
+    store_voted_pairs()
+    voted_pairs = json.loads(db.get('voted_pairs'))
 
     for pair_address, pair in pairs.items():
         pair['correctTotalVeShareByPeriod'] = 0
@@ -279,14 +282,18 @@ def main():
 
     for pair_address, pair in pairs.items():
         if pair['totalVeShareByPeriod'] != pair['correctTotalVeShareByPeriod']:
-            print(pair['symbol'], len(pair['voters']))
             pair['lost'] = dict(calculate_lost(pair).items())
+            print(
+                pair['symbol'],
+                len(pair['voters']),
+                pair['lost']
+            )
 
     db.set('lost', json.dumps(dict(pairs)))
 
 
 if __name__ == '__main__':
     # calculate_rewards()
-    process_lost()
-    # main()
+    # process_lost()
+    main()
     # double_check()
