@@ -12,7 +12,7 @@ local_coin_ids = {
     'bifi': 'beefy-finance',
     'magic': 'magic',
     'ram': 'ramses-exchange',
-    'fbomb': 'fbomb',
+    'fbomb': 'fantom-bomb',
     'fs': 'fantomstarter',
     'arc': 'arcadeum',
     'qi': 'qi-dao',
@@ -22,7 +22,8 @@ local_coin_ids = {
     'ldo': 'lido-dao',
     'ring': 'onering',
     'gns': 'gains-network',
-    'cbeth': 'coinbase-wrapped-staked-eth'
+    'cbeth': 'coinbase-wrapped-staked-eth',
+    'wusdr': 'wrapped-usdr'
 }
 
 stable_coins = [
@@ -37,14 +38,14 @@ stable_coins = [
     'mim',
     'lusd',
     'usds',
-    'frax'
+    'frax',
+    'ets epsilon'
 ]
 
 constant_prices = {
-    'elr': 0.08,
-    'ets epsilon': 1,
-    'neadram': 0.08,
-    'grain': 0
+    'elr': 0.06,
+    'neadram': 0.06,
+    'grain': 0.07
 }
 
 
