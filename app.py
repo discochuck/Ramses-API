@@ -28,28 +28,10 @@ def apr():
 
 
 @app.route("/pairs")
-# @cache.cached(60 * 60)
+@cache.cached(5 * 60)
 def pairs():
     print('function call')
     return jsonify(get_pairs())
-
-
-@app.route("/firebird")
-def firebird_proxy():
-    url = f"https://router.firebird.finance/aggregator/v1/route?{request.query_string.decode()}"
-
-    res = requests.get(
-        url=url,
-        headers={
-            'API-KEY': 'firebird_ramses_prod_200323'
-        }
-    )
-
-    print(res.status_code)
-    if res.status_code == 200:
-        return jsonify(res.json())
-    else:
-        return res.text
 
 
 @app.route("/voterClaimableRewards")

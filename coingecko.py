@@ -20,7 +20,9 @@ local_coin_ids = {
     'hop': 'hop-protocol',
     'spa': 'sperax',
     'ldo': 'lido-dao',
-    'ring': 'onering'
+    'ring': 'onering',
+    'gns': 'gains-network',
+    'cbeth': 'coinbase-wrapped-staked-eth'
 }
 
 stable_coins = [
@@ -34,14 +36,15 @@ stable_coins = [
     'dai+',
     'mim',
     'lusd',
-    'dai+',
-    'usds'
+    'usds',
+    'frax'
 ]
 
 constant_prices = {
-    'elr': 0,
+    'elr': 0.08,
     'ets epsilon': 1,
-    'neadram': 0
+    'neadram': 0.08,
+    'grain': 0
 }
 
 
