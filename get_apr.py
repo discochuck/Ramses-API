@@ -265,6 +265,25 @@ def _fetch_pairs():
     for fee_distributor in fee_distributors:
         fee_distributor_address = fee_distributor['id']
         pair_address = fee_distributor['pair']['id']
+
+        if 'RAM' not in [token['token']['symbol'] for token in fee_distributor['bribeTokens']]:
+            fee_distributor['bribeTokens'].append({
+                'token': {
+                    'id': '0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418',
+                    'symbol': 'RAM',
+                    'decimals': 18
+                }
+            })
+
+        if fee_distributor_address == '0x1568d05b8fd251d17687c395db5aa8adbe384e77':
+            fee_distributor['bribeTokens'].append({
+                'token': {
+                    'id': '0x18c11FD286C5EC11c3b683Caa813B77f5163A122',
+                    'symbol': 'GNS',
+                    'decimals': 18
+                }
+            })
+
         for token in fee_distributor['bribeTokens']:
             token = token['token']
             token_address = token['id']
@@ -437,5 +456,5 @@ def get_pairs():
 
 if __name__ == '__main__':
     p = _fetch_pairs()
-    # pair = p['0x8ac36fbce743b632d228f9c2ea5e3bb8603141c7'.lower()]
-    # pprint(pair)
+    pair = p['0x926916dba2d7af7a4ae50687029aa8fe17a432a7'.lower()]
+    pprint(pair)
