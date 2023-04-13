@@ -85,7 +85,7 @@ def get_prices(symbols):
 
     ids = get_coins_ids(symbols)
 
-    ids_array = list(ids.values()) + ['ethereum', 'ramses-exchange']
+    ids_array = list([v for v in ids.values() if v]) + ['ethereum', 'ramses-exchange']
 
     response = requests.get(
         url="https://pro-api.coingecko.com/api/v3/simple/price",
@@ -108,7 +108,7 @@ def get_prices(symbols):
 if __name__ == '__main__':
     pprint(
         get_prices(
-            ['DAO', 'WETH', 'TAROT', 'wstETH', 'LQTY', 'OATH', 'UNIDX', 'gmUSD', 'VELA', 'MIM', 'MAGIC', 'YFX', 'DOLA', 'LEVI', 'LUSD', 'FRAX', 'L2DAO', 'DAI',
+            ['TEST', 'DAO', 'WETH', 'TAROT', 'wstETH', 'LQTY', 'OATH', 'UNIDX', 'gmUSD', 'VELA', 'MIM', 'MAGIC', 'YFX', 'DOLA', 'LEVI', 'LUSD', 'FRAX', 'L2DAO', 'DAI',
              'GMX', 'xSHRAP', 'GNS', 'BIFI', 'jEUR', 'MAI', 'DAI+', 'USDT', 'ELR', 'gDAI', 'USD+', 'DEI', 'RAM', 'DEUS', 'LQDR', 'NFTE', 'frxETH', 'fBOMB',
              'GMD', 'FXS', 'XCAD', 'USDC']
         )

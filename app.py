@@ -6,6 +6,7 @@ from flask_caching import Cache
 from flask_cors import CORS
 
 from claimable_rewards import get_voter_claimable_rewards
+from fetch_voted_pairs import check_balance
 from get_apr import get_apr, get_pairs
 from utils import db, cache_config
 
@@ -48,6 +49,29 @@ def fetch_from_db():
     return jsonify(
         json.loads(db.get(key))
     )
+
+
+@app.route("/check_rewards/<pair_address>")
+def check_rewards(pair_address):
+    pair = json.loads(db.get('pairs'))[pair_address]
+
+    fee_distributor_address = pair['fee_distributor_address']
+
+    result = []
+    for token in pair['fee_distributor_tokens']:
+        missing_amount = -check_balance(pair['fee_distributor_address'], token['address'])['diff']
+        if missing_amount > 0:
+            check = {
+               'symbol': token['symbol'],
+               'address': token['address'],
+               'missing_amount': missing_amount / 10 ** token['decimals']
+            }
+            result.append(check)
+
+    return jsonify({
+        'fee_distributor_address': fee_distributor_address,
+        'result': result
+    })
 
 
 if __name__ == "__main__":
