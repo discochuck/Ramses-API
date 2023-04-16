@@ -23,7 +23,8 @@ local_coin_ids = {
     'ring': 'onering',
     'gns': 'gains-network',
     'cbeth': 'coinbase-wrapped-staked-eth',
-    'wusdr': 'wrapped-usdr'
+    'wusdr': 'wrapped-usdr',
+    'sfrxeth': 'staked-frax-ether'
 }
 
 stable_coins = [
@@ -43,9 +44,9 @@ stable_coins = [
 ]
 
 constant_prices = {
-    'elr': 0.06,
-    'neadram': 0.06,
-    'grain': 0.07
+    'elr': 0.015,
+    'neadram': 0.076,
+    'grain': 0.06
 }
 
 
