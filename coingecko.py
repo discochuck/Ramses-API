@@ -24,7 +24,9 @@ local_coin_ids = {
     'gns': 'gains-network',
     'cbeth': 'coinbase-wrapped-staked-eth',
     'wusdr': 'wrapped-usdr',
-    'sfrxeth': 'staked-frax-ether'
+    'sfrxeth': 'staked-frax-ether',
+    'neadram': 'the-ennead',
+    'grain': 'granary'
 }
 
 stable_coins = [
@@ -44,9 +46,7 @@ stable_coins = [
 ]
 
 constant_prices = {
-    'elr': 0.015,
-    'neadram': 0.076,
-    'grain': 0.06
+    'elr': 0.08
 }
 
 
