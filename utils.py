@@ -19,3 +19,7 @@ else:
     cache_config = {
         'CACHE_TYPE': 'RedisCache'
     }
+
+
+def log(msg):
+    print(msg)

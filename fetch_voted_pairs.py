@@ -1,6 +1,7 @@
 import csv
 import json
 import math
+from math import ceil
 from pprint import pprint
 
 from coingecko import get_prices
@@ -436,7 +437,7 @@ def process_balance_check(use_db=False):
     lost_usd = 0
     extra_usd = 0
     pair_losts = []
-    transfers = []
+    transfers = ""
     for pair_symbol, tokens in balance_checks.items():
         pair_lost_usd = 0
         pair_extra_usd = 0
@@ -447,13 +448,13 @@ def process_balance_check(use_db=False):
             else:
                 pair_lost_usd += diff
 
-            token_address = token['address']
-            if diff < -10:
-                amount = token['diff'] / 10 ** token['decimals']
-                print(token['diff'] - amount * 10 ** token['decimals'] > 0)
-                amount += token['diff'] - amount * 10 ** token['decimals']
+            if diff < -0.01:
+                amount = (-token['diff'] / 10 ** token['decimals'])
+                amount += 10 ** -(len(str(amount).split('.')[1]) - 1)
+                if diff < -10:
+                    assert -token['diff'] <= amount * 10 ** token['decimals'] <= -token['diff'] * 1.0001
 
-                transfers.append(['erc20',token_address, ])
+                transfers += f"erc20,{token['token_address']},{token['fee_distributor_address']},{amount},\n"
 
         if abs(pair_extra_usd) < 10 and abs(pair_lost_usd) < 10:
             continue
@@ -476,8 +477,8 @@ def process_balance_check(use_db=False):
     #     print(pair['symbol'], end=' ')
     #     verify_total_ve_share(pair['fee_distributor_address'])
 
-    # pprint(pair_losts)
-    # print(lost_usd, extra_usd)
+    pprint(pair_losts)
+    print(lost_usd, extra_usd)
 
     # pprint(transfers)
 
@@ -485,6 +486,9 @@ def process_balance_check(use_db=False):
     # print([token_id for token_id, earned in list(balance_checks[pair_symbol].values())[0]['detail'].items() if earned > 0])
     # print([token_id for token_id, earned in list(balance_checks[pair_symbol].values())[1]['detail'].items() if earned > 0])
     # print(pairs[pairs_addresses[pair_symbol]]['fee_distributor_address'])
+
+    with open(f"transfers/transfers.txt", 'w') as file:
+        file.write(transfers)
 
 
 def verify_total_ve_share(fee_distributor_address):
@@ -622,7 +626,7 @@ if __name__ == '__main__':
     # process_lost()
     # double_check()
 
-    store_balance_check()
+    # store_balance_check()
     # process_balance_check(use_db=True)
 
-    # process_balance_check()
+    process_balance_check()
