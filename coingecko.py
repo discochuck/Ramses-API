@@ -25,7 +25,6 @@ local_coin_ids = {
     'cbeth': 'coinbase-wrapped-staked-eth',
     'wusdr': 'wrapped-usdr',
     'sfrxeth': 'staked-frax-ether',
-    'neadram': 'the-ennead',
     'grain': 'granary'
 }
 
@@ -98,11 +97,12 @@ def get_prices(symbols):
         }
     ).json()
 
-    prices['ETH'] = response['ethereum']['usd']
-    prices['RAM'] = response['ramses-exchange']['usd']
-
     for symbol in symbols:
         prices[symbol] = response.get(ids[symbol.lower()], {'usd': 0})['usd']
+
+    prices['ETH'] = response['ethereum']['usd']
+    prices['RAM'] = response['ramses-exchange']['usd']
+    prices['neadRAM'] = prices['RAM'] * 0.9
 
     return prices
 
@@ -110,7 +110,9 @@ def get_prices(symbols):
 if __name__ == '__main__':
     pprint(
         get_prices(
-            ['DAO', 'WETH', 'TAROT', 'wstETH', 'LQTY', 'OATH', 'UNIDX', 'gmUSD', 'VELA', 'MIM', 'MAGIC', 'YFX', 'DOLA', 'LEVI', 'LUSD', 'FRAX', 'L2DAO', 'DAI',
+            ['neadRAM', 'TEST', 'DAO', 'WETH', 'TAROT', 'wstETH', 'LQTY', 'OATH', 'UNIDX', 'gmUSD', 'VELA', 'MIM', 'MAGIC', 'YFX', 'DOLA', 'LEVI', 'LUSD',
+             'FRAX', 'L2DAO',
+             'DAI',
              'GMX', 'xSHRAP', 'GNS', 'BIFI', 'jEUR', 'MAI', 'DAI+', 'USDT', 'ELR', 'gDAI', 'USD+', 'DEI', 'RAM', 'DEUS', 'LQDR', 'NFTE', 'frxETH', 'fBOMB',
              'GMD', 'FXS', 'XCAD', 'USDC']
         )

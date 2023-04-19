@@ -106,7 +106,7 @@ def log(msg):
     print(msg)
 
 
-def get_subgraph_tokens():
+def get_subgraph_tokens(catch_errors):
     # get tokens from subgraph
     skip = 0
     tokens = []
@@ -136,7 +136,9 @@ def get_subgraph_tokens():
     try:
         prices = get_prices(symbols)
         db.set('v2_prices', json.dumps(prices))
-    except:
+    except Exception as e:
+        if not catch_errors:
+            raise e
         log("Error on prices")
         prices = json.loads(db.get('v2_prices'))
     for token in tokens:
@@ -179,9 +181,9 @@ def get_subgraph_pairs():
     return pairs
 
 
-def get_subgraph_data():
+def get_subgraph_data(catch_errors):
     tokens = {}
-    for token in get_subgraph_tokens():
+    for token in get_subgraph_tokens(catch_errors):
         tokens[token['id']] = token
     pairs = get_subgraph_pairs()
 
@@ -273,8 +275,8 @@ def get_subgraph_data():
     return data
 
 
-def _fetch_pairs():
-    subgraph_data = get_subgraph_data()
+def _fetch_pairs(catch_errors):
+    subgraph_data = get_subgraph_data(catch_errors)
     fee_distributors = subgraph_data['bribeEntities']
     gauges = subgraph_data['gaugeEntities']
 
@@ -489,7 +491,9 @@ def _fetch_pairs():
     try:
         prices = get_prices(symbols)
         db.set('v2_prices', json.dumps(prices))
-    except:
+    except Exception as e:
+        if not catch_errors:
+            raise e
         log("Error on prices")
         prices = json.loads(db.get('v2_prices'))
 
@@ -573,17 +577,19 @@ def _fetch_pairs():
     return pairs
 
 
-def get_pairs():
+def get_pairs(catch_errors=True):
     try:
-        pairs = _fetch_pairs()
+        pairs = _fetch_pairs(catch_errors)
         db.set('pairs', json.dumps(pairs))
-    except:
+    except Exception as e:
+        if not catch_errors:
+            raise e
         log("Error on get_pairs")
         pairs = json.loads(db.get('pairs'))
     return pairs
 
 
 if __name__ == '__main__':
-    p = _fetch_pairs()
-    pair = p['0x926916dba2d7af7a4ae50687029aa8fe17a432a7'.lower()]
+    p = _fetch_pairs(False)
+    pair = p['0xc9385521cbc31becb230df91b40122695ab4fedd'.lower()]
     pprint(pair)
