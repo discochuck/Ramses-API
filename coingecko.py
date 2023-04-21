@@ -25,7 +25,8 @@ local_coin_ids = {
     'cbeth': 'coinbase-wrapped-staked-eth',
     'wusdr': 'wrapped-usdr',
     'sfrxeth': 'staked-frax-ether',
-    'grain': 'granary'
+    'grain': 'granary',
+    'ageur': 'ageur'
 }
 
 stable_coins = [
