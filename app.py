@@ -62,9 +62,9 @@ def check_rewards(pair_address):
         missing_amount = -check_balance(pair['fee_distributor_address'], token['address'])['diff']
         if missing_amount > 0:
             check = {
-               'symbol': token['symbol'],
-               'address': token['address'],
-               'missing_amount': missing_amount / 10 ** token['decimals']
+                'symbol': token['symbol'],
+                'address': token['address'],
+                'missing_amount': missing_amount / 10 ** token['decimals']
             }
             result.append(check)
 
@@ -72,6 +72,36 @@ def check_rewards(pair_address):
         'fee_distributor_address': fee_distributor_address,
         'result': result
     })
+
+
+@app.route("/cruize-lge-chart")
+def get_cruize_lge_chart():
+    limit = 100
+    skip = 0
+    data = []
+    while True:
+        query = f"{{ buys(skip: {skip}, limit: {limit}, orderBy: totalRaised) {{user timestamp amount totalRaised}} }}"
+        response = requests.post(
+            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses-lge",
+            json={
+                "query": query
+            }
+        )
+
+        if response.status_code == 200:
+            new_data = response.json()['data']['buys']
+            data += new_data
+
+            if len(new_data) < limit:
+                break
+            else:
+                skip += limit
+        else:
+            return json.loads(db.get('cruize-lge-chart'))
+
+    db.set('cruize-lge-chart', json.dumps(data))
+
+    return data
 
 
 if __name__ == "__main__":
