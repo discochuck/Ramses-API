@@ -26,7 +26,8 @@ local_coin_ids = {
     'wusdr': 'wrapped-usdr',
     'sfrxeth': 'staked-frax-ether',
     'grain': 'granary',
-    'ageur': 'ageur'
+    'ageur': 'ageur',
+    'fba': 'firebird-aggregator'
 }
 
 stable_coins = [
@@ -46,7 +47,7 @@ stable_coins = [
 ]
 
 constant_prices = {
-    'elr': 0.08
+    'elr': 0.06
 }
 
 
