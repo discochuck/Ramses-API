@@ -350,7 +350,7 @@ def _fetch_pairs(catch_errors):
             Call(
                 w3,
                 gauge_address,
-                ["totalSupply()(uint256)"],
+                ["derivedSupply()(uint256)"],
                 [[pair_address, lambda v: v[0]]]
             ),
         )
@@ -360,7 +360,6 @@ def _fetch_pairs(catch_errors):
                 'pair_address': pair_address,
                 'symbol': gauge['pair']['symbol'],
                 'totalSupply': float(gauge['pair']['totalSupply']),
-                'price': 0,
                 'tvl': 0,
                 'token0': {
                     'reserve': float(gauge['pair']['reserve0']),
