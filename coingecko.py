@@ -27,7 +27,8 @@ local_coin_ids = {
     'sfrxeth': 'staked-frax-ether',
     'grain': 'granary',
     'ageur': 'ageur',
-    'fba': 'firebird-aggregator'
+    'fba': 'firebird-aggregator',
+    'euroe': 'euroe-stablecoin'
 }
 
 stable_coins = [
