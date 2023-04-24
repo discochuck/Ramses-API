@@ -588,7 +588,7 @@ def _fetch_pairs(catch_errors):
                     totalUSD += token['rewardRate'] * 24 * 60 * 60 / 10 ** token['decimals'] * token['price']
 
             pair['total_lp_reward_usd'] = totalUSD
-            pair['lp_apr'] = totalUSD * 36500 / (pair['gaugeTotalSupply'] * pair['price'] / 1e18)
+            pair['lp_apr'] = totalUSD * 36500 / (pair['gaugeTotalSupply'] * pair['price'] / 1e18) / 2.5
 
     return pairs
 
@@ -607,6 +607,6 @@ def get_pairs(catch_errors=True):
 
 if __name__ == '__main__':
     p = _fetch_pairs(False)
-    pair = p['0x275f7112e3900fdf3c9532d749dd4985790e7933'.lower()]
+    pair = p['0x8ac36fbce743b632d228f9c2ea5e3bb8603141c7'.lower()]
     pprint(pair['gauge_tokens'])
     print(pair['lp_apr'])
