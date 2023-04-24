@@ -20,7 +20,8 @@ def get_apr():
     fee_distributors = response.json()['data']['bribeEntities']
 
     week = 7 * 24 * 60 * 60
-    period = int(datetime.datetime.now().timestamp() // week * week + week)
+    now = datetime.datetime.now().timestamp()
+    period = int(now // week * week + week)
 
     pairs = {}
     calls = []
@@ -272,6 +273,7 @@ def get_subgraph_data(catch_errors):
         'gaugeEntities': gauges,
         'bribeEntities': bribes
     }
+
     return data
 
 
@@ -281,7 +283,8 @@ def _fetch_pairs(catch_errors):
     gauges = subgraph_data['gaugeEntities']
 
     week = 7 * 24 * 60 * 60
-    period = int(datetime.datetime.now().timestamp() // week * week + week)
+    now = datetime.datetime.now().timestamp()
+    period = int(now // week * week + week)
 
     pairs = {}
     calls = []
@@ -450,6 +453,7 @@ def _fetch_pairs(catch_errors):
 
     gauge_tokens = {}
     calls = []
+    period_finish_calls = []
     for gauge in gauges:
         gauge_address = gauge['id']
         pair_address = gauge['pair']['id']
@@ -468,16 +472,28 @@ def _fetch_pairs(catch_errors):
                 ),
             )
 
+            period_finish_calls.append(
+                Call(
+                    w3,
+                    gauge_address,
+                    ["periodFinish(address)(uint256)", token_address],
+                    [[key, lambda v: int(v[0])]]
+                ),
+            )
+
             gauge_tokens[key] = {
                 'type': 'gt',
                 'address': token_address,
                 'symbol': token['symbol'],
                 'rewardPerToken': 0,
-                'decimals': int(token['decimals'])
+                'decimals': int(token['decimals']),
+                'periodFinish': 0
             }
 
+    period_finish = Multicall(w3, period_finish_calls)()
     for key, value in Multicall(w3, calls)().items():
         gauge_tokens[key]['rewardRate'] = value
+        gauge_tokens[key]['periodFinish'] = period_finish[key]
 
     tokens = fee_distributor_tokens.copy()
     tokens.update(gauge_tokens)
@@ -568,7 +584,8 @@ def _fetch_pairs(catch_errors):
         if pair['gaugeTotalSupply'] > 0:
             totalUSD = 0
             for token in pair['gauge_tokens']:
-                totalUSD += token['rewardRate'] * week / 10 ** token['decimals'] * token['price']
+                if token['periodFinish'] > now:
+                    totalUSD += token['rewardRate'] * (token['periodFinish'] - now) / 10 ** token['decimals'] * token['price']
 
             pair['total_lp_reward_usd'] = totalUSD
             pair['lp_apr'] = totalUSD / 7 * 36500 / (pair['gaugeTotalSupply'] * pair['price'] / 1e18)
@@ -590,5 +607,6 @@ def get_pairs(catch_errors=True):
 
 if __name__ == '__main__':
     p = _fetch_pairs(False)
-    pair = p['0xc9385521cbc31becb230df91b40122695ab4fedd'.lower()]
-    pprint(pair)
+    pair = p['0x275f7112e3900fdf3c9532d749dd4985790e7933'.lower()]
+    pprint(pair['gauge_tokens'])
+    print(pair['lp_apr'])
