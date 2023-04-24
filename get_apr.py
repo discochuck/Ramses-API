@@ -585,10 +585,10 @@ def _fetch_pairs(catch_errors):
             totalUSD = 0
             for token in pair['gauge_tokens']:
                 if token['periodFinish'] > now:
-                    totalUSD += token['rewardRate'] * (token['periodFinish'] - now) / 10 ** token['decimals'] * token['price']
+                    totalUSD += token['rewardRate'] * 24 * 60 * 60 / 10 ** token['decimals'] * token['price']
 
             pair['total_lp_reward_usd'] = totalUSD
-            pair['lp_apr'] = totalUSD / 7 * 36500 / (pair['gaugeTotalSupply'] * pair['price'] / 1e18)
+            pair['lp_apr'] = totalUSD * 36500 / (pair['gaugeTotalSupply'] * pair['price'] / 1e18)
 
     return pairs
 
