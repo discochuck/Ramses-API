@@ -30,7 +30,9 @@ local_coin_ids = {
     'fba': 'firebird-aggregator',
     'euroe': 'euroe-stablecoin',
     'gnd': 'gnd-protocol',
-    'pork': 'pigscanfly'
+    'pork': 'pigscanfly',
+    'aidoge': 'arbdoge-ai',
+    'aicode': 'ai-code'
 }
 
 stable_coins = [
