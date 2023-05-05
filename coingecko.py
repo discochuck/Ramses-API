@@ -52,7 +52,8 @@ stable_coins = [
 ]
 
 constant_prices = {
-    'elr': 0.036
+    'elr': 0.036,
+    'xpork': 0.00017
 }
 
 
@@ -110,7 +111,6 @@ def get_prices(symbols):
     prices['ETH'] = response['ethereum']['usd']
     prices['RAM'] = response['ramses-exchange']['usd']
     prices['neadRAM'] = prices['RAM'] * 0.9
-    prices['xPORK'] = prices['PORK'] * 1.0
 
     return prices
 
