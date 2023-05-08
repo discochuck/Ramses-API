@@ -32,7 +32,8 @@ local_coin_ids = {
     'gnd': 'gnd-protocol',
     'pork': 'pigscanfly',
     'aidoge': 'arbdoge-ai',
-    'aicode': 'ai-code'
+    'aicode': 'ai-code',
+    'play': 'xcad-network-play'
 }
 
 stable_coins = [
