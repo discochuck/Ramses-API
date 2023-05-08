@@ -48,12 +48,13 @@ stable_coins = [
     'lusd',
     'usds',
     'frax',
-    'ets epsilon'
+    'ets epsilon',
+    'gmdusdc'
 ]
 
 constant_prices = {
-    'elr': 0.036,
-    'xpork': 0.00017
+    'elr': 0.035,
+    'xpork': 0.0001050
 }
 
 
