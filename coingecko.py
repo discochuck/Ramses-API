@@ -28,7 +28,12 @@ local_coin_ids = {
     'grain': 'granary',
     'ageur': 'ageur',
     'fba': 'firebird-aggregator',
-    'euroe': 'euroe-stablecoin'
+    'euroe': 'euroe-stablecoin',
+    'gnd': 'gnd-protocol',
+    'pork': 'pigscanfly',
+    'aidoge': 'arbdoge-ai',
+    'aicode': 'ai-code',
+    'play': 'xcad-network-play'
 }
 
 stable_coins = [
@@ -44,11 +49,13 @@ stable_coins = [
     'lusd',
     'usds',
     'frax',
-    'ets epsilon'
+    'ets epsilon',
+    'gmdusdc'
 ]
 
 constant_prices = {
-    'elr': 0.06
+    'elr': 0.035,
+    'xpork': 0.0001770
 }
 
 
