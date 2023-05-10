@@ -20,7 +20,8 @@ def get_apr():
     fee_distributors = response.json()['data']['bribeEntities']
 
     week = 7 * 24 * 60 * 60
-    period = int(datetime.datetime.now().timestamp() // week * week + week)
+    now = datetime.datetime.now().timestamp()
+    period = int(now // week * week + week)
 
     pairs = {}
     calls = []
@@ -106,51 +107,184 @@ def log(msg):
     print(msg)
 
 
-def _fetch_pairs():
-    def get_subgraph_data():
-        # todo: limit quick fix
-        gauge_response = requests.post(
-            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
+def get_subgraph_tokens(catch_errors):
+    # get tokens from subgraph
+    skip = 0
+    tokens = []
+    while True:
+        query = f"{{ tokens(skip: {skip}, limit: 100) {{ id symbol decimals }} }}"
+        response = requests.post(
+            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses-v2",
             json={
-                "query": """{ gaugeEntities (skip: 0, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } rewardTokens { token { id symbol decimals } } } }"""
-            }
-        )
-        gauge_response_2 = requests.post(
-            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
-            json={
-                "query": """{ gaugeEntities (skip: 1000, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } rewardTokens { token { id symbol decimals } } } }"""
-            }
-        )
-        bribe_response = requests.post(
-            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
-            json={
-                "query": """{ bribeEntities (skip: 0, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } bribeTokens { token { id symbol decimals } } } }"""
-            }
-        )
-        bribe_response_2 = requests.post(
-            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
-            json={
-                "query": """{ bribeEntities (skip: 1000, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } bribeTokens { token { id symbol decimals } } } }"""
+                "query": query
             }
         )
 
-        if gauge_response.status_code == bribe_response.status_code == 200 == gauge_response_2.status_code == bribe_response_2.status_code:
-            data = {
-                'gaugeEntities': gauge_response.json()['data']['gaugeEntities'] + gauge_response_2.json()['data']['gaugeEntities'],
-                'bribeEntities': bribe_response.json()['data']['bribeEntities'] + bribe_response_2.json()['data']['bribeEntities']
-            }
-            db.set('v2_subgraph_data', json.dumps(data))
-            return data
+        if response.status_code == 200:
+            new_tokens = response.json()['data']['tokens']
+            tokens += new_tokens
+
+            if len(new_tokens) < 100:
+                break
+            else:
+                skip += 100
         else:
-            log("Error in subgraph")
-            return json.loads(db.get('v2_subgraph_data'))
+            log("Error in subgraph tokens")
+            return json.loads(db.get('v2_tokens'))
 
-    subgraph_data = get_subgraph_data()
+    # get tokens prices
+    symbols = list(set([token['symbol'] for token in tokens]))
+    try:
+        prices = get_prices(symbols)
+        db.set('v2_prices', json.dumps(prices))
+    except Exception as e:
+        if not catch_errors:
+            raise e
+        log("Error on prices")
+        prices = json.loads(db.get('v2_prices'))
+    for token in tokens:
+        token['price'] = prices[token['symbol']]
+
+    # cache tokens
+    db.set('v2_tokens', json.dumps(tokens))
+
+    return tokens
+
+
+def get_subgraph_pairs():
+    # get pairs from subgraph
+    skip = 0
+    pairs = []
+    while True:
+        query = f"{{ pairs(skip: {skip}) {{ id symbol totalSupply token0 reserve0 token1 reserve1 gauge {{ id totalDerivedSupply rewardTokens }} feeDistributor {{ id rewardTokens }} }} }}"
+        response = requests.post(
+            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses-v2",
+            json={
+                "query": query
+            }
+        )
+
+        if response.status_code == 200:
+            new_pairs = response.json()['data']['pairs']
+            pairs += new_pairs
+
+            if len(new_pairs) < 100:
+                break
+            else:
+                skip += 100
+        else:
+            log("Error in subgraph pairs")
+            return json.loads(db.get('v2_pairs'))
+
+    # cache pairs
+    db.set('v2_pairs', json.dumps(pairs))
+
+    return pairs
+
+
+def get_subgraph_data(catch_errors):
+    tokens = {}
+    for token in get_subgraph_tokens(catch_errors):
+        tokens[token['id']] = token
+    pairs = get_subgraph_pairs()
+
+    # todo: limit quick fix
+    # gauge_response = requests.post(
+    #     url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
+    #     json={
+    #         "query": """{ gaugeEntities (skip: 0, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } rewardTokens { token { id symbol decimals } } } }"""
+    #     }
+    # )
+    #
+    # gauge_response_2 = requests.post(
+    #     url="https://api.thegraph.com/subgraphs/name/sullivany/ramses",
+    #     json={
+    #         "query": """{ gaugeEntities (skip: 1000, first: 1000) { id pair { id symbol reserve0 reserve1 totalSupply token0 { id symbol } token1 { id symbol } } rewardTokens { token { id symbol decimals } } } }"""
+    #     }
+    # )
+
+    gauges = []
+    for pair in pairs:
+        if not pair['gauge']:
+            continue
+        gauges.append({
+            'id': pair['gauge']['id'],
+            'pair': {
+                'id': pair['id'],
+                'symbol': pair['symbol'],
+                'reserve0': float(pair['reserve0']) / 10 ** float(tokens[pair['token0']]['decimals']),
+                'reserve1': float(pair['reserve1']) / 10 ** float(tokens[pair['token1']]['decimals']),
+                'totalSupply': float(pair['totalSupply']) / 1e18,
+                'token0': {
+                    'id': pair['token0'],
+                    'symbol': tokens[pair['token0']]['symbol']
+                },
+                'token1': {
+                    'id': pair['token1'],
+                    'symbol': tokens[pair['token1']]['symbol']
+                },
+            },
+            'rewardTokens': [
+                {
+                    'token': {
+                        'id': token_address,
+                        'symbol': tokens[token_address]['symbol'],
+                        'decimals': tokens[token_address]['decimals'],
+                    }
+                } for token_address in pair['gauge']['rewardTokens']
+            ]
+
+        })
+
+    bribes = []
+    for pair in pairs:
+        if not pair['feeDistributor']:
+            continue
+        bribes.append({
+            'id': pair['feeDistributor']['id'],
+            'pair': {
+                'id': pair['id'],
+                'symbol': pair['symbol'],
+                'reserve0': float(pair['reserve0']) / 10 ** float(tokens[pair['token0']]['decimals']),
+                'reserve1': float(pair['reserve1']) / 10 ** float(tokens[pair['token1']]['decimals']),
+                'totalSupply': float(pair['totalSupply']) / 1e18,
+                'token0': {
+                    'id': pair['token0'],
+                    'symbol': tokens[pair['token0']]['symbol']
+                },
+                'token1': {
+                    'id': pair['token1'],
+                    'symbol': tokens[pair['token1']]['symbol']
+                },
+            },
+            'bribeTokens': [
+                {
+                    'token': {
+                        'id': token_address,
+                        'symbol': tokens[token_address]['symbol'],
+                        'decimals': tokens[token_address]['decimals'],
+                    }
+                } for token_address in pair['feeDistributor']['rewardTokens']
+            ]
+
+        })
+
+    data = {
+        'gaugeEntities': gauges,
+        'bribeEntities': bribes
+    }
+
+    return data
+
+
+def _fetch_pairs(catch_errors):
+    subgraph_data = get_subgraph_data(catch_errors)
     fee_distributors = subgraph_data['bribeEntities']
     gauges = subgraph_data['gaugeEntities']
 
     week = 7 * 24 * 60 * 60
-    period = int(datetime.datetime.now().timestamp() // week * week + week)
+    now = datetime.datetime.now().timestamp()
+    period = int(now // week * week + week)
 
     pairs = {}
     calls = []
@@ -219,7 +353,7 @@ def _fetch_pairs():
             Call(
                 w3,
                 gauge_address,
-                ["totalSupply()(uint256)"],
+                ["derivedSupply()(uint256)"],
                 [[pair_address, lambda v: v[0]]]
             ),
         )
@@ -229,7 +363,6 @@ def _fetch_pairs():
                 'pair_address': pair_address,
                 'symbol': gauge['pair']['symbol'],
                 'totalSupply': float(gauge['pair']['totalSupply']),
-                'price': 0,
                 'tvl': 0,
                 'token0': {
                     'reserve': float(gauge['pair']['reserve0']),
@@ -265,6 +398,25 @@ def _fetch_pairs():
     for fee_distributor in fee_distributors:
         fee_distributor_address = fee_distributor['id']
         pair_address = fee_distributor['pair']['id']
+
+        if 'RAM' not in [token['token']['symbol'] for token in fee_distributor['bribeTokens']]:
+            fee_distributor['bribeTokens'].append({
+                'token': {
+                    'id': '0xaaa6c1e32c55a7bfa8066a6fae9b42650f262418',
+                    'symbol': 'RAM',
+                    'decimals': 18
+                }
+            })
+
+        if fee_distributor_address == '0x1568d05b8fd251d17687c395db5aa8adbe384e77':
+            fee_distributor['bribeTokens'].append({
+                'token': {
+                    'id': '0x18c11FD286C5EC11c3b683Caa813B77f5163A122',
+                    'symbol': 'GNS',
+                    'decimals': 18
+                }
+            })
+
         for token in fee_distributor['bribeTokens']:
             token = token['token']
             token_address = token['id']
@@ -301,6 +453,7 @@ def _fetch_pairs():
 
     gauge_tokens = {}
     calls = []
+    period_finish_calls = []
     for gauge in gauges:
         gauge_address = gauge['id']
         pair_address = gauge['pair']['id']
@@ -319,16 +472,28 @@ def _fetch_pairs():
                 ),
             )
 
+            period_finish_calls.append(
+                Call(
+                    w3,
+                    gauge_address,
+                    ["periodFinish(address)(uint256)", token_address],
+                    [[key, lambda v: int(v[0])]]
+                ),
+            )
+
             gauge_tokens[key] = {
                 'type': 'gt',
                 'address': token_address,
                 'symbol': token['symbol'],
                 'rewardPerToken': 0,
-                'decimals': int(token['decimals'])
+                'decimals': int(token['decimals']),
+                'periodFinish': 0
             }
 
+    period_finish = Multicall(w3, period_finish_calls)()
     for key, value in Multicall(w3, calls)().items():
         gauge_tokens[key]['rewardRate'] = value
+        gauge_tokens[key]['periodFinish'] = period_finish[key]
 
     tokens = fee_distributor_tokens.copy()
     tokens.update(gauge_tokens)
@@ -341,7 +506,9 @@ def _fetch_pairs():
     try:
         prices = get_prices(symbols)
         db.set('v2_prices', json.dumps(prices))
-    except:
+    except Exception as e:
+        if not catch_errors:
+            raise e
         log("Error on prices")
         prices = json.loads(db.get('v2_prices'))
 
@@ -417,25 +584,29 @@ def _fetch_pairs():
         if pair['gaugeTotalSupply'] > 0:
             totalUSD = 0
             for token in pair['gauge_tokens']:
-                totalUSD += token['rewardRate'] * week / 10 ** token['decimals'] * token['price']
+                if token['periodFinish'] > now:
+                    totalUSD += token['rewardRate'] * 24 * 60 * 60 / 10 ** token['decimals'] * token['price']
 
             pair['total_lp_reward_usd'] = totalUSD
-            pair['lp_apr'] = totalUSD / 7 * 36500 / (pair['gaugeTotalSupply'] * pair['price'] / 1e18)
+            pair['lp_apr'] = totalUSD * 36500 / (pair['gaugeTotalSupply'] * pair['price'] / 1e18) / 2.5
 
     return pairs
 
 
-def get_pairs():
+def get_pairs(catch_errors=True):
     try:
-        pairs = _fetch_pairs()
+        pairs = _fetch_pairs(catch_errors)
         db.set('pairs', json.dumps(pairs))
-    except:
+    except Exception as e:
+        if not catch_errors:
+            raise e
         log("Error on get_pairs")
         pairs = json.loads(db.get('pairs'))
     return pairs
 
 
 if __name__ == '__main__':
-    p = _fetch_pairs()
-    # pair = p['0x8ac36fbce743b632d228f9c2ea5e3bb8603141c7'.lower()]
-    # pprint(pair)
+    p = _fetch_pairs(False)
+    pair = p['0x8ac36fbce743b632d228f9c2ea5e3bb8603141c7'.lower()]
+    pprint(pair['gauge_tokens'])
+    print(pair['lp_apr'])

@@ -12,9 +12,10 @@ from utils import w3, db, log
 def get_subgraph_tokens():
     # get tokens from subgraph
     skip = 0
+    limit = 100
     tokens = []
     while True:
-        query = f"{{ tokens(skip: {skip}, limit: 100) {{ id symbol decimals }} }}"
+        query = f"{{ tokens(skip: {skip}, limit: {limit}) {{ id symbol decimals }} }}"
         response = requests.post(
             url="https://api.thegraph.com/subgraphs/name/sullivany/ramses-v2",
             json={
@@ -26,10 +27,10 @@ def get_subgraph_tokens():
             new_tokens = response.json()['data']['tokens']
             tokens += new_tokens
 
-            if len(new_tokens) < 100:
+            if len(new_tokens) < limit:
                 break
             else:
-                skip += 100
+                skip += limit
         else:
             log("Error in subgraph tokens")
             return json.loads(db.get('v2_tokens'))
@@ -54,9 +55,10 @@ def get_subgraph_tokens():
 def get_subgraph_pairs():
     # get pairs from subgraph
     skip = 0
+    limit = 100
     pairs = []
     while True:
-        query = f"{{ pairs(skip: {skip}) {{ id symbol token0 reserve0 token1 reserve1 gauge {{ id totalDerivedSupply rewardTokens }} feeDistributor {{ id rewardTokens }} }} }}"
+        query = f"{{ pairs(skip: {skip}, limit: {limit}) {{ id symbol token0 reserve0 token1 reserve1 gauge {{ id totalDerivedSupply rewardTokens }} feeDistributor {{ id rewardTokens }} }} }}"
         response = requests.post(
             url="https://api.thegraph.com/subgraphs/name/sullivany/ramses-v2",
             json={
@@ -65,14 +67,13 @@ def get_subgraph_pairs():
         )
 
         if response.status_code == 200:
-            print(response.json())
             new_pairs = response.json()['data']['pairs']
             pairs += new_pairs
 
-            if len(new_pairs) < 100:
+            if len(new_pairs) < limit:
                 break
             else:
-                skip += 100
+                skip += limit
         else:
             log("Error in subgraph pairs")
             return json.loads(db.get('v2_pairs'))
