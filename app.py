@@ -8,6 +8,7 @@ from flask_cors import CORS
 from claimable_rewards import get_voter_claimable_rewards
 from get_apr import get_apr, get_pairs, _fetch_pairs
 from utils import db, cache_config
+from v2.get_pairs import get_pairs
 
 app = Flask(__name__)
 
@@ -45,6 +46,11 @@ def voter_claimable_rewards():
     return jsonify(
         get_voter_claimable_rewards(int(token_id))
     )
+
+
+@app.route("/v2/pairs")
+def v2_pairs():
+    return jsonify(get_pairs())
 
 
 if __name__ == "__main__":
