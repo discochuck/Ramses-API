@@ -55,7 +55,7 @@ stable_coins = [
 
 constant_prices = {
     'elr': 0.035,
-    'xpork': 0.0001050
+    'xpork': 0.0001770
 }
 
 
