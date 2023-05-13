@@ -15,7 +15,7 @@ def get_subgraph_tokens(debug):
     limit = 100
     tokens = []
     while True:
-        query = f"{{ tokens(skip: {skip}, limit: {limit}) {{ id symbol decimals }} }}"
+        query = f"{{ tokens(skip: {skip}, limit: {limit}) {{ id name symbol decimals }} }}"
         response = requests.post(
             url="https://api.thegraph.com/subgraphs/name/sullivany/ramses-v2",
             json={
@@ -60,7 +60,7 @@ def get_subgraph_pairs(debug):
     limit = 100
     pairs = []
     while True:
-        query = f"{{ pairs(skip: {skip}, limit: {limit}) {{ id symbol totalSupply token0 reserve0 token1 reserve1 gauge {{ id totalDerivedSupply rewardTokens }} feeDistributor {{ id rewardTokens }} }} }}"
+        query = f"{{ pairs(skip: {skip}, limit: {limit}) {{ id symbol totalSupply token0 reserve0 token1 reserve1 gauge {{ id totalDerivedSupply rewardTokens isAlive }} feeDistributor {{ id rewardTokens }} }} }}"
         response = requests.post(
             url="https://api.thegraph.com/subgraphs/name/sullivany/ramses-v2",
             json={
@@ -102,18 +102,17 @@ def _fetch_pairs(debug):
     tokens = {}
     for token in tokens_array:
         token['price'] = float(token['price'])
-        token['decimals'] = float(token['decimals'])
+        token['decimals'] = int(token['decimals'])
         tokens[token['id']] = token
     pairs = {}
     for pair in pairs_array:
-        if pair['id'] != "0xdeeceff8398b19a853901b7bcbddcad17d7f8701": continue
         if pair['gauge']:
             pair['voteBribes'] = {}
             pair['totalVeShareByPeriod'] = 0
-            pair['reserve0'] = float(pair['reserve0'])
-            pair['reserve1'] = float(pair['reserve1'])
-            pair['totalSupply'] = float(pair['totalSupply'])
-            pair['gauge']['totalDerivedSupply'] = float(pair['gauge']['totalDerivedSupply'])
+            pair['reserve0'] = int(pair['reserve0'])
+            pair['reserve1'] = int(pair['reserve1'])
+            pair['totalSupply'] = int(pair['totalSupply'])
+            pair['gauge']['totalDerivedSupply'] = int(pair['gauge']['totalDerivedSupply'])
             pairs[pair['id']] = pair
 
     # set pair TVL
@@ -157,15 +156,14 @@ def _fetch_pairs(debug):
             )
     for key, value in Multicall(w3, calls)().items():
         pair_address, token_address = key.split('-')
-        pairs[pair_address]['voteBribes'][token_address] = value
+        if value > 0:
+            pairs[pair_address]['voteBribes'][token_address] = value
 
     # fetch pair's lp reward rates
     _reward_rates = {}
     calls = []
     for pair_address, pair in pairs.items():
         _reward_rates[pair_address] = {}
-        gauge_address = pair['gauge']['id']
-        pairs[pair_address]['gauge_address'] = gauge_address
         for token_address in pair['gauge']['rewardTokens']:
             _reward_rates[token_address] = 0
             key = f'{pair_address}-{token_address}'
@@ -173,7 +171,7 @@ def _fetch_pairs(debug):
             calls.append(
                 Call(
                     w3,
-                    gauge_address,
+                    pair['gauge']['id'],
                     ["rewardRate(address)(uint256)", token_address],
                     [[key, lambda v: v[0]]]
                 ),
@@ -187,20 +185,20 @@ def _fetch_pairs(debug):
         # calculate vote APR
         if pair['totalVeShareByPeriod'] > 0:
             totalUSD = 0
-            for token_address in pair['feeDistributor']['rewardTokens']:
-                totalUSD += pair['voteBribes'][token_address] * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
-            pair['vote_apr'] = totalUSD / 7 * 36500 / (pair['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
+            for token_address, amount in pair['voteBribes'].items():
+                totalUSD += amount * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
+            pair['voteApr'] = totalUSD / 7 * 36500 / (pair['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
         else:
-            pair['vote_apr'] = 0
+            pair['voteApr'] = 0
 
         # calculate LP APR
         if pair['gauge']['totalDerivedSupply'] > 0:
             totalUSD = 0
             for token_address in pair['gauge']['rewardTokens']:
                 totalUSD += _reward_rates[pair_address][token_address] * 24 * 60 * 60 * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
-            pair['lp_apr'] = totalUSD * 36500 / (pair['gauge']['totalDerivedSupply'] * _pairs_price[pair_address] / 1e18) / 2.5
+            pair['lpApr'] = totalUSD * 36500 / (pair['gauge']['totalDerivedSupply'] * _pairs_price[pair_address] / 1e18) / 2.5
         else:
-            pair['lp_apr'] = 0
+            pair['lpApr'] = 0
 
     # convert floats to strings
     for pair_address, pair in pairs.items():
