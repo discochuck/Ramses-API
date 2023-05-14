@@ -10,6 +10,7 @@ from utils import w3, db, log, RAM_ADDRESS
 
 
 def get_subgraph_tokens(debug):
+    # return json.loads(db.get('v2_tokens'))
     # get tokens from subgraph
     skip = 0
     limit = 100
@@ -55,6 +56,7 @@ def get_subgraph_tokens(debug):
 
 
 def get_subgraph_pairs(debug):
+    # return json.loads(db.get('v2_pairs'))
     # get pairs from subgraph
     skip = 0
     limit = 100
@@ -203,8 +205,11 @@ def _fetch_pairs(debug):
     # convert floats to strings
     for pair_address, pair in pairs.items():
         for key in pair.keys():
-            if isinstance(pair[key], float):
+            if isinstance(pair[key], float) or isinstance(pair[key], int):
                 pair[key] = "{:.18f}".format(pair[key])
+
+        for token_address, amount in pair['voteBribes'].items():
+            pair['voteBribes'][token_address] = "{:.18f}".format(amount)
 
     return {
         'tokens': list(tokens.values()),
@@ -227,4 +232,4 @@ def get_pairs(debug=False):
 if __name__ == '__main__':
     p = get_pairs(True)
 
-    pprint(p['pairs'])
+    pprint(p['pairs'][1])
