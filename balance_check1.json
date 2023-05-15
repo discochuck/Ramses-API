@@ -1,0 +1,1501 @@
+{
+  "crAMM-ARB/RAM": {
+    "ARB": {
+      "balance": 550270800101530,
+      "diff": 1,
+      "required_balance": 550270800101529
+    },
+    "RAM": {
+      "balance": 30589639850470118,
+      "diff": 1,
+      "required_balance": 30589639850470117
+    }
+  },
+  "crAMM-ARB/USDC": {},
+  "crAMM-ARB/USDT": {
+    "ARB": {
+      "balance": 0,
+      "diff": 0,
+      "required_balance": 0
+    },
+    "USDT": {
+      "balance": 999,
+      "diff": 999,
+      "required_balance": 0
+    }
+  },
+  "crAMM-DAI/DAI+": {
+    "DAI": {
+      "balance": 1640986215740081934,
+      "diff": 4,
+      "required_balance": 1640986215740081930
+    },
+    "DAI+": {
+      "balance": 1751227372681605053,
+      "diff": 3981293772673485,
+      "required_balance": 1747246078908931568
+    }
+  },
+  "crAMM-DAI/USDC": {
+    "DAI": {
+      "balance": 845242643401270349,
+      "diff": 845215819672529965,
+      "required_balance": 26823728740384
+    },
+    "USDC": {
+      "balance": 818538,
+      "diff": 818513,
+      "required_balance": 25
+    }
+  },
+  "crAMM-DAO/USDC": {
+    "DAO": {
+      "balance": 647362346898012888,
+      "diff": 53697540027013908,
+      "required_balance": 593664806870998980
+    },
+    "USDC": {
+      "balance": 1465342,
+      "diff": 64590,
+      "required_balance": 1400752
+    }
+  },
+  "crAMM-DEI/USDC": {
+    "DEI": {
+      "balance": 55041324992131691651,
+      "diff": -5740794466091697920,
+      "required_balance": 60782119458223389571
+    },
+    "DEUS": {
+      "balance": 121090036983531361510,
+      "diff": 87795764825078060326,
+      "required_balance": 33294272158453301184
+    },
+    "RAM": {
+      "balance": 812704224393591847366,
+      "diff": -140827386517068241059,
+      "required_balance": 953531610910660088425
+    },
+    "USDC": {
+      "balance": 44057608,
+      "diff": -21069652,
+      "required_balance": 65127260
+    }
+  },
+  "crAMM-DOLA/USDC": {
+    "DOLA": {
+      "balance": 2193608279210290128589,
+      "diff": 1993942121391855446755,
+      "required_balance": 199666157818434681834
+    },
+    "RAM": {
+      "balance": 1105839293987731544112,
+      "diff": -15651867124736495659,
+      "required_balance": 1121491161112468039771
+    },
+    "USDC": {
+      "balance": 83607374,
+      "diff": -3438310,
+      "required_balance": 87045684
+    }
+  },
+  "crAMM-FRAX/DEI": {
+    "DEI": {
+      "balance": 10784505742386053899,
+      "diff": 204772457211855823,
+      "required_balance": 10579733285174198076
+    },
+    "DEUS": {
+      "balance": 2186803616674267855,
+      "diff": 10,
+      "required_balance": 2186803616674267845
+    },
+    "FRAX": {
+      "balance": 11974942786318558785,
+      "diff": 229347741042255132,
+      "required_balance": 11745595045276303653
+    },
+    "FXS": {
+      "balance": 121120821700045607084,
+      "diff": 108000000000000000009,
+      "required_balance": 13120821700045607075
+    },
+    "RAM": {
+      "balance": 5,
+      "diff": 5,
+      "required_balance": 0
+    }
+  },
+  "crAMM-FRAX/DOLA": {
+    "DOLA": {
+      "balance": 2601880478395819188482,
+      "diff": 2522102428835776841598,
+      "required_balance": 79778049560042346884
+    },
+    "FRAX": {
+      "balance": 3130331679103980646,
+      "diff": 102849088121385891,
+      "required_balance": 3027482590982594755
+    },
+    "FXS": {
+      "balance": 302353701448433660537,
+      "diff": 267514060176664970220,
+      "required_balance": 34839641271768690317
+    },
+    "RAM": {
+      "balance": 5893063140359787626,
+      "diff": 4,
+      "required_balance": 5893063140359787622
+    }
+  },
+  "crAMM-FRAX/MAI": {
+    "FRAX": {
+      "balance": 29716093908742066925,
+      "diff": -2491451622050276343,
+      "required_balance": 32207545530792343268
+    },
+    "FXS": {
+      "balance": 93090707935883897605,
+      "diff": -6001723503410665606,
+      "required_balance": 99092431439294563211
+    },
+    "MAI": {
+      "balance": 31989717102806655873,
+      "diff": -1725961676834778946,
+      "required_balance": 33715678779641434819
+    },
+    "QI": {
+      "balance": 3504484965427705073664,
+      "diff": -5588536460792582602573,
+      "required_balance": 9093021426220287676237
+    },
+    "RAM": {
+      "balance": 10377011493469764155617,
+      "diff": -204513407860678753,
+      "required_balance": 10377216006877624834370
+    }
+  },
+  "crAMM-FRAX/USDC": {
+    "FRAX": {
+      "balance": 15966520663260914822,
+      "diff": -286350755620353673,
+      "required_balance": 16252871418881268495
+    },
+    "USDC": {
+      "balance": 15113544,
+      "diff": -341715,
+      "required_balance": 15455259
+    }
+  },
+  "crAMM-GMD/gmUSD": {
+    "GMD": {
+      "balance": 37213022901904,
+      "diff": 25635577266080,
+      "required_balance": 11577445635824
+    },
+    "gmUSD": {
+      "balance": 1811395008318200,
+      "diff": 1626636639702774,
+      "required_balance": 184758368615426
+    }
+  },
+  "crAMM-L2DAO/WETH": {
+    "L2DAO": {
+      "balance": 11608307855429498007,
+      "diff": 11608307855429498007,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 0,
+      "diff": 0,
+      "required_balance": 0
+    }
+  },
+  "crAMM-LUSD/DEI": {
+    "DEI": {
+      "balance": 2757803795659870333,
+      "diff": -304579104228177716,
+      "required_balance": 3062382899888048049
+    },
+    "DEUS": {
+      "balance": 126012377813456114,
+      "diff": 249415601780045,
+      "required_balance": 125762962211676069
+    },
+    "LUSD": {
+      "balance": 5447885346239727807,
+      "diff": -101866505506616640,
+      "required_balance": 5549751851746344447
+    },
+    "RAM": {
+      "balance": 82321815564354213941,
+      "diff": 123801046918956788,
+      "required_balance": 82198014517435257153
+    }
+  },
+  "crAMM-LUSD/USDC": {
+    "LUSD": {
+      "balance": 258686347503087885,
+      "diff": 231203404233837595,
+      "required_balance": 27482943269250290
+    },
+    "USDC": {
+      "balance": 689354,
+      "diff": 207477,
+      "required_balance": 481877
+    }
+  },
+  "crAMM-LUSD/USDT": {
+    "LUSD": {
+      "balance": 2016376029288537,
+      "diff": 2016376029288537,
+      "required_balance": 0
+    },
+    "USDT": {
+      "balance": 3445,
+      "diff": 3445,
+      "required_balance": 0
+    }
+  },
+  "crAMM-MAGIC/WETH": {
+    "MAGIC": {
+      "balance": 16122912353788114,
+      "diff": 16122912353788114,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 981237865,
+      "diff": 981237865,
+      "required_balance": 0
+    }
+  },
+  "crAMM-MAI/DOLA": {
+    "DOLA": {
+      "balance": 40858067657199748622,
+      "diff": 1,
+      "required_balance": 40858067657199748621
+    },
+    "MAI": {
+      "balance": 50730154030513839213,
+      "diff": 1,
+      "required_balance": 50730154030513839212
+    }
+  },
+  "crAMM-MAI/USDC": {
+    "MAI": {
+      "balance": 482872155307925474183,
+      "diff": 21446201978365327052,
+      "required_balance": 461425953329560147131
+    },
+    "USDC": {
+      "balance": 445124604,
+      "diff": 20360470,
+      "required_balance": 424764134
+    }
+  },
+  "crAMM-MAI/gDAI": {
+    "MAI": {
+      "balance": 7481735298132739787,
+      "diff": 1,
+      "required_balance": 7481735298132739786
+    },
+    "gDAI": {
+      "balance": 6156118516297849219,
+      "diff": 1,
+      "required_balance": 6156118516297849218
+    }
+  },
+  "crAMM-MIM/USDC": {
+    "MIM": {
+      "balance": 14797999000691015551,
+      "diff": 195962117189642412,
+      "required_balance": 14602036883501373139
+    },
+    "USDC": {
+      "balance": 13686212,
+      "diff": 213139,
+      "required_balance": 13473073
+    }
+  },
+  "crAMM-RAM/USDC": {
+    "RAM": {
+      "balance": 6673172775018885455,
+      "diff": 3235097705366480563,
+      "required_balance": 3438075069652404892
+    },
+    "USDC": {
+      "balance": 592623,
+      "diff": 533998,
+      "required_balance": 58625
+    }
+  },
+  "crAMM-RAM/USDT": {
+    "RAM": {
+      "balance": 4713588978179396635,
+      "diff": 4713588978179396635,
+      "required_balance": 0
+    },
+    "USDT": {
+      "balance": 40642,
+      "diff": 40642,
+      "required_balance": 0
+    }
+  },
+  "crAMM-RDNT/WETH": {
+    "RDNT": {
+      "balance": 10000668356661526177369,
+      "diff": 10000668356661526177369,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 0,
+      "diff": 0,
+      "required_balance": 0
+    }
+  },
+  "crAMM-USD+/DAI+": {
+    "DAI+": {
+      "balance": 8903878642038237603,
+      "diff": -1741450642472289839,
+      "required_balance": 10645329284510527442
+    },
+    "RAM": {
+      "balance": 408078433685176881745,
+      "diff": -6196091347442104352,
+      "required_balance": 414274525032618986097
+    },
+    "USD+": {
+      "balance": 219588452,
+      "diff": 108518252,
+      "required_balance": 111070200
+    }
+  },
+  "crAMM-USD+/USDC": {
+    "USD+": {
+      "balance": 3005005,
+      "diff": 4959,
+      "required_balance": 3000046
+    },
+    "USDC": {
+      "balance": 2593995,
+      "diff": 2,
+      "required_balance": 2593993
+    }
+  },
+  "crAMM-USDT/USDC": {
+    "USDC": {
+      "balance": 103177256,
+      "diff": 8197786,
+      "required_balance": 94979470
+    },
+    "USDT": {
+      "balance": 103847070,
+      "diff": 7434495,
+      "required_balance": 96412575
+    }
+  },
+  "crAMM-USDs/USDC": {},
+  "crAMM-WETH/ARB": {
+    "ARB": {
+      "balance": 88488731939893341,
+      "diff": 88488731939893341,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 11920928955,
+      "diff": 11920928955,
+      "required_balance": 0
+    }
+  },
+  "crAMM-WETH/BIFI": {
+    "BIFI": {
+      "balance": 523581589407099,
+      "diff": 523581589407099,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 0,
+      "diff": 0,
+      "required_balance": 0
+    }
+  },
+  "crAMM-WETH/LEVI": {
+    "LEVI": {
+      "balance": 27740384546978273,
+      "diff": 27740384546978273,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 0,
+      "diff": 0,
+      "required_balance": 0
+    }
+  },
+  "crAMM-WETH/LQTY": {
+    "LQTY": {
+      "balance": 17834174006733764,
+      "diff": 17834174006733764,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 0,
+      "diff": 0,
+      "required_balance": 0
+    }
+  },
+  "crAMM-WETH/OATH": {
+    "LQDR": {
+      "balance": 160370391880669784,
+      "diff": 3,
+      "required_balance": 160370391880669781
+    },
+    "OATH": {
+      "balance": 40480507359665288,
+      "diff": 28311977833912391,
+      "required_balance": 12168529525752897
+    },
+    "RAM": {
+      "balance": 165230100725538565,
+      "diff": 2,
+      "required_balance": 165230100725538563
+    },
+    "WETH": {
+      "balance": 1077400258166,
+      "diff": 66972279013,
+      "required_balance": 1010427979153
+    }
+  },
+  "crAMM-WETH/RAM": {
+    "RAM": {
+      "balance": 4837695978534770874,
+      "diff": 1780647699453124640,
+      "required_balance": 3057048279081646234
+    },
+    "WETH": {
+      "balance": 161233489393342,
+      "diff": 18750000000002,
+      "required_balance": 142483489393340
+    }
+  },
+  "crAMM-cbETH/WETH": {},
+  "crAMM-fBOMB/WETH": {
+    "USDC": {
+      "balance": 129431876,
+      "diff": 5,
+      "required_balance": 129431871
+    },
+    "WETH": {
+      "balance": 15080859974831,
+      "diff": 4,
+      "required_balance": 15080859974827
+    },
+    "fBOMB": {
+      "balance": 21210542357789984087,
+      "diff": 4,
+      "required_balance": 21210542357789984083
+    }
+  },
+  "crAMM-frxETH/WETH": {
+    "FXS": {
+      "balance": 577773922925037157702,
+      "diff": 206216397373085996608,
+      "required_balance": 371557525551951161094
+    },
+    "RAM": {
+      "balance": 13918891296927223285645,
+      "diff": -117445298666013904,
+      "required_balance": 13919008742225889299549
+    },
+    "WETH": {
+      "balance": 103311977458882953,
+      "diff": -1177499267976060,
+      "required_balance": 104489476726859013
+    },
+    "frxETH": {
+      "balance": 87302471952957020,
+      "diff": -1754184193489919,
+      "required_balance": 89056656146446939
+    }
+  },
+  "crAMM-gDAI/USD+": {},
+  "crAMM-gDAI/gmUSD": {
+    "gDAI": {
+      "balance": 3773983260333790,
+      "diff": 3773983260333790,
+      "required_balance": 0
+    },
+    "gmUSD": {
+      "balance": 14179264144595507,
+      "diff": 14179264144595507,
+      "required_balance": 0
+    }
+  },
+  "crAMM-gmUSD/USDC": {
+    "USDC": {
+      "balance": 409731,
+      "diff": 409731,
+      "required_balance": 0
+    },
+    "gmUSD": {
+      "balance": 198412876005593139,
+      "diff": 198412876005593139,
+      "required_balance": 0
+    }
+  },
+  "crAMM-jEUR/USDC": {
+    "USDC": {
+      "balance": 17470,
+      "diff": 17470,
+      "required_balance": 0
+    },
+    "jEUR": {
+      "balance": 46293169528889882,
+      "diff": 46293169528889882,
+      "required_balance": 0
+    }
+  },
+  "crAMM-wstETH/WETH": {
+    "RAM": {
+      "balance": 144185293723647207,
+      "diff": 2,
+      "required_balance": 144185293723647205
+    },
+    "SPA": {
+      "balance": 24030882287276,
+      "diff": 2,
+      "required_balance": 24030882287274
+    },
+    "WETH": {
+      "balance": 199812878806865,
+      "diff": 173586817741272,
+      "required_balance": 26226061065593
+    },
+    "wstETH": {
+      "balance": 64191323509360,
+      "diff": 41638773356419,
+      "required_balance": 22552550152941
+    }
+  },
+  "vrAMM-ARB/RAM": {},
+  "vrAMM-ARB/USDC": {
+    "ARB": {
+      "balance": 35753022549209154065,
+      "diff": -29816686036253071217,
+      "required_balance": 65569708585462225282
+    },
+    "USDC": {
+      "balance": 33847804,
+      "diff": -65908219,
+      "required_balance": 99756023
+    }
+  },
+  "vrAMM-ARB/USDT": {
+    "ARB": {
+      "balance": 3598155494194061744,
+      "diff": -4921839672379505802,
+      "required_balance": 8519995166573567546
+    },
+    "LQDR": {
+      "balance": 164949080545139256,
+      "diff": 692543578981761,
+      "required_balance": 164256536966157495
+    },
+    "USDT": {
+      "balance": 3112688,
+      "diff": -7205047,
+      "required_balance": 10317735
+    }
+  },
+  "vrAMM-ARC/WETH": {
+    "ARC": {
+      "balance": 3393008023061587,
+      "diff": 3393008023061587,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 15363940332622,
+      "diff": 15363940332622,
+      "required_balance": 0
+    }
+  },
+  "vrAMM-BFR/WETH": {},
+  "vrAMM-DAI/USDC": {
+    "DAI": {
+      "balance": 4060244473567560,
+      "diff": 1,
+      "required_balance": 4060244473567559
+    },
+    "USDC": {
+      "balance": 43,
+      "diff": 1,
+      "required_balance": 42
+    }
+  },
+  "vrAMM-DAO/USDC": {
+    "DAO": {
+      "balance": 323536236369946626931,
+      "diff": -690588664019330223839,
+      "required_balance": 1014124900389276850770
+    },
+    "RAM": {
+      "balance": 986132916403530432063,
+      "diff": 14,
+      "required_balance": 986132916403530432049
+    },
+    "USDC": {
+      "balance": 18770840,
+      "diff": -48684897,
+      "required_balance": 67455737
+    }
+  },
+  "vrAMM-DEI/USDC": {
+    "DEI": {
+      "balance": 64128160921507346,
+      "diff": 64128160921507346,
+      "required_balance": 0
+    },
+    "USDC": {
+      "balance": 23908,
+      "diff": 23908,
+      "required_balance": 0
+    }
+  },
+  "vrAMM-DOLA/USDC": {
+    "DOLA": {
+      "balance": 1270255001074864181,
+      "diff": 1270255001074864181,
+      "required_balance": 0
+    },
+    "USDC": {
+      "balance": 141030,
+      "diff": 141030,
+      "required_balance": 0
+    }
+  },
+  "vrAMM-FEAR/USDT": {
+    "FEAR": {
+      "balance": 17360141711587280546,
+      "diff": 17360141711587280546,
+      "required_balance": 0
+    },
+    "USDT": {
+      "balance": 85,
+      "diff": 1,
+      "required_balance": 84
+    }
+  },
+  "vrAMM-FRAX/DEI": {},
+  "vrAMM-FRAX/FXS": {
+    "FRAX": {
+      "balance": 4668347237595101847,
+      "diff": 517998659898481230,
+      "required_balance": 4150348577696620617
+    },
+    "FXS": {
+      "balance": 57149495574103172953,
+      "diff": 55819469793482835710,
+      "required_balance": 1330025780620337243
+    },
+    "RAM": {
+      "balance": 2500440444340690314,
+      "diff": 7,
+      "required_balance": 2500440444340690307
+    }
+  },
+  "vrAMM-FRAX/USDT": {
+    "FRAX": {
+      "balance": 99064555033840608,
+      "diff": 99064555033840608,
+      "required_balance": 0
+    },
+    "USDT": {
+      "balance": 1291862,
+      "diff": 1291862,
+      "required_balance": 0
+    }
+  },
+  "vrAMM-FS/USDC": {
+    "FS": {
+      "balance": 2535922628872312902620,
+      "diff": -420587947739219665576,
+      "required_balance": 2956510576611532568196
+    },
+    "USDC": {
+      "balance": 4235838,
+      "diff": -1214232,
+      "required_balance": 5450070
+    }
+  },
+  "vrAMM-FTM/USDC": {
+    "FTM": {
+      "balance": 102188264604360902,
+      "diff": 102188264604360902,
+      "required_balance": 0
+    },
+    "USDC": {
+      "balance": 2000,
+      "diff": 2000,
+      "required_balance": 0
+    }
+  },
+  "vrAMM-GMD/USDC": {
+    "GMD": {
+      "balance": 29154634983894401,
+      "diff": 5,
+      "required_balance": 29154634983894396
+    },
+    "USDC": {
+      "balance": 1857425,
+      "diff": 3,
+      "required_balance": 1857422
+    }
+  },
+  "vrAMM-GMD/gmUSD": {
+    "GMD": {
+      "balance": 51927771551871116417,
+      "diff": 50159476359629041423,
+      "required_balance": 1768295192242074994
+    },
+    "RAM": {
+      "balance": 7559516112960689058898,
+      "diff": 176991189372050110599,
+      "required_balance": 7382524923588638948299
+    },
+    "gmUSD": {
+      "balance": 21778279693277386705,
+      "diff": -957724731024277972,
+      "required_balance": 22736004424301664677
+    }
+  },
+  "vrAMM-GNS/WETH": {
+    "GNS": {
+      "balance": 5057834862288010545,
+      "diff": 0,
+      "required_balance": 5057834862288010545
+    },
+    "WETH": {
+      "balance": 14294166081573806,
+      "diff": 0,
+      "required_balance": 14294166081573806
+    }
+  },
+  "vrAMM-GNS/gDAI": {
+    "GNS": {
+      "balance": 263763395583159761,
+      "diff": 263117447640544685,
+      "required_balance": 645947942615076
+    },
+    "gDAI": {
+      "balance": 422489725354062728,
+      "diff": 418828524215373944,
+      "required_balance": 3661201138688784
+    }
+  },
+  "vrAMM-GRAIN/WETH": {
+    "GRAIN": {
+      "balance": 1530396751731810613956,
+      "diff": 1528906786178116783592,
+      "required_balance": 1489965553693830364
+    },
+    "WETH": {
+      "balance": 58113300197349069,
+      "diff": 58056722178996942,
+      "required_balance": 56578018352127
+    }
+  },
+  "vrAMM-JONES/WETH": {
+    "JONES": {
+      "balance": 542888609951175,
+      "diff": 542888609951175,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 2282624484594,
+      "diff": 2282624484594,
+      "required_balance": 0
+    }
+  },
+  "vrAMM-JRT/USDC": {
+    "JRT": {
+      "balance": 2580355537823701643979,
+      "diff": 7913565303865007538,
+      "required_balance": 2572441972519836636441
+    },
+    "RAM": {
+      "balance": 7113761347870345758,
+      "diff": 9,
+      "required_balance": 7113761347870345749
+    },
+    "USDC": {
+      "balance": 5761982,
+      "diff": 12,
+      "required_balance": 5761970
+    }
+  },
+  "vrAMM-JRT/WETH": {
+    "JRT": {
+      "balance": 632239863459571514258,
+      "diff": 8,
+      "required_balance": 632239863459571514250
+    },
+    "WETH": {
+      "balance": 127149327155991,
+      "diff": 8,
+      "required_balance": 127149327155983
+    }
+  },
+  "vrAMM-L2DAO/WETH": {
+    "L2DAO": {
+      "balance": 5158289257974011683840,
+      "diff": 12,
+      "required_balance": 5158289257974011683828
+    },
+    "RAM": {
+      "balance": 142472882677463165203,
+      "diff": 10,
+      "required_balance": 142472882677463165193
+    },
+    "USDC": {
+      "balance": 23481321,
+      "diff": 10,
+      "required_balance": 23481311
+    },
+    "WETH": {
+      "balance": 2309333884033414,
+      "diff": 15,
+      "required_balance": 2309333884033399
+    }
+  },
+  "vrAMM-LDO/WETH": {},
+  "vrAMM-LQDR/WETH": {
+    "LQDR": {
+      "balance": 5517645703006714662699,
+      "diff": -14462041382059445378,
+      "required_balance": 5532107744388774108077
+    },
+    "RAM": {
+      "balance": 53795138286776428521995,
+      "diff": -35833445396769327546,
+      "required_balance": 53830971732173197849541
+    },
+    "WETH": {
+      "balance": 47444631477688389,
+      "diff": -6114565624788442,
+      "required_balance": 53559197102476831
+    }
+  },
+  "vrAMM-LUSD/LQTY": {
+    "LQTY": {
+      "balance": 1455996365516310958893,
+      "diff": 730353283350849587196,
+      "required_balance": 725643082165461371697
+    },
+    "LUSD": {
+      "balance": 68069480548450312428,
+      "diff": -3554239358105780326,
+      "required_balance": 71623719906556092754
+    },
+    "RAM": {
+      "balance": 14967447158968569264,
+      "diff": -85517119284248957,
+      "required_balance": 15052964278252818221
+    }
+  },
+  "vrAMM-LUSD/USDC": {},
+  "vrAMM-MAGIC/WETH": {
+    "MAGIC": {
+      "balance": 6895003017260237178,
+      "diff": -92869309068012032,
+      "required_balance": 6987872326328249210
+    },
+    "RAM": {
+      "balance": 310000000000000000,
+      "diff": 0,
+      "required_balance": 310000000000000000
+    },
+    "WETH": {
+      "balance": 6490927710057660,
+      "diff": -58520242707335,
+      "required_balance": 6549447952764995
+    }
+  },
+  "vrAMM-MAI/USDC": {
+    "MAI": {
+      "balance": 4821628359819390,
+      "diff": 2,
+      "required_balance": 4821628359819388
+    },
+    "USDC": {
+      "balance": 110866,
+      "diff": 1,
+      "required_balance": 110865
+    }
+  },
+  "vrAMM-MAI/gDAI": {},
+  "vrAMM-RAM/LQTY": {
+    "LQTY": {
+      "balance": 39990063255537125,
+      "diff": 39990063255537125,
+      "required_balance": 0
+    },
+    "RAM": {
+      "balance": 3658921525163375581,
+      "diff": 3658921525163375581,
+      "required_balance": 0
+    }
+  },
+  "vrAMM-RAM/RING": {
+    "RAM": {
+      "balance": 17355968371805166819,
+      "diff": 1,
+      "required_balance": 17355968371805166818
+    },
+    "RING": {
+      "balance": 10387965358433301537,
+      "diff": 2,
+      "required_balance": 10387965358433301535
+    }
+  },
+  "vrAMM-RAM/USDC": {
+    "RAM": {
+      "balance": 742931158698289374448,
+      "diff": -299194293119920520476,
+      "required_balance": 1042125451818209894924
+    },
+    "USDC": {
+      "balance": 50100433,
+      "diff": -48866138,
+      "required_balance": 98966571
+    }
+  },
+  "vrAMM-RAM/USDT": {
+    "RAM": {
+      "balance": 2168894600551450753,
+      "diff": -159929430861971371318,
+      "required_balance": 162098325462522822071
+    },
+    "USDT": {
+      "balance": 198065,
+      "diff": -9218902,
+      "required_balance": 9416967
+    }
+  },
+  "vrAMM-RDNT/WETH": {
+    "RAM": {
+      "balance": 72724247655305962977169,
+      "diff": 71935028448975003189825,
+      "required_balance": 789219206330959787344
+    },
+    "RDNT": {
+      "balance": 583839251503165318764,
+      "diff": -282624506295517642379,
+      "required_balance": 866463757798682961143
+    },
+    "WETH": {
+      "balance": 110491323968061949,
+      "diff": -46934446503915394,
+      "required_balance": 157425770471977343
+    }
+  },
+  "vrAMM-SPA/WETH": {
+    "SPA": {
+      "balance": 11789545311545543170,
+      "diff": 11789545311545543170,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 145153780812510,
+      "diff": 145153780812510,
+      "required_balance": 0
+    }
+  },
+  "vrAMM-TAROT/WETH": {
+    "RAM": {
+      "balance": 650721676951566915523,
+      "diff": -3651284733392679719,
+      "required_balance": 654372961684959595242
+    },
+    "TAROT": {
+      "balance": 150105734575797194634603,
+      "diff": 100356433603295165214190,
+      "required_balance": 49749300972502029420413
+    },
+    "WETH": {
+      "balance": 12475994304575152,
+      "diff": -7783081727645778,
+      "required_balance": 20259076032220930
+    }
+  },
+  "vrAMM-UNIDX/WETH": {
+    "DAI": {
+      "balance": 18397892183430186472,
+      "diff": 10,
+      "required_balance": 18397892183430186462
+    },
+    "MIM": {
+      "balance": 63527764462442695151,
+      "diff": 8,
+      "required_balance": 63527764462442695143
+    },
+    "UNIDX": {
+      "balance": 7999278355318705463,
+      "diff": -2059876773466983,
+      "required_balance": 8001338232092172446
+    },
+    "WETH": {
+      "balance": 755197210129833,
+      "diff": -8806775993001,
+      "required_balance": 764003986122834
+    }
+  },
+  "vrAMM-USD+/DAI+": {
+    "DAI+": {
+      "balance": 238209655858115330,
+      "diff": 238209655858115330,
+      "required_balance": 0
+    },
+    "USD+": {
+      "balance": 30740,
+      "diff": 30740,
+      "required_balance": 0
+    }
+  },
+  "vrAMM-USDT/USDC": {
+    "USDC": {
+      "balance": 837284,
+      "diff": 837284,
+      "required_balance": 0
+    },
+    "USDT": {
+      "balance": 1415,
+      "diff": 863,
+      "required_balance": 552
+    }
+  },
+  "vrAMM-VELA/WETH": {
+    "RAM": {
+      "balance": 0,
+      "diff": 0,
+      "required_balance": 0
+    },
+    "VELA": {
+      "balance": 151310353824180573,
+      "diff": 29122849734932277,
+      "required_balance": 122187504089248296
+    },
+    "WETH": {
+      "balance": 199856789304408,
+      "diff": 38466628993424,
+      "required_balance": 161390160310984
+    }
+  },
+  "vrAMM-WETH/ARB": {
+    "ARB": {
+      "balance": 233368229731062053920,
+      "diff": -480974082592159436093,
+      "required_balance": 714342312323221490013
+    },
+    "RAM": {
+      "balance": 755245245507027100,
+      "diff": -938606633569159,
+      "required_balance": 756183852140596259
+    },
+    "WETH": {
+      "balance": 119424178139349362,
+      "diff": -295174851724273695,
+      "required_balance": 414599029863623057
+    }
+  },
+  "vrAMM-WETH/BIFI": {
+    "BIFI": {
+      "balance": 191482489055847145,
+      "diff": 12793459807395080,
+      "required_balance": 178689029248452065
+    },
+    "RAM": {
+      "balance": 6250000000000000000000,
+      "diff": 6250000000000000000000,
+      "required_balance": 0
+    },
+    "USDC": {
+      "balance": 569541024,
+      "diff": 500715434,
+      "required_balance": 68825590
+    },
+    "WETH": {
+      "balance": 75789126458482688,
+      "diff": 4402299653732962,
+      "required_balance": 71386826804749726
+    }
+  },
+  "vrAMM-WETH/DEUS": {
+    "DEUS": {
+      "balance": 130927515454018805741,
+      "diff": 60381684258816184090,
+      "required_balance": 70545831195202621651
+    },
+    "RAM": {
+      "balance": 439919348058338255081,
+      "diff": -31873098511092452557,
+      "required_balance": 471792446569430707638
+    },
+    "WETH": {
+      "balance": 31266480635345890,
+      "diff": -105183765246591297,
+      "required_balance": 136450245881937187
+    }
+  },
+  "vrAMM-WETH/ELR": {
+    "ELR": {
+      "balance": 2530146215831053694,
+      "diff": 3,
+      "required_balance": 2530146215831053691
+    },
+    "USDT": {
+      "balance": 19600001,
+      "diff": 19600001,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 60081659254898677,
+      "diff": 60000000000000002,
+      "required_balance": 81659254898675
+    }
+  },
+  "vrAMM-WETH/FXS": {},
+  "vrAMM-WETH/GMX": {
+    "GMX": {
+      "balance": 266013673796,
+      "diff": 266013673796,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 30000000000000,
+      "diff": 30000000000000,
+      "required_balance": 0
+    }
+  },
+  "vrAMM-WETH/HOP": {
+    "HOP": {
+      "balance": 26251716390377803,
+      "diff": 26251716390377803,
+      "required_balance": 0
+    },
+    "WETH": {
+      "balance": 17994943099175,
+      "diff": 17994943099175,
+      "required_balance": 0
+    }
+  },
+  "vrAMM-WETH/LEVI": {
+    "GMX": {
+      "balance": 3967551930271247,
+      "diff": 50,
+      "required_balance": 3967551930271197
+    },
+    "LEVI": {
+      "balance": 295648336637653709211,
+      "diff": -192060318151017419501,
+      "required_balance": 487708654788671128712
+    },
+    "MAGIC": {
+      "balance": 2380531158162766,
+      "diff": 50,
+      "required_balance": 2380531158162716
+    },
+    "RAM": {
+      "balance": 6018146673648534342710,
+      "diff": -37289695379053422894,
+      "required_balance": 6055436369027587765604
+    },
+    "USD+": {
+      "balance": 1000185,
+      "diff": 1000185,
+      "required_balance": 0
+    },
+    "USDC": {
+      "balance": 119070,
+      "diff": 48,
+      "required_balance": 119022
+    },
+    "WETH": {
+      "balance": 3712702797400545,
+      "diff": -116410573109596983,
+      "required_balance": 120123275906997528
+    }
+  },
+  "vrAMM-WETH/LINK": {},
+  "vrAMM-WETH/LQTY": {
+    "LQTY": {
+      "balance": 2640971082073784185040,
+      "diff": 1057744634942780956382,
+      "required_balance": 1583226447131003228658
+    },
+    "RAM": {
+      "balance": 49830032252830686854,
+      "diff": -97684331099848645,
+      "required_balance": 49927716583930535499
+    },
+    "WETH": {
+      "balance": 70077129579780770,
+      "diff": -12389656106012310,
+      "required_balance": 82466785685793080
+    }
+  },
+  "vrAMM-WETH/NFTE": {
+    "L2DAO": {
+      "balance": 59779023968203348396,
+      "diff": -64973111472253978999439,
+      "required_balance": 65032890496222182347835
+    },
+    "NFTE": {
+      "balance": 1252175009597010047100309,
+      "diff": 968907709142591141247288,
+      "required_balance": 283267300454418905853021
+    },
+    "RAM": {
+      "balance": 9465787607990224881903,
+      "diff": 5203380406316868148072,
+      "required_balance": 4262407201673356733831
+    },
+    "WETH": {
+      "balance": 67867675703134586,
+      "diff": -134159574305148921,
+      "required_balance": 202027250008283507
+    }
+  },
+  "vrAMM-WETH/OATH": {
+    "LQDR": {
+      "balance": 219564868486829733,
+      "diff": 604995386011858,
+      "required_balance": 218959873100817875
+    },
+    "OATH": {
+      "balance": 15073261754834477905411,
+      "diff": 13104259409716886799389,
+      "required_balance": 1969002345117591106022
+    },
+    "RAM": {
+      "balance": 961833511286410067025,
+      "diff": -86777520762946700056,
+      "required_balance": 1048611032049356767081
+    },
+    "WETH": {
+      "balance": 86635311730953199,
+      "diff": -14107717949582736,
+      "required_balance": 100743029680535935
+    }
+  },
+  "vrAMM-WETH/QI": {
+    "QI": {
+      "balance": 1959166564455429309,
+      "diff": 1946250006861975349,
+      "required_balance": 12916557593453960
+    },
+    "WETH": {
+      "balance": 308767,
+      "diff": 281277,
+      "required_balance": 27490
+    }
+  },
+  "vrAMM-WETH/RAM": {
+    "RAM": {
+      "balance": 553483132966665978845640,
+      "diff": 450972981909417565954942,
+      "required_balance": 102510151057248412890698
+    },
+    "WETH": {
+      "balance": 2745304073785828427,
+      "diff": -2918657075808386999,
+      "required_balance": 5663961149594215426
+    }
+  },
+  "vrAMM-WETH/USDC": {
+    "USDC": {
+      "balance": 476833419,
+      "diff": -195404079,
+      "required_balance": 672237498
+    },
+    "WETH": {
+      "balance": 249864616798178536,
+      "diff": -94732677717900881,
+      "required_balance": 344597294516079417
+    }
+  },
+  "vrAMM-WETH/USDT": {
+    "USDT": {
+      "balance": 876562,
+      "diff": 846988,
+      "required_balance": 29574
+    },
+    "WETH": {
+      "balance": 542594917553665,
+      "diff": 530310015565202,
+      "required_balance": 12284901988463
+    }
+  },
+  "vrAMM-WETH/XCAD": {
+    "LQDR": {
+      "balance": 15805793616189014730,
+      "diff": 1314867699619453970,
+      "required_balance": 14490925916569560760
+    },
+    "RAM": {
+      "balance": 3799065550231501472129,
+      "diff": -16531657902772112382,
+      "required_balance": 3815597208134273584511
+    },
+    "WETH": {
+      "balance": 41707786822345200,
+      "diff": -621110348022229,
+      "required_balance": 42328897170367429
+    },
+    "XCAD": {
+      "balance": 879644111159697496866,
+      "diff": 111867151676260975765,
+      "required_balance": 767776959483436521101
+    }
+  },
+  "vrAMM-WETH/YFI": {},
+  "vrAMM-YFX/USDC": {
+    "RAM": {
+      "balance": 39195936524945168659,
+      "diff": -4558363705198472657,
+      "required_balance": 43754300230143641316
+    },
+    "USDC": {
+      "balance": 1276150883,
+      "diff": -1433662896,
+      "required_balance": 2709813779
+    },
+    "YFX": {
+      "balance": 37667754742795533244,
+      "diff": 3084607163730864850,
+      "required_balance": 34583147579064668394
+    }
+  },
+  "vrAMM-YFX/gmUSD": {
+    "YFX": {
+      "balance": 7112725760030500,
+      "diff": 3,
+      "required_balance": 7112725760030497
+    },
+    "gmUSD": {
+      "balance": 4036411803764886628,
+      "diff": 3,
+      "required_balance": 4036411803764886625
+    }
+  },
+  "vrAMM-fBOMB/RAM": {
+    "RAM": {
+      "balance": 959378072264905283567,
+      "diff": -268869696134926822701,
+      "required_balance": 1228247768399832106268
+    },
+    "USDC": {
+      "balance": 3751781533,
+      "diff": -7326162,
+      "required_balance": 3759107695
+    },
+    "fBOMB": {
+      "balance": 5923643356863221278237,
+      "diff": -2937613061397554666123,
+      "required_balance": 8861256418260775944360
+    }
+  },
+  "vrAMM-fBOMB/WETH": {
+    "RAM": {
+      "balance": 27608510112577425742,
+      "diff": -71266446208849871923,
+      "required_balance": 98874956321427297665
+    },
+    "USDC": {
+      "balance": 500313189,
+      "diff": 18,
+      "required_balance": 500313171
+    },
+    "WETH": {
+      "balance": 2040490690124156,
+      "diff": -9603887383541263,
+      "required_balance": 11644378073665419
+    },
+    "fBOMB": {
+      "balance": 360679912697980903026,
+      "diff": -3854641618896447674292,
+      "required_balance": 4215321531594428577318
+    }
+  },
+  "vrAMM-frxETH/ARB": {
+    "ARB": {
+      "balance": 196317146527894254,
+      "diff": 683340479587029,
+      "required_balance": 195633806048307225
+    },
+    "FXS": {
+      "balance": 56573041150327557123,
+      "diff": 54035270746448927271,
+      "required_balance": 2537770403878629852
+    },
+    "RAM": {
+      "balance": 484028682690361980,
+      "diff": 2,
+      "required_balance": 484028682690361978
+    },
+    "frxETH": {
+      "balance": 47220639611320,
+      "diff": 159643957971,
+      "required_balance": 47060995653349
+    }
+  },
+  "vrAMM-jEUR/USDC": {
+    "LQDR": {
+      "balance": 3010000000000000000,
+      "diff": 9276329598972414,
+      "required_balance": 3000723670401027586
+    },
+    "USDC": {
+      "balance": 76542556,
+      "diff": -35526,
+      "required_balance": 76578082
+    },
+    "jEUR": {
+      "balance": 70166328128953510279,
+      "diff": -31876545428290354,
+      "required_balance": 70198204674381800633
+    }
+  },
+  "vrAMM-neadRAM/WETH": {
+    "WETH": {
+      "balance": 222861606815375825,
+      "diff": 661697600641268,
+      "required_balance": 222199909214734557
+    },
+    "neadRAM": {
+      "balance": 9313676842499340635145,
+      "diff": 27465234849307155571,
+      "required_balance": 9286211607650033479574
+    }
+  },
+  "vrAMM-xSHRAP/WETH": {
+    "RAM": {
+      "balance": 48245941776646685850,
+      "diff": -4021615320101196179,
+      "required_balance": 52267557096747882029
+    },
+    "USDC": {
+      "balance": 886345,
+      "diff": 14,
+      "required_balance": 886331
+    },
+    "WETH": {
+      "balance": 938664445163012674,
+      "diff": -637685955789234,
+      "required_balance": 939302131118801908
+    },
+    "xSHRAP": {
+      "balance": 139403768660941645,
+      "diff": -20070390511966087,
+      "required_balance": 159474159172907732
+    }
+  }
+}
