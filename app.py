@@ -32,6 +32,7 @@ def apr():
 @cache.cached(1 * 5)
 def pairs():
     print('function call')
+    from get_apr import get_pairs
     return jsonify(get_pairs())
 
 
