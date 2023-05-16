@@ -33,7 +33,8 @@ local_coin_ids = {
     'pork': 'pigscanfly',
     'aidoge': 'arbdoge-ai',
     'aicode': 'ai-code',
-    'play': 'xcad-network-play'
+    'play': 'xcad-network-play',
+    'vela': 'vela-token'
 }
 
 stable_coins = [
@@ -54,8 +55,8 @@ stable_coins = [
 ]
 
 constant_prices = {
-    'elr': 0.035,
-    'xpork': 0.0001770
+    'elr': 0.047,
+    'xpork': 0.00003770
 }
 
 
