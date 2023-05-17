@@ -34,29 +34,30 @@ local_coin_ids = {
     'aidoge': 'arbdoge-ai',
     'aicode': 'ai-code',
     'play': 'xcad-network-play',
-    'vela': 'vela-token'
+    'vela': 'vela-token',
+    'ohm': 'olympus',
+    'dei': 'dei-token',
+    'lusd': 'liquity-usd',
+    'usdc': 'usd-coin',
+    'usdt': 'tether',
+    'mai': 'mai',
+    'dai': 'dai',
+    'usds': 'sperax-usd',
+    'mim': 'magic-internet-money',
+    'frax': 'frax'
 }
 
 stable_coins = [
-    'usdc',
-    'dei',
-    'usdt',
-    'mai',
-    'dai',
-    'gmusd',
     'usd+',
     'dai+',
-    'mim',
-    'lusd',
-    'usds',
-    'frax',
     'ets epsilon',
-    'gmdusdc'
 ]
 
 constant_prices = {
     'elr': 0.047,
-    'xpork': 0.00003770
+    'xpork': 0.00003770,
+    'gmusd': 1.05,
+    'gmdusdc': 1.07
 }
 
 
