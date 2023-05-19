@@ -46,7 +46,7 @@ local_coin_ids = {
     'mim': 'magic-internet-money',
     'frax': 'frax',
     'unsheth': 'unsheth-unsheth',
-    'neadram': 'the-ennead'
+    'neadram': 'the-ennead',
     'ankr': 'ankr-network',
     'ankreth': 'ankr-staked-eth'
 }
