@@ -174,10 +174,10 @@ def get_subgraph_pairs():
                 skip += 100
         else:
             log("Error in subgraph pairs")
-            return json.loads(db.get('v2_pairs'))
+            return json.loads(db.get('v2_subgraph_pairs'))
 
     # cache pairs
-    db.set('v2_pairs', json.dumps(pairs))
+    db.set('v2_subgraph_pairs', json.dumps(pairs))
 
     return pairs
 

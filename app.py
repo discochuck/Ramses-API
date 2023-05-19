@@ -50,9 +50,9 @@ def voter_claimable_rewards():
 
 
 @app.route("/v2/pairs")
-@cache.cached(60 * 1)
+@cache.cached(60 * 5)
 def v2_pairs():
-    return jsonify(get_pairs_v2())
+    return jsonify(get_pairs_v2(True))
 
 
 if __name__ == "__main__":
