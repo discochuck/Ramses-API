@@ -59,7 +59,14 @@ constant_prices = {
     'elr': 0.043,
     'xpork': 0.00001308,
     'gmusd': 1.05,
-    'gmdusdc': 1.07
+    'gmdusdc': 1.07,
+    'smartai': 0,
+    'flyshares': 0,
+    'bbb': 0,
+    'tusdc': 0,
+    'teth': 0,
+    'liveram': 0,
+    'test': 0
 }
 
 
