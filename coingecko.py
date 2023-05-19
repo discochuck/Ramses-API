@@ -125,8 +125,8 @@ def get_prices(symbols):
 
     prices['ETH'] = response['ethereum']['usd']
     prices['RAM'] = response['ramses-exchange']['usd']
-    prices['GND'] = response['gnd-protocol']['usd']
-    prices['xGND'] = prices['GND'] * 0.4
+    ##prices['GND'] = response['gnd-protocol']['usd']
+    ##prices['xGND'] = prices['GND'] * 0.4
 
     return prices
 
