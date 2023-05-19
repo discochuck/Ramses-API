@@ -44,7 +44,8 @@ local_coin_ids = {
     'dai': 'dai',
     'usds': 'sperax-usd',
     'mim': 'magic-internet-money',
-    'frax': 'frax'
+    'frax': 'frax',
+    'unsheth': 'unsheth-unsheth'
 }
 
 stable_coins = [
@@ -54,8 +55,8 @@ stable_coins = [
 ]
 
 constant_prices = {
-    'elr': 0.047,
-    'xpork': 0.00001708,
+    'elr': 0.043,
+    'xpork': 0.00001308,
     'gmusd': 1.05,
     'gmdusdc': 1.07
 }
