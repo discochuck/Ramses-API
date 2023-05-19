@@ -45,7 +45,8 @@ local_coin_ids = {
     'usds': 'sperax-usd',
     'mim': 'magic-internet-money',
     'frax': 'frax',
-    'unsheth': 'unsheth-unsheth'
+    'unsheth': 'unsheth-unsheth',
+    'neadram': 'the-ennead'
 }
 
 stable_coins = [
@@ -116,7 +117,6 @@ def get_prices(symbols):
     prices['ETH'] = response['ethereum']['usd']
     prices['RAM'] = response['ramses-exchange']['usd']
     prices['GND'] = response['gnd-protocol']['usd']
-    prices['neadRAM'] = prices['RAM'] * 0.9
     prices['xGND'] = prices['GND'] * 0.4
 
     return prices
