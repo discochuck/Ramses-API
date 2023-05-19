@@ -56,7 +56,6 @@ def get_subgraph_tokens(debug):
 
 
 def get_subgraph_pairs(debug):
-    # return json.loads(db.get('v2_pairs'))
     # get pairs from subgraph
     skip = 0
     limit = 100

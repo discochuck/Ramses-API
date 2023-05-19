@@ -120,12 +120,14 @@ def get_prices(symbols):
     ).json()
 
     for symbol in symbols:
-        prices[symbol] = response.get(ids[symbol.lower()], {'usd': 0})['usd']
+        prices[symbol] = response.get(ids[symbol.lower()], {'usd': 0}).get('usd', 0)
 
     prices['ETH'] = response['ethereum']['usd']
     prices['RAM'] = response['ramses-exchange']['usd']
     prices['neadRAM'] = prices['RAM'] * 0.9
 
+    prices['GND'] = response.get('gnd-protocol', {'usd': 0}).get('usd', 0)
+    prices['xGND'] = prices['GND'] * 0.4
 
     return prices
 
