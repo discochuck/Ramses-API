@@ -217,7 +217,7 @@ def _fetch_pairs(debug):
     }
 
 
-def get_pairs(debug=False):
+def get_pairs_v2(debug=False):
     try:
         pairs = _fetch_pairs(debug)
         db.set('v2_pairs', json.dumps(pairs))
@@ -230,6 +230,6 @@ def get_pairs(debug=False):
 
 
 if __name__ == '__main__':
-    p = get_pairs(True)
+    p = get_pairs_v2(True)
 
     pprint(p['pairs'][1])
