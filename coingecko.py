@@ -33,29 +33,45 @@ local_coin_ids = {
     'pork': 'pigscanfly',
     'aidoge': 'arbdoge-ai',
     'aicode': 'ai-code',
-    'play': 'xcad-network-play'
+    'play': 'xcad-network-play',
+    'vela': 'vela-token',
+    'ohm': 'olympus',
+    'dei': 'dei-token',
+    'lusd': 'liquity-usd',
+    'usdc': 'usd-coin',
+    'usdt': 'tether',
+    'mai': 'mai',
+    'dai': 'dai',
+    'usds': 'sperax-usd',
+    'mim': 'magic-internet-money',
+    'frax': 'frax',
+    ##'unsheth': 'unsheth-unsheth',
+    'neadram': 'the-ennead'
+    ##'ankr': 'ankr-network',
+    ##'ankreth': 'ankr-staked-eth'
 }
 
 stable_coins = [
-    'usdc',
-    'dei',
-    'usdt',
-    'mai',
-    'dai',
-    'gmusd',
     'usd+',
     'dai+',
-    'mim',
-    'lusd',
-    'usds',
-    'frax',
     'ets epsilon',
-    'gmdusdc'
 ]
 
 constant_prices = {
-    'elr': 0.035,
-    'xpork': 0.0001770
+    'elr': 0.043,
+    'xpork': 0.00001308,
+    'gmusd': 1.05,
+    'gmdusdc': 1.07,
+    'smartai': 0,
+    'flyshares': 0,
+    'bbb': 0,
+    'tusdc': 0,
+    'teth': 0,
+    'liveram': 0,
+    'test': 0,
+    'unsheth': 0,
+    'ankr': 0,
+    'ankreth': 0
 }
 
 
@@ -112,7 +128,8 @@ def get_prices(symbols):
 
     prices['ETH'] = response['ethereum']['usd']
     prices['RAM'] = response['ramses-exchange']['usd']
-    prices['neadRAM'] = prices['RAM'] * 0.9
+    prices['GND'] = response['gnd-protocol']['usd']
+    prices['xGND'] = prices['GND'] * 0.4
 
     return prices
 
