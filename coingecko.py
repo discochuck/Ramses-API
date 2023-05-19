@@ -125,6 +125,8 @@ def get_prices(symbols):
 
     prices['ETH'] = response['ethereum']['usd']
     prices['RAM'] = response['ramses-exchange']['usd']
+    prices['neadRAM'] = prices['RAM'] * 0.9
+
 
     return prices
 
