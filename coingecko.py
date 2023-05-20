@@ -40,7 +40,6 @@ local_coin_ids = {
     'lusd': 'liquity-usd',
     'usdc': 'usd-coin',
     'usdt': 'tether',
-    'mai': 'mai',
     'dai': 'dai',
     'usds': 'sperax-usd',
     'mim': 'magic-internet-money',
@@ -54,6 +53,7 @@ stable_coins = [
     'usd+',
     'dai+',
     'ets epsilon',
+    'mai'
 ]
 
 constant_prices = {
