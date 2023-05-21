@@ -45,8 +45,8 @@ local_coin_ids = {
     'mim': 'magic-internet-money',
     'frax': 'frax',
     'unsheth': 'unsheth-unsheth',
-    'ankr': 'ankr-network',
-    'ankreth': 'ankr-staked-eth'
+    ## 'ankr': 'ankr-network',
+    ##'ankreth': 'ankr-staked-eth'
 }
 
 stable_coins = [
@@ -67,7 +67,9 @@ constant_prices = {
     'tusdc': 0,
     'teth': 0,
     'liveram': 0,
-    'test': 0
+    'test': 0,
+    'ankr': 0.026,
+    'ankreth': 2020
 }
 
 
