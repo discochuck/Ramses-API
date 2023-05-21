@@ -130,7 +130,7 @@ def get_subgraph_tokens(catch_errors):
                 skip += 100
         else:
             log("Error in subgraph tokens")
-            return json.loads(db.get('v2_tokens'))
+            return json.loads(db.get('v2_apr_tokens'))
 
     # get tokens prices
     symbols = list(set([token['symbol'] for token in tokens]))
@@ -146,7 +146,7 @@ def get_subgraph_tokens(catch_errors):
         token['price'] = prices[token['symbol']]
 
     # cache tokens
-    db.set('v2_tokens', json.dumps(tokens))
+    db.set('v2_apr_tokens', json.dumps(tokens))
 
     return tokens
 
@@ -174,10 +174,10 @@ def get_subgraph_pairs():
                 skip += 100
         else:
             log("Error in subgraph pairs")
-            return json.loads(db.get('v2_pairs'))
+            return json.loads(db.get('v2_apr_subgraph_pairs'))
 
     # cache pairs
-    db.set('v2_pairs', json.dumps(pairs))
+    db.set('v2_apr_subgraph_pairs', json.dumps(pairs))
 
     return pairs
 

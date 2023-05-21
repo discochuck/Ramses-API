@@ -34,29 +34,40 @@ local_coin_ids = {
     'aidoge': 'arbdoge-ai',
     'aicode': 'ai-code',
     'play': 'xcad-network-play',
-    'vela': 'vela-token'
+    'vela': 'vela-token',
+    'ohm': 'olympus',
+    'dei': 'dei-token',
+    'lusd': 'liquity-usd',
+    'usdc': 'usd-coin',
+    'usdt': 'tether',
+    'mai': 'mai',
+    'dai': 'dai',
+    'usds': 'sperax-usd',
+    'mim': 'magic-internet-money',
+    'frax': 'frax',
+    'unsheth': 'unsheth-unsheth',
+    'ankr': 'ankr-network',
+    'ankreth': 'ankr-staked-eth'
 }
 
 stable_coins = [
-    'usdc',
-    'dei',
-    'usdt',
-    'mai',
-    'dai',
-    'gmusd',
     'usd+',
     'dai+',
-    'mim',
-    'lusd',
-    'usds',
-    'frax',
     'ets epsilon',
-    'gmdusdc'
 ]
 
 constant_prices = {
-    'elr': 0.047,
-    'xpork': 0.00003770
+    'elr': 0.043,
+    'xpork': 0.00001308,
+    'gmusd': 1.05,
+    'gmdusdc': 1.07,
+    'smartai': 0,
+    'flyshares': 0,
+    'bbb': 0,
+    'tusdc': 0,
+    'teth': 0,
+    'liveram': 0,
+    'test': 0
 }
 
 
@@ -109,11 +120,14 @@ def get_prices(symbols):
     ).json()
 
     for symbol in symbols:
-        prices[symbol] = response.get(ids[symbol.lower()], {'usd': 0})['usd']
+        prices[symbol] = response.get(ids[symbol.lower()], {'usd': 0}).get('usd', 0)
 
     prices['ETH'] = response['ethereum']['usd']
     prices['RAM'] = response['ramses-exchange']['usd']
     prices['neadRAM'] = prices['RAM'] * 0.9
+
+    prices['GND'] = response.get('gnd-protocol', {'usd': 0}).get('usd', 0)
+    prices['xGND'] = prices['GND'] * 0.4
 
     return prices
 

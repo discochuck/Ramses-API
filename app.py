@@ -8,7 +8,7 @@ from flask_cors import CORS
 from claimable_rewards import get_voter_claimable_rewards
 from get_apr import get_apr, get_pairs, _fetch_pairs
 from utils import db, cache_config
-from v2.get_pairs import get_pairs
+from v2.get_pairs import get_pairs_v2
 
 app = Flask(__name__)
 
@@ -52,8 +52,7 @@ def voter_claimable_rewards():
 @app.route("/v2/pairs")
 @cache.cached(60 * 5)
 def v2_pairs():
-    from v2.get_pairs import get_pairs
-    return jsonify(get_pairs())
+    return jsonify(get_pairs_v2())
 
 
 @app.route("/unlimited-lge-chart")
