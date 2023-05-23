@@ -70,7 +70,8 @@ constant_prices = {
     'test': 0,
     'ankr': 0.026,
     'ankreth': 2100,
-    'fbomb': 0.005840
+    'fbomb': 0.005840,
+    'uwu': 1.05
 }
 
 
