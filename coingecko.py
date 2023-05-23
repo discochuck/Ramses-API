@@ -12,7 +12,7 @@ local_coin_ids = {
     'bifi': 'beefy-finance',
     'magic': 'magic',
     'ram': 'ramses-exchange',
-    'fbomb': 'fantom-bomb',
+    #'fbomb': 'fantom-bomb',
     'fs': 'fantomstarter',
     'arc': 'arcadeum',
     'qi': 'qi-dao',
@@ -45,8 +45,8 @@ local_coin_ids = {
     'mim': 'magic-internet-money',
     'frax': 'frax',
     'unsheth': 'unsheth-unsheth',
-    ## 'ankr': 'ankr-network',
-    ##'ankreth': 'ankr-staked-eth'
+    # 'ankr': 'ankr-network',
+    #'ankreth': 'ankr-staked-eth'
 }
 
 stable_coins = [
@@ -69,7 +69,8 @@ constant_prices = {
     'liveram': 0,
     'test': 0,
     'ankr': 0.026,
-    'ankreth': 2020
+    'ankreth': 2100,
+    'fbomb': 0.005840
 }
 
 
