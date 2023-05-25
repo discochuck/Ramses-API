@@ -10,7 +10,7 @@ from utils import w3, db, log, RAM_ADDRESS
 
 
 def get_subgraph_tokens(debug):
-    # return json.loads(db.get('v2_tokens'))
+    # return json.loads(db.get('v2_subgraph_tokens'))
     # get tokens from subgraph
     skip = 0
     limit = 100
@@ -35,7 +35,7 @@ def get_subgraph_tokens(debug):
         else:
             if debug: print(response.text)
             log("Error in subgraph tokens")
-            return json.loads(db.get('v2_tokens'))
+            return json.loads(db.get('v2_subgraph_tokens'))
 
     # get tokens prices
     symbols = list(set([token['symbol'] for token in tokens]))
@@ -50,7 +50,7 @@ def get_subgraph_tokens(debug):
         token['price'] = prices[token['symbol']]
 
     # cache tokens
-    db.set('v2_tokens', json.dumps(tokens))
+    db.set('v2_subgraph_tokens', json.dumps(tokens))
 
     return tokens
 
