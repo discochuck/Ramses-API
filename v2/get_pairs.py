@@ -162,9 +162,12 @@ def _fetch_pairs(debug):
 
     # fetch pair's lp reward rates
     _reward_rates = {}
+    _period_finish = {}
     calls = []
+    period_finish_calls = []
     for pair_address, pair in pairs.items():
         _reward_rates[pair_address] = {}
+        _period_finish[pair_address] = {}
         for token_address in pair['gauge']['rewardTokens']:
             _reward_rates[token_address] = 0
             key = f'{pair_address}-{token_address}'
@@ -177,9 +180,23 @@ def _fetch_pairs(debug):
                     [[key, lambda v: v[0]]]
                 ),
             )
+
+            period_finish_calls.append(
+                Call(
+                    w3,
+                    pair['gauge']['id'],
+                    ["periodFinish(address)(uint256)", token_address],
+                    [[key, lambda v: int(v[0])]]
+                ),
+            )
+
     for key, value in Multicall(w3, calls)().items():
         pair_address, token_address = key.split('-')
         _reward_rates[pair_address][token_address] = value
+
+    for key, value in Multicall(w3, period_finish_calls)().items():
+        pair_address, token_address = key.split('-')
+        _period_finish[pair_address][token_address] = value
 
     # calculate APRs
     for pair_address, pair in pairs.items():
@@ -196,7 +213,9 @@ def _fetch_pairs(debug):
         if pair['gauge']['totalDerivedSupply'] > 0:
             totalUSD = 0
             for token_address in pair['gauge']['rewardTokens']:
-                totalUSD += _reward_rates[pair_address][token_address] * 24 * 60 * 60 * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
+                if _period_finish[pair_address][token_address] > now:
+                    totalUSD += _reward_rates[pair_address][token_address] * 24 * 60 * 60 * tokens[token_address]['price'] / 10 ** tokens[token_address][
+                        'decimals']
             pair['lpApr'] = totalUSD * 36500 / (pair['gauge']['totalDerivedSupply'] * _pairs_price[pair_address] / 1e18) / 2.5
         else:
             pair['lpApr'] = 0
@@ -231,4 +250,4 @@ def get_pairs_v2(debug=False):
 if __name__ == '__main__':
     p = get_pairs_v2(True)
 
-    pprint(p['pairs'][1])
+    pprint(p['pairs'])
