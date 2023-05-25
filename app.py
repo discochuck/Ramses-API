@@ -38,7 +38,7 @@ def pairs():
 
 @app.route("/dev/pairs")
 def dev_pairs():
-    return jsonify(_fetch_pairs(False))
+    return jsonify(get_pairs_v2(True))
 
 
 @app.route("/voterClaimableRewards")
