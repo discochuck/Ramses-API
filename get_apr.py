@@ -4,7 +4,7 @@ from pprint import pprint
 
 import requests
 
-from coingecko import get_prices
+from coingecko import get_prices_from_coingecko
 from multicall import Call, Multicall
 from utils import w3, db
 
@@ -78,7 +78,7 @@ def get_apr():
         tokens[address]['tokenTotalSupplyByPeriod'] = value
 
     symbols = list(set([token['symbol'] for token in tokens.values()]))
-    prices = get_prices(symbols)
+    prices = get_prices_from_coingecko(symbols)
 
     for key, token in tokens.items():
         pair_address = key.split('-')[0]
@@ -135,7 +135,7 @@ def get_subgraph_tokens(catch_errors):
     # get tokens prices
     symbols = list(set([token['symbol'] for token in tokens]))
     try:
-        prices = get_prices(symbols)
+        prices = get_prices_from_coingecko(symbols)
         db.set('v2_prices', json.dumps(prices))
     except Exception as e:
         if not catch_errors:
@@ -504,7 +504,7 @@ def _fetch_pairs(catch_errors):
     symbols = list(set(symbols))
 
     try:
-        prices = get_prices(symbols)
+        prices = get_prices_from_coingecko(symbols)
         db.set('v2_prices', json.dumps(prices))
     except Exception as e:
         if not catch_errors:

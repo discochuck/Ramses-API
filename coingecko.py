@@ -94,7 +94,7 @@ def get_coins_ids(symbols):
     return ids
 
 
-def get_prices(symbols):
+def get_prices_from_coingecko(symbols):
     prices = {}
 
     symbols_ = []
@@ -136,7 +136,7 @@ def get_prices(symbols):
 
 if __name__ == '__main__':
     pprint(
-        get_prices(
+        get_prices_from_coingecko(
             ['neadRAM', 'TEST', 'DAO', 'WETH', 'TAROT', 'wstETH', 'LQTY', 'OATH', 'UNIDX', 'gmUSD', 'VELA', 'MIM', 'MAGIC', 'YFX', 'DOLA', 'LEVI', 'LUSD',
              'FRAX', 'L2DAO',
              'DAI',
