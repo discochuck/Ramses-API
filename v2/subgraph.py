@@ -35,15 +35,8 @@ def get_subgraph_tokens(debug):
             return json.loads(db.get('v2_subgraph_tokens'))
 
     # get tokens prices
-    try:
-        prices = get_prices(tokens)
-        db.set('v2_prices', json.dumps(prices))
-    except Exception as e:
-        if debug: raise e
-        log("Error on prices")
-        prices = json.loads(db.get('v2_prices'))
+    prices = get_prices(tokens, debug=debug)
     for token in tokens:
-        print(token['symbol'])
         token['price'] = prices[token['symbol']]
 
     # cache tokens

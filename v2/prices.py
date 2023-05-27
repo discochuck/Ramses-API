@@ -137,7 +137,7 @@ def get_prices_from_defillama(tokens):
     return prices
 
 
-def get_prices(tokens):
+def get_prices(tokens, debug=False):
     prices = {}
 
     symbols = [token['symbol'] for token in tokens]
@@ -149,28 +149,47 @@ def get_prices(tokens):
         else:
             prices[symbol] = 0
 
-    # fetch prices from coingecko
-    prices.update(get_prices_from_coingecko(symbols))
+    exception_happened = False
 
     # fetch zero prices from defillama
-    prices.update(
-        get_prices_from_defillama(
-            [
-                token for token in tokens if prices[token['symbol']] == 0
-            ]
-        )
-    )
+    try:
+        defillama_prices = get_prices_from_defillama([
+            token for token in tokens if prices[token['symbol']] == 0
+        ])
+        prices.update(defillama_prices)
+    except Exception as e:
+        exception_happened = True
+        if debug:
+            raise e
+        print("Error in defillama")
+
+    # fetch prices from coingecko
+    try:
+        coingecko_prices = get_prices_from_coingecko([
+            token['symbol'] for token in tokens if prices[token['symbol']] == 0
+        ])
+        prices.update(coingecko_prices)
+    except Exception as e:
+        exception_happened = True
+        if debug:
+            raise e
+        print("Error in coingecko")
 
     # set neadRAM price
     prices['neadRAM'] = prices['RAM'] * 0.9
 
-    print(
-        [k for k in prices.keys() if prices[k] == 0]
-    )
+    # if any exception happened in defillama or coingecko and token price is zero use previous price for the token
+    if exception_happened:
+        for token in tokens:
+            symbol = token['symbol']
+            if prices[symbol] == 0:
+                prices[symbol] = token['price']
+
+    print("missing prices", [k for k in prices.keys() if prices[k] == 0])
 
     return prices
 
 
 if __name__ == '__main__':
-    get_prices(json.loads(db.get('v2_subgraph_tokens')))
+    get_prices(json.loads(db.get('v2_subgraph_tokens')), debug=False)
     # pprint(get_prices(json.loads(db.get('v2_subgraph_tokens'))))
