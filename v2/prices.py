@@ -57,9 +57,6 @@ coingecko_coins = {
     'mim': 'magic-internet-money',
     'frax': 'frax',
     'unsheth': 'unsheth-unsheth',
-    'neadRAM': 'the-ennead',
-    'ankr': 'ankr-network',
-    'ankreth': 'ankr-staked-eth'
 }
 
 defillama_coins = {
