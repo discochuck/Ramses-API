@@ -30,7 +30,7 @@ local_coin_ids = {
     'fba': 'firebird-aggregator',
     'euroe': 'euroe-stablecoin',
     'gnd': 'gnd-protocol',
-    ##'pork': 'pigscanfly',
+  ##  'pork': 'pigscanfly',
     'aidoge': 'arbdoge-ai',
     'aicode': 'ai-code',
     'play': 'xcad-network-play',
@@ -68,8 +68,7 @@ constant_prices = {
     'teth': 0,
     'liveram': 0,
     'test': 0,
-    'uwu': 1.05,
-    'pork': 0.0000001
+    'pork': 0
 }
 
 
@@ -94,7 +93,7 @@ def get_coins_ids(symbols):
     return ids
 
 
-def get_prices(symbols):
+def get_prices_from_coingecko(symbols):
     prices = {}
 
     symbols_ = []
@@ -136,7 +135,7 @@ def get_prices(symbols):
 
 if __name__ == '__main__':
     pprint(
-        get_prices(
+        get_prices_from_coingecko(
             ['neadRAM', 'TEST', 'DAO', 'WETH', 'TAROT', 'wstETH', 'LQTY', 'OATH', 'UNIDX', 'gmUSD', 'VELA', 'MIM', 'MAGIC', 'YFX', 'DOLA', 'LEVI', 'LUSD',
              'FRAX', 'L2DAO',
              'DAI',
