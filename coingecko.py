@@ -12,7 +12,7 @@ local_coin_ids = {
     'bifi': 'beefy-finance',
     'magic': 'magic',
     'ram': 'ramses-exchange',
-    #'fbomb': 'fantom-bomb',
+    'fbomb': 'fantom-bomb',
     'fs': 'fantomstarter',
     'arc': 'arcadeum',
     'qi': 'qi-dao',
@@ -30,7 +30,7 @@ local_coin_ids = {
     'fba': 'firebird-aggregator',
     'euroe': 'euroe-stablecoin',
     'gnd': 'gnd-protocol',
-    'pork': 'pigscanfly',
+    ##'pork': 'pigscanfly',
     'aidoge': 'arbdoge-ai',
     'aicode': 'ai-code',
     'play': 'xcad-network-play',
@@ -45,8 +45,8 @@ local_coin_ids = {
     'mim': 'magic-internet-money',
     'frax': 'frax',
     'unsheth': 'unsheth-unsheth',
-    # 'ankr': 'ankr-network',
-    #'ankreth': 'ankr-staked-eth'
+    'ankr': 'ankr-network',
+    'ankreth': 'ankr-staked-eth'
 }
 
 stable_coins = [
@@ -68,10 +68,8 @@ constant_prices = {
     'teth': 0,
     'liveram': 0,
     'test': 0,
-    'ankr': 0.026,
-    'ankreth': 2100,
-    'fbomb': 0.005840,
-    'uwu': 1.05
+    'uwu': 1.05,
+    'pork': 0.0000001
 }
 
 
