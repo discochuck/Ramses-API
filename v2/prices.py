@@ -13,9 +13,8 @@ constant_prices = {
     'ets epsilon': 1,
     'mai': 1,
 
-    'elr': 0.043,
-    'xpork': 0.00001032,
-    'pork': 0.00001
+    'elr': 0.033,
+    'xpork': 0.00001032
 }
 
 coingecko_coins = {
@@ -58,6 +57,8 @@ coingecko_coins = {
     'mim': 'magic-internet-money',
     'frax': 'frax',
     'unsheth': 'unsheth-unsheth',
+    'ankr': 'ankr-network',
+    'ankreth': 'ankr-staked-eth'
 }
 
 defillama_coins = {
