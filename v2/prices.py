@@ -58,7 +58,8 @@ coingecko_coins = {
     'frax': 'frax',
     'unsheth': 'unsheth-unsheth',
     'ankr': 'ankr-network',
-    'ankreth': 'ankr-staked-eth'
+    'ankreth': 'ankr-staked-eth',
+    'arken': 'arken-finance'
 }
 
 defillama_coins = {
