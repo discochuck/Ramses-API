@@ -15,7 +15,8 @@ constant_prices = {
 
     'elr': 0.03,
     'xpork': 0.00001172,
-    'bath': 0.021
+    'bath': 0.021,
+    'gohm': 2800
 }
 
 coingecko_coins = {
