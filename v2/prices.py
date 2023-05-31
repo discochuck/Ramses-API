@@ -13,8 +13,10 @@ constant_prices = {
     'ets epsilon': 1,
     'mai': 1,
 
-    'elr': 0.043,
-    'xpork': 0.00001308,
+    'elr': 0.03,
+    'xpork': 0.00001172,
+    'bath': 0.021,
+    'gohm': 2800
 }
 
 coingecko_coins = {
@@ -57,6 +59,10 @@ coingecko_coins = {
     'mim': 'magic-internet-money',
     'frax': 'frax',
     'unsheth': 'unsheth-unsheth',
+    'ankr': 'ankr-network',
+    'ankreth': 'ankr-staked-eth',
+    'arken': 'arken-finance',
+    'gohm': 'governance-ohm'
 }
 
 defillama_coins = {
@@ -69,6 +75,7 @@ defillama_coins = {
     'ankrETH': 'ethereum:0xe95a203b1a91a908f9b9ce46459d101078c2c3cb',
     'cbETH': 'ethereum:0xbe9895146f7af43049ca1c1ae358b0541ea49704',
     'jEUR': 'ethereum:0x0f17bc9a994b87b5225cfb6a2cd4d667adb4f20b',
+    'QI': 'polygon:0x580a84c73811e1839f75d86d75d88cca0c241ff4',
 }
 
 
