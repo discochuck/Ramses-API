@@ -114,7 +114,7 @@ def get_subgraph_tokens(catch_errors):
     while True:
         query = f"{{ tokens(skip: {skip}, limit: 100) {{ id symbol decimals }} }}"
         response = requests.post(
-            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses-v2",
+            url="https://api.thegraph.com/subgraphs/name/ramsesexchange/api-subgraph",
             json={
                 "query": query
             }
@@ -158,7 +158,7 @@ def get_subgraph_pairs():
     while True:
         query = f"{{ pairs(skip: {skip}) {{ id symbol totalSupply token0 reserve0 token1 reserve1 gauge {{ id totalDerivedSupply rewardTokens }} feeDistributor {{ id rewardTokens }} }} }}"
         response = requests.post(
-            url="https://api.thegraph.com/subgraphs/name/sullivany/ramses-v2",
+            url="https://api.thegraph.com/subgraphs/name/ramsesexchange/api-subgraph",
             json={
                 "query": query
             }
