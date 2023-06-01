@@ -12,11 +12,12 @@ constant_prices = {
     'dai+': 1,
     'ets epsilon': 1,
     'mai': 1,
-
+    'usdc': 1,
+    'usdt': 1,
+    'dai': 1,
+    'frax': 1,
     'elr': 0.03,
-    'xpork': 0.00001172,
-    'bath': 0.021,
-    'gohm': 2800
+    'xpork': 0.00001265,
 }
 
 coingecko_coins = {
@@ -29,7 +30,6 @@ coingecko_coins = {
     'fbomb': 'fantom-bomb',
     'fs': 'fantomstarter',
     'arc': 'arcadeum',
-    'qi': 'qi-dao',
     'arb': 'arbitrum',
     'hop': 'hop-protocol',
     'spa': 'sperax',
@@ -52,12 +52,8 @@ coingecko_coins = {
     'ohm': 'olympus',
     'dei': 'dei-token',
     'lusd': 'liquity-usd',
-    'usdc': 'usd-coin',
-    'usdt': 'tether',
-    'dai': 'dai',
     'usds': 'sperax-usd',
     'mim': 'magic-internet-money',
-    'frax': 'frax',
     'unsheth': 'unsheth-unsheth',
     'ankr': 'ankr-network',
     'ankreth': 'ankr-staked-eth',
@@ -76,6 +72,7 @@ defillama_coins = {
     'cbETH': 'ethereum:0xbe9895146f7af43049ca1c1ae358b0541ea49704',
     'jEUR': 'ethereum:0x0f17bc9a994b87b5225cfb6a2cd4d667adb4f20b',
     'QI': 'polygon:0x580a84c73811e1839f75d86d75d88cca0c241ff4',
+    'BATH': 'arbitrum:0xe5b8C3381C0A2544883CfF9dDaf1e48D9dea9E49'
 }
 
 
