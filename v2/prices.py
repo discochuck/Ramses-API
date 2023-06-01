@@ -16,6 +16,7 @@ constant_prices = {
     'usdt': 1,
     'dai': 1,
     'frax': 1,
+    'usdc.e': 1,
     'elr': 0.03,
     'xpork': 0.00001265,
 }
