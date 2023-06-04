@@ -53,7 +53,7 @@ def get_cl_subgraph_pools(debug):
     limit = 100
     pools = []
     while True:
-        query = f"{{ pools(skip: {skip}, limit: {limit}) {{ id token0 {{id symbol}} token1 {{id symbol}} feeTier liquidity sqrtPrice token0Price token1Price tick totalValueLockedUSD totalValueLockedToken0 totalValueLockedToken1 gauge {{id feeDistributor {{id rewardTokens}} rewardTokens isAlive}}}} }}"
+        query = f"{{ pools(skip: {skip}, limit: {limit}) {{ id token0 {{id symbol}} token1 {{id symbol}} feeTier liquidity sqrtPrice token0Price token1Price tick totalValueLockedUSD totalValueLockedToken0 totalValueLockedToken1 gauge {{id rewardTokens isAlive}} feeDistributor {{id rewardTokens}} }} }}"
         response = requests.post(
             url=cl_subgraph_url,
             json={

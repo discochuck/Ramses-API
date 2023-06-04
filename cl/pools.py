@@ -39,7 +39,7 @@ def _fetch_pools(debug):
     # fetch pair's vote share
     calls = []
     for pool_address, pool in pools.items():
-        fee_distributor_address = pool['gauge']['feeDistributor']['id']
+        fee_distributor_address = pool['feeDistributor']['id']
         calls.append(
             Call(
                 w3,
@@ -54,8 +54,8 @@ def _fetch_pools(debug):
     # fetch pair's vote bribes
     calls = []
     for pool_address, pool in pools.items():
-        fee_distributor_address = pool['gauge']['feeDistributor']['id']
-        for token_address in pool['gauge']['feeDistributor']['rewardTokens']:
+        fee_distributor_address = pool['feeDistributor']['id']
+        for token_address in pool['feeDistributor']['rewardTokens']:
             key = f'{pool_address}-{token_address}'
             calls.append(
                 Call(
