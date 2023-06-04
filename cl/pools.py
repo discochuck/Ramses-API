@@ -26,7 +26,6 @@ def _fetch_pools(debug):
         tokens[token['id']] = token
     pools = {}
     for pool in pools_array:
-        print(pool)
         if pool.get('gauge', {}):
             pool['symbol'] = 'CL-' + pool['token0']['symbol'] + '-' + pool['token1']['symbol'] + '-' + str(float(pool['feeTier']) / 1e4) + '%'
             pool['voteBribes'] = {}
