@@ -9,7 +9,7 @@ from claimable_rewards import get_voter_claimable_rewards
 from get_apr import get_apr, get_pairs, _fetch_pairs
 from utils import db, cache_config
 from v2.pairs import get_pairs_v2
-from cl.pools import get_cl_pools
+from cl.pools import get_cl_pools, get_mixed_pairs
 
 app = Flask(__name__)
 
@@ -91,6 +91,10 @@ def get_unlimited_lge_chart():
 @app.route("/cl-pools")
 def cl_pools():
     return jsonify(get_cl_pools(True))
+
+@app.route("/mixed-pairs")
+def mixed_pairs():
+    return jsonify(get_mixed_pairs(True))
 
 
 if __name__ == "__main__":

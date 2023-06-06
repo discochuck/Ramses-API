@@ -60,17 +60,17 @@ def get_cl_subgraph_pools(debug):
                             {{
                                 id 
                                 symbol
+                                decimals
                             }} 
                         token1 
                             {{
                                 id 
                                 symbol
+                                decimals
                             }} 
                         feeTier 
                         liquidity 
                         sqrtPrice
-                        token0Price 
-                        token1Price 
                         tick 
                         totalValueLockedUSD 
                         totalValueLockedToken0 

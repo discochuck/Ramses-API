@@ -5,6 +5,7 @@ from pprint import pprint
 from multicall import Multicall, Call
 from utils import w3, db, log, RAM_ADDRESS
 from cl.subgraph import get_cl_subgraph_tokens, get_cl_subgraph_pools
+from v2.pairs import get_pairs_v2
 
 
 def _fetch_pools(debug):
@@ -31,9 +32,11 @@ def _fetch_pools(debug):
             pool['voteBribes'] = {}
             pool['totalVeShareByPeriod'] = 0
             pool['liquidity'] = float(pool['liquidity'])
+            pool['totalSupply'] = float(pool['liquidity'])
+            pool['isStable'] = True
             pool['tvl'] = float(pool['totalValueLockedUSD'])
-            pool['reserve0'] = float(pool['totalValueLockedToken0'])
-            pool['reserve1'] = float(pool['totalValueLockedToken1'])
+            pool['reserve0'] = float(pool['totalValueLockedToken0']) * 10**int(pool['token0']['decimals'])
+            pool['reserve1'] = float(pool['totalValueLockedToken1']) * 10**int(pool['token1']['decimals'])
             pools[pool['id']] = pool
 
     # fetch pair's vote share
@@ -127,6 +130,18 @@ def _fetch_pools(debug):
         for token_address, amount in pool['voteBribes'].items():
             pool['voteBribes'][token_address] = "{:.18f}".format(amount)
 
+    # remove unused fields
+    for pool_address, pool in pools.items():
+        pool['token0'] = pool['token0']['id']
+        pool['token1'] = pool['token1']['id']
+        del pool['liquidity']
+        del pool['totalValueLockedUSD']
+        del pool['totalValueLockedToken0']
+        del pool['totalValueLockedToken1']
+        del pool['feeTier']
+        del pool['sqrtPrice']
+        del pool['tick']
+
     return {
         'tokens': list(tokens.values()),
         'pools': list(pools.values())
@@ -144,6 +159,26 @@ def get_cl_pools(debug=False):
         pools = json.loads(db.get('cl_pools'))
 
     return pools
+
+
+def get_mixed_pairs(debug=False):
+    cl = get_cl_pools(debug)
+    v2 = get_pairs_v2(debug)
+
+    combined_tokens = cl['tokens'] + v2['tokens']
+    unique_tokens = []
+    unique_token_ids = []
+    for token in combined_tokens:
+        if token['id'] not in unique_token_ids:
+            unique_token_ids.append(token['id'])
+            unique_tokens.append(token)
+
+    combined_pairs = cl['pools'] + v2['pairs']
+
+    return {
+        'tokens': unique_tokens,
+        'pairs': combined_pairs
+    }
 
 
 if __name__ == '__main__':
