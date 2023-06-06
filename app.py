@@ -47,7 +47,7 @@ def v2_pairs():
 
 @app.route("/dev/v2/pairs")
 def dev_pairs():
-    return jsonify(get_pairs_v2(True))
+    return jsonify(get_pairs_v2())
 
 
 @app.route("/voterClaimableRewards")
@@ -90,11 +90,11 @@ def get_unlimited_lge_chart():
 
 @app.route("/cl-pools")
 def cl_pools():
-    return jsonify(get_cl_pools(True))
+    return jsonify(get_cl_pools())
 
 @app.route("/mixed-pairs")
 def mixed_pairs():
-    return jsonify(get_mixed_pairs(True))
+    return jsonify(get_mixed_pairs())
 
 
 if __name__ == "__main__":
