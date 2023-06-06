@@ -39,7 +39,7 @@ def _fetch_pairs(debug):
     _pairs_price = {}
     for pair_address, pair in pairs.items():
         pair['tvl'] = pair['reserve0'] * tokens[pair['token0']]['price'] / 10 ** tokens[pair['token0']]['decimals'] \
-                      + pair['reserve1'] * tokens[pair['token1']]['price'] / 10 ** tokens[pair['token1']]['decimals']
+            + pair['reserve1'] * tokens[pair['token1']]['price'] / 10 ** tokens[pair['token1']]['decimals']
         if pair['totalSupply'] > 0:
             _pairs_price[pair_address] = pair['tvl'] * 1e18 / pair['totalSupply']
         else:
@@ -142,7 +142,7 @@ def _fetch_pairs(debug):
     # convert floats to strings
     for pair_address, pair in pairs.items():
         for key in pair.keys():
-            if isinstance(pair[key], float) or isinstance(pair[key], int):
+            if isinstance(pair[key], float) or (isinstance(pair[key], int) and not isinstance(pair[key], bool)):
                 pair[key] = "{:.18f}".format(pair[key])
 
         for token_address, amount in pair['voteBribes'].items():
@@ -159,7 +159,8 @@ def get_pairs_v2(debug=False):
         pairs = _fetch_pairs(debug)
         db.set('v2_pairs', json.dumps(pairs))
     except Exception as e:
-        if debug: raise e
+        if debug:
+            raise e
         log("Error on get_pairs")
         pairs = json.loads(db.get('v2_pairs'))
 

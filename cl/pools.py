@@ -121,7 +121,7 @@ def _fetch_pools(debug):
     # convert floats to strings
     for pool_address, pool in pools.items():
         for key in pool.keys():
-            if isinstance(pool[key], float) or isinstance(pool[key], int):
+            if isinstance(pool[key], float) or (isinstance(pool[key], int) and not isinstance(pool[key], bool)):
                 pool[key] = "{:.18f}".format(pool[key])
 
         for token_address, amount in pool['voteBribes'].items():
