@@ -138,9 +138,7 @@ def _fetch_pools(debug):
         del pool['totalValueLockedUSD']
         del pool['totalValueLockedToken0']
         del pool['totalValueLockedToken1']
-        del pool['feeTier']
         del pool['sqrtPrice']
-        del pool['tick']
 
     return {
         'tokens': list(tokens.values()),
