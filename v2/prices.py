@@ -19,7 +19,19 @@ constant_prices = {
     'usdc.e': 1,
     'elr': 0.03244,
     'xpork': 0.00001015,
-    'bath': 0.0035
+    'bath': 0.0035,
+    'uwu': 1.05,
+
+    # TODO: FILTER THESE TOKENS OUT
+
+    'smartai': 0,
+    'test': 0,
+    'flyshares': 0,
+    'liveram': 0,
+    'ttk': 0,
+    'teth': 0,
+    'tusdc': 0,
+    'aaa': 0
 }
 
 coingecko_coins = {
