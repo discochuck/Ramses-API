@@ -93,6 +93,7 @@ def get_unlimited_lge_chart():
 def cl_pools():
     return jsonify(get_cl_pools())
 
+
 @app.route("/mixed-pairs")
 @cache.cached(60 * 5)
 def mixed_pairs():

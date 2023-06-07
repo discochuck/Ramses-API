@@ -84,6 +84,11 @@ def get_cl_subgraph_pools(debug):
                             id 
                             rewardTokens
                         }}
+                        poolDayData(first:7 orderBy:date orderBy:desc){{  
+                            date
+                            feesUSD
+                            tvlUSD
+                        }}
                     }}
                 }}
                 """

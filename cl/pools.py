@@ -1,4 +1,5 @@
 import datetime
+import time
 import json
 from pprint import pprint
 
@@ -38,6 +39,25 @@ def _fetch_pools(debug):
             pool['reserve0'] = float(pool['totalValueLockedToken0']) * 10**int(pool['token0']['decimals'])
             pool['reserve1'] = float(pool['totalValueLockedToken1']) * 10**int(pool['token1']['decimals'])
             pools[pool['id']] = pool
+
+    today = time.time() // 86400 * 86400
+    cutoff = today - 86400 * 7
+
+    # process fee apr, based on last 7 days' fees
+    for pool_address, pool in pools.items():
+        valid_days = list(filter(lambda day: int(day['date']) >= cutoff, pool['poolDayData']))
+
+        fees = 0
+        tvl = 0
+        for day in valid_days:
+            fees += float(day['feesUSD'])
+            tvl += float(day['tvlUSD'])
+
+        # apr is in %s
+        try:
+            pool['feeApr'] = fees / tvl * 100
+        except ZeroDivisionError:
+            pool['feeApr'] = 0
 
     # fetch pair's vote share
     calls = []
@@ -117,7 +137,8 @@ def _fetch_pools(debug):
                     'decimals']
             # using TVL is conservative, since not all TVL is in range
             # TODO: only use in range value for APR
-            pool['lpApr'] = totalUSD * 36500 / pool['tvl']
+
+            pool['lpApr'] = totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
         else:
             pool['lpApr'] = 0
 
@@ -139,6 +160,7 @@ def _fetch_pools(debug):
         del pool['totalValueLockedToken0']
         del pool['totalValueLockedToken1']
         del pool['sqrtPrice']
+        del pool['poolDayData']
 
     return {
         'tokens': list(tokens.values()),
