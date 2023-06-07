@@ -61,12 +61,20 @@ def get_cl_subgraph_pools(debug):
                                 id 
                                 symbol
                                 decimals
+                                tokenDayData(first:7 orderBy:date orderDirection:desc){{
+                                    date
+                                    priceUSD
+                                }}
                             }} 
                         token1 
                             {{
                                 id 
                                 symbol
                                 decimals
+                                tokenDayData(first:7 orderBy:date orderDirection:desc){{
+                                    date
+                                    priceUSD
+                                }}
                             }} 
                         feeTier 
                         liquidity 
@@ -84,10 +92,13 @@ def get_cl_subgraph_pools(debug):
                             id 
                             rewardTokens
                         }}
-                        poolDayData(first:7 orderBy:date orderBy:desc){{  
+                        poolDayData(first:7 orderBy:date orderDirection:desc){{  
                             date
                             feesUSD
                             tvlUSD
+                            liquidity
+                            high
+                            low
                         }}
                     }}
                 }}
