@@ -53,9 +53,9 @@ def _fetch_pools(debug):
             fees += float(day['feesUSD'])
             tvl += float(day['tvlUSD'])
 
-        # apr is in %s
+        # apr is in %s, 20% goes to users, 80% goes to veRAM and treasury
         try:
-            pool['feeApr'] = fees / tvl * 100
+            pool['feeApr'] = fees / tvl * 100 * 0.2
         except ZeroDivisionError:
             pool['feeApr'] = 0
 
