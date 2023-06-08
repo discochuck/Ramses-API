@@ -201,17 +201,19 @@ def _fetch_pools(debug):
             pool['voteApr'] = 0
 
         # calculate LP APR
-        if pool['liquidity'] > 0:
-            totalUSD = 0
-            for token_address in pool['gauge']['rewardTokens']:
-                # reward rate reported by gauge contracts are already normalized to total unboosted liquidity
-                totalUSD += _reward_rates[pool_address][token_address] * 24 * 60 * 60 * tokens[token_address]['price'] / 10 ** tokens[token_address][
-                    'decimals']
+        # if pool['liquidity'] > 0:
+        totalUSD = 0
+        for token_address in pool['gauge']['rewardTokens']:
+            # reward rate reported by gauge contracts are already normalized to total unboosted liquidity
+            totalUSD += _reward_rates[pool_address][token_address] * 24 * 60 * 60 * tokens[token_address]['price'] / 10 ** tokens[token_address][
+                'decimals']
 
-            # using average usd in range from the past 7 days
-            pool['lpApr'] = totalUSD * 36500 / (pool['averageUsdInRange'] if pool['averageUsdInRange'] > 0 else 1)
-        else:
-            pool['lpApr'] = 0
+        # using average usd in range from the past 7 days
+        # pool['lpApr'] = totalUSD * 36500 / (pool['averageUsdInRange'] if pool['averageUsdInRange'] > 0 else 1)
+        pool['lpApr'] = totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
+        # else:
+        #     pool['lpApr'] = 0
+        pool['emissionsUSD'] = totalUSD * 365
 
     # convert floats to strings
     for pool_address, pool in pools.items():
