@@ -11,6 +11,7 @@ from utils import w3, db, log, RAM_ADDRESS
 from cl.subgraph import get_cl_subgraph_tokens, get_cl_subgraph_pools
 from cl.tick import get_tick_at_sqrt_ratio, get_sqrt_ratio_at_tick, TICK_SPACINGS
 from v2.pairs import get_pairs_v2
+from v2.prices import get_prices
 
 decimal.getcontext().prec = 50
 
@@ -50,6 +51,14 @@ def _fetch_pools(debug):
     cutoff = today - 86400 * 7
     x96 = int(2**96)
 
+    # process tvl if price is 0
+    for pool_address, pool in pools.items():
+        token0_price = tokens[pool['token0']['id']]['price']
+        token0_decimals = tokens[pool['token0']['id']]['decimals']
+        token1_price = tokens[pool['token1']['id']]['price']
+        token1_decimals = tokens[pool['token1']['id']]['decimals']
+        pool['tvl'] = pool['reserve0'] * token0_price / 10 ** token0_decimals + pool['reserve1'] * token1_price / 10**token1_decimals
+
     # process fee apr, based on last 7 days' fees
     # usd in range is based on the day's high and low prices, narrowed to +- 10% if needed
     for pool_address, pool in pools.items():
@@ -64,6 +73,11 @@ def _fetch_pools(debug):
             token0_price_USD = Decimal(token0_price_USD['priceUSD'])
             token1_price_USD = next(token1_day for token1_day in pool['token1']['tokenDayData'] if token1_day['date'] == day['date'])
             token1_price_USD = Decimal(token1_price_USD['priceUSD'])
+
+            if token0_price_USD == 0:
+                token0_price_USD = tokens[pool['token0']['id']]['price']
+            if token1_price_USD == 0:
+                token1_price_USD = tokens[pool['token1']['id']]['price']
 
             # inverted because using token1, since token1's getAmountDelta is easier to deal with
 
@@ -213,7 +227,7 @@ def _fetch_pools(debug):
         pool['lpApr'] = totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
         # else:
         #     pool['lpApr'] = 0
-        pool['emissionsUSD'] = totalUSD * 365
+        # pool['emissionsUSD'] = totalUSD * 365
 
     # convert floats to strings
     for pool_address, pool in pools.items():
