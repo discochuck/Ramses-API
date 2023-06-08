@@ -63,7 +63,6 @@ coingecko_coins = {
     'aicode': 'ai-code',
     'play': 'xcad-network-play',
     'vela': 'vela-token',
-    'ohm': 'olympus',
     'dei': 'dei-token',
     'lusd': 'liquity-usd',
     'usds': 'sperax-usd',
@@ -71,8 +70,7 @@ coingecko_coins = {
     'unsheth': 'unsheth-unsheth',
     'ankr': 'ankr-network',
     'ankreth': 'ankr-staked-eth',
-    'arken': 'arken-finance',
-    'gohm': 'governance-ohm'
+    'arken': 'arken-finance'
 }
 
 defillama_coins = {
@@ -86,7 +84,9 @@ defillama_coins = {
     'cbETH': 'ethereum:0xbe9895146f7af43049ca1c1ae358b0541ea49704',
     'jEUR': 'ethereum:0x0f17bc9a994b87b5225cfb6a2cd4d667adb4f20b',
     'QI': 'polygon:0x580a84c73811e1839f75d86d75d88cca0c241ff4',
-    'BATH': 'arbitrum:0xe5b8C3381C0A2544883CfF9dDaf1e48D9dea9E49'
+    'BATH': 'arbitrum:0xe5b8C3381C0A2544883CfF9dDaf1e48D9dea9E49',
+    'OHM': 'arbitrum:0xf0cb2dc0db5e6c66B9a70Ac27B06b878da017028',
+    'gOHM': 'arbitrum:0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1'
 }
 
 
