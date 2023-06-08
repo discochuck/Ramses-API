@@ -18,8 +18,8 @@ constant_prices = {
     'frax': 1,
     'usdc.e': 1,
     'elr': 0.03244,
-    'xpork': 0.00001015,
-    'bath': 0.0035,
+    'xpork': 0.000005015,
+    'bath': 0.001330,
     'uwu': 1.05,
 
     # TODO: FILTER THESE TOKENS OUT
