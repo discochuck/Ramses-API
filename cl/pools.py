@@ -68,11 +68,17 @@ def _fetch_pools(debug):
         usd_in_range = 0
         for day in valid_days:
             # print(pool['token0']['symbol'], "-", pool['token1']['symbol'])
+            try:
+                token0_price_USD = next(token0_day for token0_day in pool['token0']['tokenDayData'] if token0_day['date'] == day['date'])
+                token0_price_USD = Decimal(token0_price_USD['priceUSD'])
+            except StopIteration:
+                token0_price_USD = 0
 
-            token0_price_USD = next(token0_day for token0_day in pool['token0']['tokenDayData'] if token0_day['date'] == day['date'])
-            token0_price_USD = Decimal(token0_price_USD['priceUSD'])
-            token1_price_USD = next(token1_day for token1_day in pool['token1']['tokenDayData'] if token1_day['date'] == day['date'])
-            token1_price_USD = Decimal(token1_price_USD['priceUSD'])
+            try:
+                token1_price_USD = next(token1_day for token1_day in pool['token1']['tokenDayData'] if token1_day['date'] == day['date'])
+                token1_price_USD = Decimal(token1_price_USD['priceUSD'])
+            except StopIteration:
+                token1_price_USD = 0
 
             if token0_price_USD == 0:
                 token0_price_USD = tokens[pool['token0']['id']]['price']
@@ -224,7 +230,7 @@ def _fetch_pools(debug):
 
         # using average usd in range from the past 7 days
         # pool['lpApr'] = totalUSD * 36500 / (pool['averageUsdInRange'] if pool['averageUsdInRange'] > 0 else 1)
-        pool['lpApr'] = 4* totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
+        pool['lpApr'] = 4 * totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
         # else:
         #     pool['lpApr'] = 0
         # pool['emissionsUSD'] = totalUSD * 365
