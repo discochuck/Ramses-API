@@ -17,9 +17,9 @@ constant_prices = {
     'dai': 1,
     'frax': 1,
     'usdc.e': 1,
-    'elr': 0.03244,
-    'xpork': 0.000005015,
-    'bath': 0.001330,
+    'elr': 0.03,
+    'xpork': 0.000005400,
+    'bath': 0.0005189,
     'uwu': 1.05,
 
     # TODO: FILTER THESE TOKENS OUT
@@ -50,18 +50,15 @@ coingecko_coins = {
     'ldo': 'lido-dao',
     'ring': 'onering',
     'gns': 'gains-network',
-    'cbeth': 'coinbase-wrapped-staked-eth',
     'wusdr': 'wrapped-usdr',
     'sfrxeth': 'staked-frax-ether',
     'grain': 'granary',
     'ageur': 'ageur',
-    'fba': 'firebird-aggregator',
     'euroe': 'euroe-stablecoin',
     'gnd': 'gnd-protocol',
     'pork': 'pigscanfly',
     'aidoge': 'arbdoge-ai',
     'aicode': 'ai-code',
-    'play': 'xcad-network-play',
     'vela': 'vela-token',
     'dei': 'dei-token',
     'lusd': 'liquity-usd',
@@ -69,7 +66,6 @@ coingecko_coins = {
     'mim': 'magic-internet-money',
     'unsheth': 'unsheth-unsheth',
     'ankr': 'ankr-network',
-    'ankreth': 'ankr-staked-eth',
     'arken': 'arken-finance'
 }
 
