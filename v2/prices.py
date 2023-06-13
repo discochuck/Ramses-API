@@ -8,18 +8,10 @@ import requests
 from utils import db
 
 constant_prices = {
-    'usd+': 1,
-    'dai+': 1,
     'ets epsilon': 1,
-    'mai': 1,
-    'usdc': 1,
-    'usdt': 1,
-    'dai': 1,
-    'frax': 1,
-    'usdc.e': 1,
-    'elr': 0.03244,
+    'elr': 0.03,
     'xpork': 0.000005015,
-    'bath': 0.001330,
+    'bath': 0.0003990,
     'uwu': 1.05,
 
     # TODO: FILTER THESE TOKENS OUT
@@ -86,7 +78,17 @@ defillama_coins = {
     'QI': 'polygon:0x580a84c73811e1839f75d86d75d88cca0c241ff4',
     'BATH': 'arbitrum:0xe5b8C3381C0A2544883CfF9dDaf1e48D9dea9E49',
     'OHM': 'arbitrum:0xf0cb2dc0db5e6c66B9a70Ac27B06b878da017028',
-    'gOHM': 'arbitrum:0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1'
+    'gOHM': 'arbitrum:0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1',
+
+    'DAI': 'arbitrum:0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+    'USDC.e': 'arbitrum:0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
+    'USDC': 'arbitrum:0xaf88d065e77c8cc2239327c5edb3a432268e5831',
+    'FRAX': 'arbitrum:0x17fc002b466eec40dae837fc4be5c67993ddbd6f',
+    'USDT': 'arbitrum:0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',
+    'MAI': 'arbitrum:0x3F56e0c36d275367b8C502090EDF38289b3dEa0d',
+    'USD+': 'arbitrum:0xe80772eaf6e2e18b651f160bc9158b2a5cafca65',
+    'DAI+': 'arbitrum:0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8'
+
 }
 
 
