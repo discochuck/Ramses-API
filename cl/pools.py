@@ -229,8 +229,8 @@ def _fetch_pools(debug):
                 'decimals']
 
         # using average usd in range from the past 7 days
-        pool['lpApr'] = totalUSD * 36500 / (pool['averageUsdInRange'] if pool['averageUsdInRange'] > 0 else 1)
-        #pool['lpApr'] = 4 * totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
+        # pool['lpApr'] = totalUSD * 36500 / (pool['averageUsdInRange'] if pool['averageUsdInRange'] > 0 else 1)
+        pool['lpApr'] = 4 * totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
         # else:
         #     pool['lpApr'] = 0
         # pool['emissionsUSD'] = totalUSD * 365
