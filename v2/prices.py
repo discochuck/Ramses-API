@@ -11,7 +11,6 @@ constant_prices = {
     'ets epsilon': 1,
     'elr': 0.03,
     'xpork': 0.000005015,
-    'bath': 0.0003990,
     'uwu': 1.05,
 
     # TODO: FILTER THESE TOKENS OUT
@@ -62,7 +61,8 @@ coingecko_coins = {
     'unsheth': 'unsheth-unsheth',
     'ankr': 'ankr-network',
     'ankreth': 'ankr-staked-eth',
-    'arken': 'arken-finance'
+    'arken': 'arken-finance',
+    'bath': 'bathtub-protocol'
 }
 
 defillama_coins = {
