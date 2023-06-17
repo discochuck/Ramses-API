@@ -9,6 +9,7 @@ from claimable_rewards import get_voter_claimable_rewards
 from get_apr import get_apr, get_pairs, _fetch_pairs
 from utils import db, cache_config
 from v2.pairs import get_pairs_v2
+from v2.tokenlist import get_tokenlist
 from cl.pools import get_cl_pools, get_mixed_pairs
 
 app = Flask(__name__)
@@ -43,6 +44,12 @@ def pairs():
 @cache.cached(60 * 5)
 def v2_pairs():
     return jsonify(get_pairs_v2())
+
+
+@app.route("/v2/tokenlist")
+@cache.cached(60 * 5)
+def tokenlist():
+    return jsonify(get_tokenlist())
 
 
 @app.route("/dev/v2/pairs")

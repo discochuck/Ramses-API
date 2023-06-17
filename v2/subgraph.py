@@ -13,7 +13,7 @@ def get_subgraph_tokens(debug):
     limit = 100
     tokens = []
     while True:
-        query = f"{{ tokens(skip: {skip}, limit: {limit}) {{ id name symbol decimals }} }}"
+        query = f"{{ tokens(skip: {skip}, limit: {limit}) {{ id name symbol decimals whitelisted}} }}"
         response = requests.post(
             url="https://api.thegraph.com/subgraphs/name/ramsesexchange/api-subgraph",
             json={
@@ -30,7 +30,8 @@ def get_subgraph_tokens(debug):
             else:
                 skip += limit
         else:
-            if debug: print(response.text)
+            if debug:
+                print(response.text)
             log("Error in subgraph tokens")
             return json.loads(db.get('v2_subgraph_tokens'))
 
@@ -68,7 +69,8 @@ def get_subgraph_pairs(debug):
             else:
                 skip += limit
         else:
-            if debug: print(response.text)
+            if debug:
+                print(response.text)
             log("Error in subgraph pairs")
             return json.loads(db.get('v2_subgraph_pairs'))
 
