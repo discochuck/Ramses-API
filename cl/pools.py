@@ -45,6 +45,7 @@ def _fetch_pools(debug):
             pool['tvl'] = float(pool['totalValueLockedUSD'])
             pool['reserve0'] = float(pool['totalValueLockedToken0']) * 10**int(pool['token0']['decimals'])
             pool['reserve1'] = float(pool['totalValueLockedToken1']) * 10**int(pool['token1']['decimals'])
+            pool['price'] = (float(pool['sqrtPrice']) / (2**96))**2
             pools[pool['id']] = pool
 
     today = time.time() // 86400 * 86400
