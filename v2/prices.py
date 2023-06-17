@@ -62,7 +62,8 @@ coingecko_coins = {
     'ankr': 'ankr-network',
     'ankreth': 'ankr-staked-eth',
     'arken': 'arken-finance',
-    'bath': 'bathtub-protocol'
+    'bath': 'bathtub-protocol',
+    'scanto': 'liquid-staked-canto'
 }
 
 defillama_coins = {
