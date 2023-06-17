@@ -6,7 +6,7 @@ from utils import log, db
 from v2.subgraph import get_subgraph_tokens
 
 
-def get_tokenlist(debug):
+def get_tokenlist(debug=False):
     tokens_array = get_subgraph_tokens(debug)
 
     # reformat tokens and pairs
