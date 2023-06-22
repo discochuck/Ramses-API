@@ -90,7 +90,8 @@ defillama_coins = {
     'MAI': 'arbitrum:0x3F56e0c36d275367b8C502090EDF38289b3dEa0d',
     'USD+': 'arbitrum:0xe80772eaf6e2e18b651f160bc9158b2a5cafca65',
     'DAI+': 'arbitrum:0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8',
-    'ERN': 'arbitrum:0xa334884bf6b0a066d553d19e507315e839409e62'
+    'ERN': 'arbitrum:0xa334884bf6b0a066d553d19e507315e839409e62',
+    'gDAI': 'arbitrum: 0xd85e038593d7a098614721eae955ec2022b9b91b'
 
 }
 
