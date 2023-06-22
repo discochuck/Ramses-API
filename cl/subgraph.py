@@ -99,6 +99,8 @@ def get_cl_subgraph_pools(debug):
                             liquidity
                             high
                             low
+                            volumeToken0
+                            volumeToken1
                         }}
                     }}
                 }}

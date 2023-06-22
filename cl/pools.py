@@ -12,8 +12,12 @@ from cl.subgraph import get_cl_subgraph_tokens, get_cl_subgraph_pools
 from cl.tick import get_tick_at_sqrt_ratio, get_sqrt_ratio_at_tick, TICK_SPACINGS
 from v2.pairs import get_pairs_v2
 from v2.prices import get_prices
+from cl.sqrt_price_math import get_amount0_delta, get_amount1_delta, token_amounts_from_current_price
 
 decimal.getcontext().prec = 50
+
+with open('cl/constants/feeDistribution.json', 'r') as file:
+    fee_distribution = json.load(file)
 
 
 def _fetch_pools(debug):
@@ -46,13 +50,14 @@ def _fetch_pools(debug):
             pool['reserve0'] = float(pool['totalValueLockedToken0']) * 10**int(pool['token0']['decimals'])
             pool['reserve1'] = float(pool['totalValueLockedToken1']) * 10**int(pool['token1']['decimals'])
             pool['price'] = (float(pool['sqrtPrice']) / (2**96))**2
+            pool['projectedFees'] = {'tokens': {}, 'apr': 0}
             pools[pool['id']] = pool
 
     today = time.time() // 86400 * 86400
     cutoff = today - 86400 * 7
     x96 = int(2**96)
 
-    # process tvl if price is 0
+    # process tvl
     for pool_address, pool in pools.items():
         token0_price = tokens[pool['token0']['id']]['price']
         token0_decimals = tokens[pool['token0']['id']]['decimals']
@@ -65,8 +70,12 @@ def _fetch_pools(debug):
     for pool_address, pool in pools.items():
         valid_days = list(filter(lambda day: int(day['date']) >= cutoff, pool['poolDayData']))
 
-        fees = 0
+        pool['feesUSD'] = 0
         usd_in_range = 0
+        token0 = tokens[pool['token0']['id']]
+        token1 = tokens[pool['token1']['id']]
+        pool['projectedFees']['tokens'][pool['token0']['id']] = 0
+        pool['projectedFees']['tokens'][pool['token1']['id']] = 0
         for day in valid_days:
             # print(pool['token0']['symbol'], "-", pool['token1']['symbol'])
             try:
@@ -141,14 +150,16 @@ def _fetch_pools(debug):
             if (day_usd_in_range > Decimal(day['tvlUSD'])):
                 day_usd_in_range = Decimal(day['tvlUSD'])
 
-            fees += float(day['feesUSD'])
+            pool['feesUSD'] += float(day['feesUSD'])
+            pool['projectedFees']['tokens'][pool['token0']['id']] += int(float(day['volumeToken0']) * int(pool['feeTier']) / 1e6 * 10**token0['decimals'] * fee_distribution['veRam'])
+            pool['projectedFees']['tokens'][pool['token1']['id']] += int(float(day['volumeToken1']) * int(pool['feeTier']) / 1e6 * 10**token1['decimals'] * fee_distribution['veRam'])
             usd_in_range += float(day_usd_in_range)
 
         pool['averageUsdInRange'] = usd_in_range / len(valid_days) if len(valid_days) > 0 else 1
 
         # apr is in %s, 20% goes to users, 80% goes to veRAM and treasury
         try:
-            pool['feeApr'] = fees / usd_in_range * 100 * 0.2
+            pool['feeApr'] = pool['feesUSD'] / usd_in_range * 100 * fee_distribution['lp']
         except ZeroDivisionError:
             pool['feeApr'] = 0
 
@@ -212,29 +223,53 @@ def _fetch_pools(debug):
 
     # calculate APRs
     for pool_address, pool in pools.items():
-        # calculate vote APR
-        if pool['totalVeShareByPeriod'] > 0:
-            totalUSD = 0
-            for token_address, amount in pool['voteBribes'].items():
-                totalUSD += amount * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
-            pool['voteApr'] = totalUSD / 7 * 36500 / (pool['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
-        else:
-            pool['voteApr'] = 0
 
         # calculate LP APR
-        # if pool['liquidity'] > 0:
         totalUSD = 0
         for token_address in pool['gauge']['rewardTokens']:
             # reward rate reported by gauge contracts are already normalized to total unboosted liquidity
             totalUSD += _reward_rates[pool_address][token_address] * 24 * 60 * 60 * tokens[token_address]['price'] / 10 ** tokens[token_address][
                 'decimals']
 
-        # using average usd in range from the past 7 days
-        # pool['lpApr'] = totalUSD * 36500 / (pool['averageUsdInRange'] if pool['averageUsdInRange'] > 0 else 1)
-        pool['lpApr'] = 4 * totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
-        # else:
-        #     pool['lpApr'] = 0
-        # pool['emissionsUSD'] = totalUSD * 365
+        # lp apr estimate uses current tick +-5%, +-0.5%, or +-0.1%
+        position_usd = 0
+        if (pool['price'] > 0):
+            token0 = tokens[pool['token0']['id']]
+            token1 = tokens[pool['token1']['id']]
+
+            [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 500, pool['liquidity'])
+            position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
+
+            # TODO: Make this prettier
+            # make range smaller if it's greater than tvl, might be stables pool
+            if (position_usd > pool['tvl']):
+                [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 50, pool['liquidity'])
+                position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
+
+                # make range smaller if it's greater than tvl, might be stables pool
+                if (position_usd > pool['tvl']):
+                    [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 10, pool['liquidity'])
+                    position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
+
+                    if (position_usd > pool['tvl']):
+                        position_usd = pool['tvl']
+
+        pool['lpApr'] = totalUSD * 36500 / (position_usd if position_usd > 0 else 1)
+        pool['lpAprOld'] = 4 * totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
+        # print("totalUSD", totalUSD)
+
+        # calculate vote APR
+        if pool['totalVeShareByPeriod'] > 0:
+            totalUSD = 0
+            projected_fees_usd = 0
+            for token_address, amount in pool['voteBribes'].items():
+                totalUSD += amount * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
+            pool['voteApr'] = totalUSD / 7 * 36500 / (pool['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
+            for token_address, amount in pool['projectedFees']['tokens'].items():
+                projected_fees_usd += amount * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
+            pool['projectedFees']['apr'] = projected_fees_usd / 7 * 36500 / (pool['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
+        else:
+            pool['voteApr'] = 0
 
     # convert floats to strings
     for pool_address, pool in pools.items():
@@ -256,6 +291,7 @@ def _fetch_pools(debug):
         del pool['sqrtPrice']
         del pool['poolDayData']
         del pool['averageUsdInRange']
+        del pool['feesUSD']
 
     return {
         'tokens': list(tokens.values()),
