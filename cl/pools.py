@@ -245,17 +245,17 @@ def _fetch_pools(debug):
             
             # stable/stable
             if symbol0 in STABLECOINS and symbol1 in STABLECOINS:
-                tick_spacing = 5
+                tick_spacing = 10
             # stable/loosestable or vice versa
-            elif (symbol0 in STABLECOINS and symbol1 in LOOSE_STABLECOINS) or (symbol0 in LOOSE_STABLECOINS and symbol1 in STABLECOINS):
-                tick_spacing = 50
+            elif (symbol0 in STABLECOINS and symbol1 in LOOSE_STABLECOINS) or (symbol0 in LOOSE_STABLECOINS and symbol1 in STABLECOINS) or (symbol0 in LOOSE_STABLECOINS and symbol1 in LOOSE_STABLECOINS):
+                tick_spacing = 25
             # everything else
             else:
                 tick_spacing = 500
 
         [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], tick_spacing, pool['liquidity'])
         position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
-        pool['lpApr'] = totalUSD * 36500 / (position_usd if position_usd > 0 else 1)
+        pool['lpApr'] = (totalUSD * 36500 / (position_usd if position_usd > 0 else 1) + (pool['feeApr']*0.2))
         pool['lpAprOld'] = 4 * totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
         # print("totalUSD", totalUSD)
 
