@@ -248,7 +248,7 @@ def _fetch_pools(debug):
                 tick_spacing = 10
             # stable/loosestable or vice versa
             elif (symbol0 in STABLECOINS and symbol1 in LOOSE_STABLECOINS) or (symbol0 in LOOSE_STABLECOINS and symbol1 in STABLECOINS) or (symbol0 in LOOSE_STABLECOINS and symbol1 in LOOSE_STABLECOINS):
-                tick_spacing = 25
+                tick_spacing = 50
             # everything else
             else:
                 tick_spacing = 500
