@@ -243,7 +243,7 @@ def _fetch_pools(debug):
             # TODO: Make this prettier
             # make range smaller if it's greater than tvl, might be stables pool
             if (position_usd > pool['tvl']):
-                [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 25, pool['liquidity'])
+                [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 250, pool['liquidity'])
                 position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
 
                 # make range smaller if it's greater than tvl, might be stables pool
