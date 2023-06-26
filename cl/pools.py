@@ -240,8 +240,8 @@ def _fetch_pools(debug):
         if (pool['price'] > 0):
             token0 = tokens[pool['token0']['id']]
             token1 = tokens[pool['token1']['id']]
-            symbol0 = tokens[pool['token0']['symbol']]
-            symbol1 = tokens[pool['token1']['symbol']]
+            symbol0 = pool['token0']['symbol']
+            symbol1 = pool['token1']['symbol']
             
             # stable/stable
             if symbol0 in STABLECOINS and symbol1 in STABLECOINS:
