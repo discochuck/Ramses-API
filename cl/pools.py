@@ -222,8 +222,8 @@ def _fetch_pools(debug):
         _reward_rates[pool_address][token_address] = value
 
     ## placeholder for stablecoin list, move to appropiate place
-    LOOSE_STABLECOINS = []
-    STABLECOINS = []
+    LOOSE_STABLECOINS = ["gDAI", "LUSD", "ERN", "DOLA", "MAI"]
+    STABLECOINS = ["USDC", "USDC.e", "USDT", "FRAX", "DAI"]
 
     # calculate APRs
     for pool_address, pool in pools.items():
@@ -255,7 +255,7 @@ def _fetch_pools(debug):
 
         [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], tick_spacing, pool['liquidity'])
         position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
-        pool['lpApr'] = totalUSD * 36500 / (position_usd if position_usd > 0 else 1) + pool['feeApr']
+        pool['lpApr'] = totalUSD * 36500 / (position_usd if position_usd > 0 else 1)
         pool['lpAprOld'] = 4 * totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
         # print("totalUSD", totalUSD)
 
