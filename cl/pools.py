@@ -243,18 +243,18 @@ def _fetch_pools(debug):
             # TODO: Make this prettier
             # make range smaller if it's greater than tvl, might be stables pool
             if (position_usd > pool['tvl']):
-                [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 250, pool['liquidity'])
+                [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 50, pool['liquidity'])
                 position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
 
                 # make range smaller if it's greater than tvl, might be stables pool
                 if (position_usd > pool['tvl']):
-                    [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 10, pool['liquidity'])
+                    [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 5, pool['liquidity'])
                     position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
 
                     if (position_usd > pool['tvl']):
                         position_usd = pool['tvl']
 
-        pool['lpApr'] = totalUSD * 36500 / (position_usd if position_usd > 0 else 1)
+        pool['lpApr'] = totalUSD * 36500 / (position_usd if position_usd > 0 else 1) + pool['feeApr']
         pool['lpAprOld'] = 4 * totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
         # print("totalUSD", totalUSD)
 
