@@ -60,7 +60,8 @@ coingecko_coins = {
     'arken': 'arken-finance',
     'bath': 'bathtub-protocol',
     'scanto': 'liquid-staked-canto',
-    'qi': 'qi-dao'
+    'qi': 'qi-dao',
+    'grai': 'grai'
 }
 
 defillama_coins = {
