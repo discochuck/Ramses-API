@@ -15,25 +15,32 @@ def get_cl_subgraph_tokens(debug):
     tokens = []
     while True:
         query = f"{{ tokens(skip: {skip}, limit: {limit}) {{ id name symbol decimals }} }}"
-        response = requests.post(
-            url=cl_subgraph_url,
-            json={
-                "query": query
-            }
-        )
 
-        if response.status_code == 200:
-            new_tokens = response.json()['data']['tokens']
-            tokens += new_tokens
+        try:
+            response = requests.post(
+                url=cl_subgraph_url,
+                json={
+                    "query": query
+                }, timeout=15
+            )
 
-            if len(new_tokens) < limit:
-                break
+            if response.status_code == 200:
+                new_tokens = response.json()['data']['tokens']
+                tokens += new_tokens
+
+                if len(new_tokens) < limit:
+                    break
+                else:
+                    skip += limit
             else:
-                skip += limit
-        else:
+                if debug:
+                    print(response.text)
+                log("Error in subgraph tokens")
+                return json.loads(db.get('cl_subgraph_tokens'))
+        except requests.exceptions.Timeout:
             if debug:
-                print(response.text)
-            log("Error in subgraph tokens")
+                print("Timeout")
+            log("Timeout in cl_subgraph_tokens")
             return json.loads(db.get('cl_subgraph_tokens'))
 
     # get tokens prices
@@ -105,25 +112,32 @@ def get_cl_subgraph_pools(debug):
                     }}
                 }}
                 """
-        response = requests.post(
-            url=cl_subgraph_url,
-            json={
-                "query": query
-            }
-        )
 
-        if response.status_code == 200:
-            new_pools = response.json()['data']['pools']
-            pools += new_pools
+        try:
+            response = requests.post(
+                url=cl_subgraph_url,
+                json={
+                    "query": query
+                }, timeout=15
+            )
 
-            if len(new_pools) < limit:
-                break
+            if response.status_code == 200:
+                new_pools = response.json()['data']['pools']
+                pools += new_pools
+
+                if len(new_pools) < limit:
+                    break
+                else:
+                    skip += limit
             else:
-                skip += limit
-        else:
+                if debug:
+                    print(response.text)
+                log("Error in subgraph pairs")
+                return json.loads(db.get('cl_subgraph_pools'))
+        except requests.exceptions.Timeout:
             if debug:
-                print(response.text)
-            log("Error in subgraph pairs")
+                print("Timeout")
+            log("Timeout in cl_subgraph_pools")
             return json.loads(db.get('cl_subgraph_pools'))
 
     # cache pairs

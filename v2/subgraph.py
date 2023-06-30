@@ -14,25 +14,31 @@ def get_subgraph_tokens(debug):
     tokens = []
     while True:
         query = f"{{ tokens(skip: {skip}, limit: {limit}) {{ id name symbol decimals whitelisted}} }}"
-        response = requests.post(
-            url="https://api.thegraph.com/subgraphs/name/ramsesexchange/api-subgraph",
-            json={
-                "query": query
-            }
-        )
+        try:
+            response = requests.post(
+                url="https://api.thegraph.com/subgraphs/name/ramsesexchange/api-subgraph",
+                json={
+                    "query": query
+                }, timeout=15
+            )
 
-        if response.status_code == 200:
-            new_tokens = response.json()['data']['tokens']
-            tokens += new_tokens
+            if response.status_code == 200:
+                new_tokens = response.json()['data']['tokens']
+                tokens += new_tokens
 
-            if len(new_tokens) < limit:
-                break
+                if len(new_tokens) < limit:
+                    break
+                else:
+                    skip += limit
             else:
-                skip += limit
-        else:
+                if debug:
+                    print(response.text)
+                log("Error in subgraph tokens")
+                return json.loads(db.get('v2_subgraph_tokens'))
+        except requests.exceptions.Timeout:
             if debug:
-                print(response.text)
-            log("Error in subgraph tokens")
+                print("Timeout")
+            log("Timeout in v2_subgraph_tokens")
             return json.loads(db.get('v2_subgraph_tokens'))
 
     # get tokens prices
@@ -53,25 +59,31 @@ def get_subgraph_pairs(debug):
     pairs = []
     while True:
         query = f"{{ pairs(skip: {skip}, limit: {limit}) {{ id symbol totalSupply isStable token0 reserve0 token1 reserve1 gauge {{ id totalDerivedSupply rewardTokens isAlive }} feeDistributor {{ id rewardTokens }} }} }}"
-        response = requests.post(
-            url="https://api.thegraph.com/subgraphs/name/ramsesexchange/api-subgraph",
-            json={
-                "query": query
-            }
-        )
+        try:
+            response = requests.post(
+                url="https://api.thegraph.com/subgraphs/name/ramsesexchange/api-subgraph",
+                json={
+                    "query": query
+                }, timeout=15
+            )
 
-        if response.status_code == 200:
-            new_pairs = response.json()['data']['pairs']
-            pairs += new_pairs
+            if response.status_code == 200:
+                new_pairs = response.json()['data']['pairs']
+                pairs += new_pairs
 
-            if len(new_pairs) < limit:
-                break
+                if len(new_pairs) < limit:
+                    break
+                else:
+                    skip += limit
             else:
-                skip += limit
-        else:
+                if debug:
+                    print(response.text)
+                log("Error in subgraph pairs")
+                return json.loads(db.get('v2_subgraph_pairs'))
+        except requests.exceptions.Timeout:
             if debug:
-                print(response.text)
-            log("Error in subgraph pairs")
+                print("Timeout")
+            log("Timeout in v2_subgraph_pairs")
             return json.loads(db.get('v2_subgraph_pairs'))
 
     # cache pairs
