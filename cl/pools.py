@@ -258,7 +258,8 @@ def _fetch_pools(debug):
                     if (position_usd > pool['tvl']):
                         position_usd = pool['tvl']
 
-        pool['lpApr'] = (totalUSD * 36500 / (position_usd if position_usd > 0 else 1)) + (pool['feeApr'] /500)
+        adjustedFeeAPR = pool['feeApr'] * 0.2
+        pool['lpApr'] = (totalUSD * 36500 / (position_usd if position_usd > 0 else 1)) + (adjustedFeeAPR if adjustedFeeAPR < 25 else 0) 
         pool['lpAprOld'] = 4 * totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
         # print("totalUSD", totalUSD)
 
