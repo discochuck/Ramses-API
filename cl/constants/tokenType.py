@@ -15,6 +15,8 @@ token_type_dict = {
     "ERN": Token_Type['LOOSE_STABLE'],
     "DOLA": Token_Type['LOOSE_STABLE'],
     "MAI": Token_Type['LOOSE_STABLE'],
+    "GRAI": Token_Type['LOOSE_STABLE'],
+    "jEUR": Token_Type["LOOSE_STABLE"],
 
     "USDC": Token_Type['STABLE'],
     "USDC.e": Token_Type['STABLE'],
@@ -24,6 +26,7 @@ token_type_dict = {
 
     "frxETH": Token_Type['LSD'],
     "stETH": Token_Type['LSD'],
+    "wstETH": Token_Type["LSD"],
 
     "neadRAM": Token_Type['NEAD'],
 }
