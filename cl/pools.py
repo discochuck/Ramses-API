@@ -151,10 +151,10 @@ def _fetch_pools(debug):
             if (day_usd_in_range > Decimal(day['tvlUSD'])):
                 day_usd_in_range = Decimal(day['tvlUSD'])
 
-            pool['feesUSD'] += float(day['feesUSD'] *7)
+            pool['feesUSD'] += float(day['feesUSD'])
             # projected fees for the voters, this accounts for the 75% going to voter
-            pool['projectedFees']['tokens'][pool['token0']['id']] += int(float(day['volumeToken0']) * int(pool['feeTier']) / 1e6 * 10**token0['decimals'] * fee_distribution['veRam']) *7
-            pool['projectedFees']['tokens'][pool['token1']['id']] += int(float(day['volumeToken1']) * int(pool['feeTier']) / 1e6 * 10**token1['decimals'] * fee_distribution['veRam']) *7
+            pool['projectedFees']['tokens'][pool['token0']['id']] += int(float(day['volumeToken0']) * int(pool['feeTier']) / 1e6 * 10**token0['decimals'] * fee_distribution['veRam'])
+            pool['projectedFees']['tokens'][pool['token1']['id']] += int(float(day['volumeToken1']) * int(pool['feeTier']) / 1e6 * 10**token1['decimals'] * fee_distribution['veRam'])
             usd_in_range += float(day_usd_in_range)
 
         pool['averageUsdInRange'] = usd_in_range / len(valid_days) if len(valid_days) > 0 else 1
