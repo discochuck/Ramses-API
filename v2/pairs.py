@@ -3,8 +3,8 @@ import json
 from pprint import pprint
 
 from multicall import Multicall, Call
-from utils import w3, db, log, RAM_ADDRESS
-from v2.subgraph import get_subgraph_tokens, get_subgraph_pairs
+from utils import w3, db, log, RAM_ADDRESS, V1_FACTORY_ADDRESS, fees
+from v2.subgraph import get_subgraph_tokens, get_subgraph_pairs, get_subgraph_pair_day_data
 
 
 def _fetch_pairs(debug):
@@ -16,6 +16,7 @@ def _fetch_pairs(debug):
     # fetch tokens and pairs from subgraph
     tokens_array = get_subgraph_tokens(debug)
     pairs_array = get_subgraph_pairs(debug)
+    pair_day_data = get_subgraph_pair_day_data(len(pairs_array), debug)
 
     # reformat tokens and pairs
     # + filter out pairs without gauge
@@ -33,6 +34,7 @@ def _fetch_pairs(debug):
             pair['reserve1'] = int(pair['reserve1'])
             pair['totalSupply'] = int(pair['totalSupply'])
             pair['gauge']['totalDerivedSupply'] = int(pair['gauge']['totalDerivedSupply'])
+            pair['projectedFees'] = {'tokens': {}, 'apr': 0}
             pairs[pair['id']] = pair
 
     # set pair TVL
@@ -117,6 +119,24 @@ def _fetch_pairs(debug):
         pair_address, token_address = key.split('-')
         _period_finish[pair_address][token_address] = value
 
+    # fetch pair's fee ratios
+    calls = []
+    for pair_address, pair in pairs.items():
+        key = pair_address
+        pair['fee'] = fees['stable'] if pair['isStable'] else fees['variable']  # default fees
+        # fetch custom fees
+        calls.append(
+            Call(
+                w3,
+                V1_FACTORY_ADDRESS,
+                ["pairFee(address)(uint256)", pair['id']],
+                [[key, lambda v: v[0]]]
+            )
+        )
+    for key, value in Multicall(w3, calls)().items():
+        if value > 0:
+            pairs[key]['fee'] = value
+
     # calculate APRs
     for pair_address, pair in pairs.items():
         # calculate vote APR
@@ -138,6 +158,28 @@ def _fetch_pairs(debug):
             pair['lpApr'] = totalUSD * 36500 / (pair['gauge']['totalDerivedSupply'] * _pairs_price[pair_address] / 1e18) / 2.5
         else:
             pair['lpApr'] = 0
+
+        # add up each day's fees
+        pair['projectedFees']['tokens'][pair['token0']] = 0
+        pair['projectedFees']['tokens'][pair['token1']] = 0
+        for day in pair_day_data.get(pair['id'], []):
+            pair['projectedFees']['tokens'][pair['token0']] += int(float(day['dailyVolumeToken0']) * pair['fee'] / 1e4 * 10**tokens[pair['token0']]['decimals'])
+            pair['projectedFees']['tokens'][pair['token1']] += int(float(day['dailyVolumeToken1']) * pair['fee'] / 1e4 * 10**tokens[pair['token1']]['decimals'])
+
+        # calculate vote APR
+        if pair['totalVeShareByPeriod'] > 0:
+            totalUSD = 0
+            projected_fees_usd = 0
+            for token_address, amount in pair['voteBribes'].items():
+                totalUSD += amount * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
+            pair['voteApr'] = totalUSD / 7 * 36500 / (pair['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
+
+            # calculate the fees in USD
+            for token_address, amount in pair['projectedFees']['tokens'].items():
+                projected_fees_usd += amount * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
+            pair['projectedFees']['apr'] = projected_fees_usd / 7 * 36500 / (pair['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
+        else:
+            pair['voteApr'] = 0
 
     # convert floats to strings
     for pair_address, pair in pairs.items():

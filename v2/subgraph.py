@@ -1,4 +1,5 @@
 import json
+import time
 
 import requests
 
@@ -90,3 +91,62 @@ def get_subgraph_pairs(debug):
     db.set('v2_subgraph_pairs', json.dumps(pairs))
 
     return pairs
+
+
+def get_subgraph_pair_day_data(pair_count=100, debug=False):
+    # get pair day data from subgraph
+    data_count_limit = pair_count * 7  # 7 days per pool
+    # cutoff = time.time() - 86400 * 7
+    cutoff = 0
+    skip = 0
+    limit = 100
+    raw_pair_day_data = []
+    while True:
+        query = f"""
+                    {{ pairDayDatas(skip: {skip}, limit: {limit}, orderBy: date, orderDirection: desc) {{  
+                            pairAddress
+                            date
+                            dailyVolumeToken0
+                            dailyVolumeToken1
+                        }} 
+                    }}
+                """
+        try:
+            response = requests.post(
+                url="https://api.thegraph.com/subgraphs/name/sullivany/ramses-analytics",
+                json={
+                    "query": query
+                }, timeout=5
+            )
+
+            if response.status_code == 200:
+                new_pair_day_data = response.json()['data']['pairDayDatas']
+                raw_pair_day_data += new_pair_day_data
+
+                if len(new_pair_day_data) < limit or len(raw_pair_day_data) >= data_count_limit:
+                    break
+                else:
+                    skip += limit
+            else:
+                if debug:
+                    print(response.text)
+                log("Error in subgraph pairs day data")
+                return json.loads(db.get('v2_subgraph_pair_day_data'))
+        except requests.exceptions.Timeout:
+            if debug:
+                print("Timeout")
+            log("Timeout in v2_subgraph_pair_day_data")
+            return json.loads(db.get('v2_subgraph_pair_day_data'))
+
+    pair_day_data = {}
+
+    # format data into pools
+    for data in raw_pair_day_data:
+        if data['pairAddress'] not in pair_day_data:
+            pair_day_data[data['pairAddress']] = []
+        pair_day_data[data['pairAddress']].append(data)
+
+    # cache pairs
+    db.set('v2_subgraph_pair_day_data', json.dumps(pair_day_data))
+
+    return pair_day_data
