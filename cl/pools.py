@@ -283,7 +283,7 @@ def _fetch_pools(debug):
             pool['voteApr'] = totalUSD / 7 * 36500 / (pool['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
             for token_address, amount in pool['projectedFees']['tokens'].items():
                 projected_fees_usd += amount * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
-            pool['projectedFees']['apr'] = projected_fees_usd / 7 * 36500 / (pool['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
+            pool['projectedFees']['apr'] = projected_fees_usd / 36500 / (pool['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
         else:
             pool['voteApr'] = 0
 
