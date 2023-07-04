@@ -10,8 +10,8 @@ from utils import db
 constant_prices = {
     'ets epsilon': 1,
     'elr': 0.03,
-    'xpork': 0.000005015,
-    'uwu': 1.15,
+    'xpork': 0.0000005015,
+    'uwu': 0.55,
     'gdai': 1.06,
 
     # TODO: FILTER THESE TOKENS OUT
@@ -192,6 +192,7 @@ def get_prices(tokens, debug=False):
 
     # set neadRAM price
     prices['neadRAM'] = prices['RAM'] * 0.9
+    prices['xRAM'] = prices['RAM']
 
     # if any exception happened in defillama or coingecko and token price is zero use previous price for the token
     if exception_happened:
