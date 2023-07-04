@@ -4,6 +4,7 @@ import requests
 
 from utils import log, db
 from v2.prices import get_prices
+from cl.constants.tokenType import token_type_dict, Token_Type, weth_address, ram_address
 
 cl_subgraph_url = "https://api.thegraph.com/subgraphs/name/ramsesexchange/concentrated-liquidity-graph"
 
@@ -47,6 +48,17 @@ def get_cl_subgraph_tokens(debug):
     prices = get_prices(tokens, debug=debug)
     for token in tokens:
         token['price'] = prices[token['symbol']]
+
+        # determine token type
+        token_type = token_type_dict.get(token['symbol'], Token_Type['OTHERS'])
+        if token_type == Token_Type['OTHERS']:
+            if 'USD' in token['symbol']:
+                token_type = Token_Type['LOOSE_STABLE']
+            elif token['id'] == weth_address:
+                token_type = Token_Type['WETH']
+            elif token['id'] == ram_address:
+                token_type = Token_Type['RAM']
+        token['type'] = token_type
 
     # cache tokens
     db.set('cl_subgraph_tokens', json.dumps(tokens))

@@ -13,6 +13,7 @@ from cl.tick import get_tick_at_sqrt_ratio, get_sqrt_ratio_at_tick, TICK_SPACING
 from v2.pairs import get_pairs_v2
 from v2.prices import get_prices
 from cl.sqrt_price_math import get_amount0_delta, get_amount1_delta, token_amounts_from_current_price
+from cl.constants.tokenType import Token_Type, weth_address
 
 decimal.getcontext().prec = 50
 
@@ -151,6 +152,7 @@ def _fetch_pools(debug):
                 day_usd_in_range = Decimal(day['tvlUSD'])
 
             pool['feesUSD'] += float(day['feesUSD'])
+            # projected fees for the voters, this accounts for the 75% going to voter
             pool['projectedFees']['tokens'][pool['token0']['id']] += int(float(day['volumeToken0']) * int(pool['feeTier']) / 1e6 * 10**token0['decimals'] * fee_distribution['veRam'])
             pool['projectedFees']['tokens'][pool['token1']['id']] += int(float(day['volumeToken1']) * int(pool['feeTier']) / 1e6 * 10**token1['decimals'] * fee_distribution['veRam'])
             usd_in_range += float(day_usd_in_range)
@@ -159,6 +161,7 @@ def _fetch_pools(debug):
 
         # apr is in %s, 20% goes to users, 80% goes to veRAM and treasury
         try:
+            # this already accounts for the 20% to LP
             pool['feeApr'] = pool['feesUSD'] / usd_in_range * 100 * fee_distribution['lp']
         except ZeroDivisionError:
             pool['feeApr'] = 0
@@ -221,10 +224,6 @@ def _fetch_pools(debug):
         pool_address, token_address = key.split('-')
         _reward_rates[pool_address][token_address] = value
 
-    ## placeholder for stablecoin list, move to appropiate place
-    ## LOOSE_STABLECOINS = ["gDAI", "LUSD", "ERN", "DOLA", "MAI"]
-    ## STABLECOINS = ["USDC", "USDC.e", "USDT", "FRAX", "DAI"]
-
     # calculate APRs
     for pool_address, pool in pools.items():
 
@@ -240,26 +239,38 @@ def _fetch_pools(debug):
         if (pool['price'] > 0):
             token0 = tokens[pool['token0']['id']]
             token1 = tokens[pool['token1']['id']]
-          
-            [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 500, pool['liquidity'])
+
+            # get range delta
+            pool_type = token0['type'] * token1['type']
+            range_delta = 0
+            # case: LSD and WETH
+            if pool_type == Token_Type['LSD'] and (token0['id'] == weth_address or token1['id'] == weth_address):
+                range_delta = 50  # +-0.5%
+
+            # case: neadRAM
+            if pool_type == Token_Type['NEAD'] and (token0['id'] == RAM_ADDRESS or token1['id'] == RAM_ADDRESS):
+                range_delta = 50  # +-0.5%
+
+            # case: STABLE-STABLE
+            elif pool_type == 9:
+                range_delta = 10  # +-0.1%
+
+            # case: STABLE-LOOSE_STABLE
+            elif pool_type >= 4:
+                range_delta = 50  # +-0.5%
+
+            # case: all other cases
+            else:
+                range_delta = 500  # +-5%
+
+            [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], range_delta, pool['liquidity'])
             position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
 
-            # TODO: Make this prettier
-            # make range smaller if it's greater than tvl, might be stables pool
+            # make position_usd smaller if it's greater than tvl
             if (position_usd > pool['tvl']):
-                [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 50, pool['liquidity'])
-                position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
+                position_usd = pool['tvl']
 
-                # make range smaller if it's greater than tvl, might be stables pool
-                if (position_usd > pool['tvl']):
-                    [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], 10, pool['liquidity'])
-                    position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
-
-                    if (position_usd > pool['tvl']):
-                        position_usd = pool['tvl']
-
-        adjustedFeeAPR = pool['feeApr'] * 0.2
-        pool['lpApr'] = (totalUSD * 36500 / (position_usd if position_usd > 0 else 1)) + (adjustedFeeAPR if adjustedFeeAPR < 25 else 0) 
+        pool['lpApr'] = (totalUSD * 36500 / (position_usd if position_usd > 0 else 1)) + (pool['feeApr'] if pool['feeApr'] < 25 else 0)
         pool['lpAprOld'] = 4 * totalUSD * 36500 / (pool['tvl'] if pool['tvl'] > 0 else 1)
         # print("totalUSD", totalUSD)
 
@@ -297,6 +308,9 @@ def _fetch_pools(debug):
         del pool['poolDayData']
         del pool['averageUsdInRange']
         del pool['feesUSD']
+
+    for token_address, token in tokens.items():
+        del token['type']
 
     return {
         'tokens': list(tokens.values()),
