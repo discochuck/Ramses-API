@@ -162,7 +162,9 @@ def _fetch_pairs(debug):
         # add up each day's fees
         pair['projectedFees']['tokens'][pair['token0']] = 0
         pair['projectedFees']['tokens'][pair['token1']] = 0
+        pair['projectedFees']['days'] = 0
         for day in pair_day_data.get(pair['id'], []):
+            pair['projectedFees']['days'] += 1
             pair['projectedFees']['tokens'][pair['token0']] += int(float(day['dailyVolumeToken0']) * pair['fee'] / 1e4 * 10**tokens[pair['token0']]['decimals'])
             pair['projectedFees']['tokens'][pair['token1']] += int(float(day['dailyVolumeToken1']) * pair['fee'] / 1e4 * 10**tokens[pair['token1']]['decimals'])
 
@@ -175,9 +177,10 @@ def _fetch_pairs(debug):
             pair['voteApr'] = totalUSD / 7 * 36500 / (pair['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
 
             # calculate the fees in USD
-            for token_address, amount in pair['projectedFees']['tokens'].items():
-                projected_fees_usd += amount * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
-            pair['projectedFees']['apr'] = projected_fees_usd / 7 * 36500 / (pair['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
+            if (pair['projectedFees']['days'] > 0):
+                for token_address, amount in pair['projectedFees']['tokens'].items():
+                    projected_fees_usd += amount * tokens[token_address]['price'] / 10 ** tokens[token_address]['decimals']
+                pair['projectedFees']['apr'] = projected_fees_usd / pair['projectedFees']['days'] * 36500 / (pair['totalVeShareByPeriod'] * tokens[RAM_ADDRESS]['price'] / 1e18)
         else:
             pair['voteApr'] = 0
 
@@ -192,7 +195,8 @@ def _fetch_pairs(debug):
 
     return {
         'tokens': list(tokens.values()),
-        'pairs': list(pairs.values())
+        'pairs': list(pairs.values()),
+        'pair_day_data': list(pair_day_data.values()),
     }
 
 

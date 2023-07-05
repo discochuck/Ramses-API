@@ -5,6 +5,7 @@ import requests
 
 from utils import log, db
 from v2.prices import get_prices
+import math
 
 
 def get_subgraph_tokens(debug):
@@ -96,14 +97,13 @@ def get_subgraph_pairs(debug):
 def get_subgraph_pair_day_data(pair_count=100, debug=False):
     # get pair day data from subgraph
     data_count_limit = pair_count * 7  # 7 days per pool
-    # cutoff = time.time() - 86400 * 7
-    cutoff = 0
+    cutoff = math.floor(time.time() - 86400 * 7)
     skip = 0
     limit = 100
     raw_pair_day_data = []
     while True:
         query = f"""
-                    {{ pairDayDatas(skip: {skip}, limit: {limit}, orderBy: date, orderDirection: desc) {{  
+                    {{ pairDayDatas(skip: {skip}, limit: {limit}, where: {{ date_gt: {cutoff} }}, orderBy: date, orderDirection: desc) {{  
                             pairAddress
                             date
                             dailyVolumeToken0
