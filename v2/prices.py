@@ -9,10 +9,7 @@ from utils import db
 
 constant_prices = {
     'ets epsilon': 1,
-    'elr': 0.03,
-    'xpork': 0.0000005015,
-    'uwu': 0.55,
-    'gdai': 1.06,
+    'xpork': 0,
 
     # TODO: FILTER THESE TOKENS OUT
 
@@ -77,6 +74,7 @@ defillama_coins = {
     'QI': 'polygon:0x580a84c73811e1839f75d86d75d88cca0c241ff4',
     'OHM': 'arbitrum:0xf0cb2dc0db5e6c66B9a70Ac27B06b878da017028',
     'gOHM': 'arbitrum:0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1',
+    'gDAI': 'arbitrum:0xd85E038593d7A098614721EaE955EC2022B9B91B',
 
     'DAI': 'arbitrum:0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
     'USDC.e': 'arbitrum:0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
@@ -191,8 +189,9 @@ def get_prices(tokens, debug=False):
         print("Error in coingecko")
 
     # set neadRAM price
-    prices['neadRAM'] = prices['RAM'] * 0.9
+    prices['neadRAM'] = prices['RAM'] * 0.95
     prices['xRAM'] = prices['RAM']
+    prices['ELR'] = prices['RAM'] * 1.26
 
     # if any exception happened in defillama or coingecko and token price is zero use previous price for the token
     if exception_happened:
