@@ -51,7 +51,6 @@ coingecko_coins = {
     'mim': 'magic-internet-money',
     'ankr': 'ankr-network',
     'arken': 'arken-finance',
-    'bath': 'bathtub-protocol',
     'scanto': 'liquid-staked-canto',
     'qi': 'qi-dao',
     'grai': 'grai',
