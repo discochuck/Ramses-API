@@ -31,10 +31,7 @@ coingecko_coins = {
     'magic': 'magic',
     'ram': 'ramses-exchange',
     'fbomb': 'fantom-bomb',
-    'fs': 'fantomstarter',
-    'arc': 'arcadeum',
     'arb': 'arbitrum',
-    'hop': 'hop-protocol',
     'spa': 'sperax',
     'ldo': 'lido-dao',
     'ring': 'onering',
@@ -46,7 +43,6 @@ coingecko_coins = {
     'fba': 'firebird-aggregator',
     'euroe': 'euroe-stablecoin',
     'gnd': 'gnd-protocol',
-    'pork': 'pigscanfly',
     'play': 'xcad-network-play',
     'vela': 'vela-token',
     'dei': 'dei-token',
@@ -58,7 +54,9 @@ coingecko_coins = {
     'bath': 'bathtub-protocol',
     'scanto': 'liquid-staked-canto',
     'qi': 'qi-dao',
-    'grai': 'grai'
+    'grai': 'grai',
+    'neadram': 'the-ennead',
+    'grain': 'granary'
 }
 
 defillama_coins = {
@@ -189,9 +187,10 @@ def get_prices(tokens, debug=False):
         print("Error in coingecko")
 
     # set neadRAM price
-    prices['neadRAM'] = prices['RAM'] * 0.95
     prices['xRAM'] = prices['RAM']
-    prices['ELR'] = prices['RAM'] * 1.26
+    prices['ELR'] = prices['RAM'] * 1.06
+
+    prices['sLSD'] = prices['FRAX']
 
     # if any exception happened in defillama or coingecko and token price is zero use previous price for the token
     if exception_happened:
