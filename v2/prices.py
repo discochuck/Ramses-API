@@ -8,8 +8,9 @@ import requests
 from utils import db
 
 constant_prices = {
-    'ets epsilon': 1,
-    'xpork': 0,
+
+    'slsd': 0.999,
+    'grain': 0.0125,
 
     # TODO: FILTER THESE TOKENS OUT
 
@@ -54,8 +55,7 @@ coingecko_coins = {
     'scanto': 'liquid-staked-canto',
     'qi': 'qi-dao',
     'grai': 'grai',
-    'neadram': 'the-ennead',
-    'grain': 'granary'
+    'neadram': 'the-ennead'
 }
 
 defillama_coins = {
@@ -188,8 +188,6 @@ def get_prices(tokens, debug=False):
     # set neadRAM price
     prices['xRAM'] = prices['RAM']
     prices['ELR'] = prices['RAM'] * 1.06
-
-    prices['sLSD'] = prices['FRAX']
 
     # if any exception happened in defillama or coingecko and token price is zero use previous price for the token
     if exception_happened:
