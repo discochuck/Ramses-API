@@ -106,6 +106,7 @@ def get_cl_subgraph_pools(debug):
                             id 
                             rewardTokens 
                             isAlive
+                            xRamRatio
                         }} 
                         feeDistributor {{
                             id 

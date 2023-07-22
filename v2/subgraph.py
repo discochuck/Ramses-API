@@ -60,7 +60,34 @@ def get_subgraph_pairs(debug):
     limit = 100
     pairs = []
     while True:
-        query = f"{{ pairs(skip: {skip}, limit: {limit}) {{ id symbol totalSupply isStable token0 reserve0 token1 reserve1 gauge {{ id totalDerivedSupply rewardTokens isAlive }} feeDistributor {{ id rewardTokens }} }} }}"
+        query = f"""
+            {{ 
+                pairs(skip: {skip}, limit: {limit}) 
+                    {{ 
+                        id 
+                        symbol 
+                        totalSupply 
+                        isStable 
+                        token0 
+                        reserve0 
+                        token1 
+                        reserve1 
+                        gauge 
+                            {{ 
+                                id 
+                                totalDerivedSupply 
+                                rewardTokens 
+                                isAlive
+                                xRamRatio
+                            }} 
+                        feeDistributor 
+                            {{ 
+                                id 
+                                rewardTokens 
+                            }} 
+                    }} 
+            }}
+            """
         try:
             response = requests.post(
                 url="https://api.thegraph.com/subgraphs/name/ramsesexchange/api-subgraph",
@@ -103,12 +130,23 @@ def get_subgraph_pair_day_data(pair_count=100, debug=False):
     raw_pair_day_data = []
     while True:
         query = f"""
-                    {{ pairDayDatas(skip: {skip}, limit: {limit}, where: {{ date_gt: {cutoff} }}, orderBy: date, orderDirection: desc) {{  
-                            pairAddress
-                            date
-                            dailyVolumeToken0
-                            dailyVolumeToken1
-                        }} 
+                    {{ pairDayDatas(
+                            skip: {skip}, 
+                            limit: {limit}, 
+                            where: {{ 
+                                date_gt: {cutoff} 
+                            }}, 
+                            orderBy: 
+                                date, 
+                            orderDirection: 
+                                desc
+                        ) 
+                            {{  
+                                pairAddress
+                                date
+                                dailyVolumeToken0
+                                dailyVolumeToken1
+                            }} 
                     }}
                 """
         try:
