@@ -164,7 +164,7 @@ def _fetch_pools(debug):
         # apr is in %s, 20% goes to users, 80% goes to veRAM and treasury
         try:
             # this already accounts for the 20% to LP
-            pool['feeApr'] = pool['feesUSD'] / usd_in_range * 100 * fee_distribution['lp']
+            pool['feeApr'] = pool['feesUSD'] / usd_in_range * 100 * fee_distribution['lp'] * 365
         except ZeroDivisionError:
             pool['feeApr'] = 0
 
