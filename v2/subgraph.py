@@ -8,6 +8,15 @@ from v2.prices import get_prices
 import math
 
 
+v2_subgraph_url = "https://api.thegraph.com/subgraphs/name/ramsesexchange/api-subgraph"
+backup_v2_subgraph_url = "http://146.190.190.51:8000/subgraphs/name/ramsesexchange/api-subgraph"
+urls = [v2_subgraph_url, backup_v2_subgraph_url]
+sulli_analytics_subgraph_url = "https://api.thegraph.com/subgraphs/name/sullivany/ramses-analytics"
+v2_analytics_subgraph_url = "https://api.thegraph.com/subgraphs/name/ramsesexchange/analytics-subgraph"
+backup_v2_analytics_subgraph_url = "https://146.190.190.51:8000/subgraphs/name/ramsesexchange/analytics-subgraph"
+analytics_urls = [sulli_analytics_subgraph_url, v2_analytics_subgraph_url, backup_v2_analytics_subgraph_url]
+
+
 def get_subgraph_tokens(debug):
     # return json.loads(db.get('v2_subgraph_tokens'))
     # get tokens from subgraph
@@ -17,12 +26,7 @@ def get_subgraph_tokens(debug):
     while True:
         query = f"{{ tokens(skip: {skip}, limit: {limit}) {{ id name symbol decimals whitelisted}} }}"
         try:
-            response = requests.post(
-                url="https://api.thegraph.com/subgraphs/name/ramsesexchange/api-subgraph",
-                json={
-                    "query": query
-                }, timeout=15
-            )
+            response = try_subgraph(urls, query)
 
             if response.status_code == 200:
                 new_tokens = response.json()['data']['tokens']
@@ -89,12 +93,7 @@ def get_subgraph_pairs(debug):
             }}
             """
         try:
-            response = requests.post(
-                url="https://api.thegraph.com/subgraphs/name/ramsesexchange/api-subgraph",
-                json={
-                    "query": query
-                }, timeout=15
-            )
+            response = try_subgraph(urls, query)
 
             if response.status_code == 200:
                 new_pairs = response.json()['data']['pairs']
@@ -150,12 +149,7 @@ def get_subgraph_pair_day_data(pair_count=100, debug=False):
                     }}
                 """
         try:
-            response = requests.post(
-                url="https://api.thegraph.com/subgraphs/name/sullivany/ramses-analytics",
-                json={
-                    "query": query
-                }, timeout=5
-            )
+            response = try_subgraph(analytics_urls, query, 5)
 
             if response.status_code == 200:
                 new_pair_day_data = response.json()['data']['pairDayDatas']
@@ -188,3 +182,25 @@ def get_subgraph_pair_day_data(pair_count=100, debug=False):
     db.set('v2_subgraph_pair_day_data', json.dumps(pair_day_data))
 
     return pair_day_data
+
+
+def try_subgraph(urls, query, timeout=15):
+
+    response = {}
+
+    for i in range(len(urls)):
+        try:
+            response = requests.post(
+                urls[i],
+                json={
+                    "query": query
+                }, timeout=timeout)
+        except Exception as e:
+            log(f"Error in {urls[i]}")
+            log(e)
+            continue
+
+        if (response.status_code == 200):
+            return response
+
+    return response
