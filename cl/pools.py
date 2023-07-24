@@ -14,6 +14,7 @@ from v2.pairs import get_pairs_v2
 from v2.prices import get_prices
 from cl.sqrt_price_math import get_amount0_delta, get_amount1_delta, token_amounts_from_current_price
 from cl.constants.tokenType import Token_Type, weth_address
+from cl.range_tvl import range_tvl
 
 decimal.getcontext().prec = 50
 
@@ -78,81 +79,20 @@ def _fetch_pools(debug):
         pool['projectedFees']['days'] = 0
         pool['projectedFees']['tokens'][pool['token0']['id']] = 0
         pool['projectedFees']['tokens'][pool['token1']['id']] = 0
+
+        # print()
+        # print(pool['symbol'])
         for day in valid_days:
-            # print(pool['token0']['symbol'], "-", pool['token1']['symbol'])
-            try:
-                token0_price_USD = next(token0_day for token0_day in pool['token0']['tokenDayData'] if token0_day['date'] == day['date'])
-                token0_price_USD = Decimal(token0_price_USD['priceUSD'])
-            except StopIteration:
-                token0_price_USD = 0
 
-            try:
-                token1_price_USD = next(token1_day for token1_day in pool['token1']['tokenDayData'] if token1_day['date'] == day['date'])
-                token1_price_USD = Decimal(token1_price_USD['priceUSD'])
-            except StopIteration:
-                token1_price_USD = 0
-
-            if token0_price_USD == 0:
-                token0_price_USD = tokens[pool['token0']['id']]['price']
-            if token1_price_USD == 0:
-                token1_price_USD = tokens[pool['token1']['id']]['price']
-
-            # inverted because using token1, since token1's getAmountDelta is easier to deal with
-
-            try:
-                low = 1 / Decimal(day['high'])
-            except decimal.DivisionByZero:
-                low = Decimal(0)
-            try:
-                high = 1 / Decimal(day['low'])
-            except decimal.DivisionByZero:
-                high = low / Decimal(0.9) * Decimal(1.1)
-
-            mid = Decimal((high + low) / 2)
-
-            # limit range if too large
-            # print("high", high)
-            # print("low ", low)
-            # print("range too large", high > (mid * Decimal(1.1)))
-            if (high > (mid * Decimal(1.1))):
-                high = mid * Decimal(1.1)
-                low = mid * Decimal(0.9)
-
-            high_ratio = high.as_integer_ratio()
-            low_ratio = low.as_integer_ratio()
-            high_sqrt_x96 = math.isqrt(high_ratio[0] * x96 * x96 // high_ratio[1])
-            low_sqrt_x96 = math.isqrt(low_ratio[0] * x96 * x96 // low_ratio[1])
-
-            # expand if range <1 tick spacing
-            if (high_sqrt_x96 > 0 and low_sqrt_x96 > 0):
-                tick_upper = get_tick_at_sqrt_ratio(high_sqrt_x96)
-                tick_lower = get_tick_at_sqrt_ratio(low_sqrt_x96)
-                if (tick_upper - tick_lower < TICK_SPACINGS[pool['feeTier']]):
-                    tick_mid = (tick_upper + tick_lower) // 2
-                    tick_upper = tick_mid + TICK_SPACINGS[pool['feeTier']] // 2
-                    tick_lower = tick_mid - TICK_SPACINGS[pool['feeTier']] // 2
-                    high_sqrt_x96 = get_sqrt_ratio_at_tick(tick_upper)
-                    low_sqrt_x96 = get_sqrt_ratio_at_tick(tick_lower)
-                # print("tick_upper", tick_upper)
-                # print("tick_lower", tick_lower)
-
-            token1_in_range = int(day['liquidity']) * (high_sqrt_x96 - low_sqrt_x96) // x96
-            day_usd_in_range = (token1_in_range * token1_price_USD / 10**int(pool['token1']['decimals'])) * 2  # assume symmetrical for estimation
-            # print(pool['token1']['symbol'])
-            # print("TVL USD", Decimal(day['tvlUSD']))
-            # print("adjusted USD in range", usd_in_range)
-            # print("adjusted higher than actual", usd_in_range > Decimal(day['tvlUSD']))
-            # print("high_sqrt_x96", high_sqrt_x96)
-            # print("low_sqrt_x96 ", low_sqrt_x96)
-            # print("day liquidity", (day['liquidity']))
-            # print("current liq  ", pool['liquidity'])
-            # print("token1_in_range", token1_in_range)
-            # print("token1 price", token1_price_USD)
+            day_usd_in_range = range_tvl(tokens, pool, int(day['liquidity']))
 
             if (day_usd_in_range > Decimal(day['tvlUSD'])):
                 day_usd_in_range = Decimal(day['tvlUSD'])
 
             pool['feesUSD'] += float(day['feesUSD'])
+            # print("day['feesUSD']", day['feesUSD'])
+            # print("day['tvlUSD']", day['tvlUSD'])
+            # print("day_usd_in_range", day_usd_in_range)
             # projected fees for the voters, this accounts for the 75% going to voter
             pool['projectedFees']['days'] += 1
             pool['projectedFees']['tokens'][pool['token0']['id']] += int(float(day['volumeToken0']) * int(pool['feeTier']) / 1e6 * 10**token0['decimals'] * fee_distribution['veRam'])
@@ -165,6 +105,12 @@ def _fetch_pools(debug):
         try:
             # this already accounts for the 20% to LP
             pool['feeApr'] = pool['feesUSD'] / usd_in_range * 100 * fee_distribution['lp'] * 365
+
+            # print()
+            # print(pool['symbol'])
+            # print("fees", pool['feesUSD'])
+            # print("usd_in_range", usd_in_range)
+            # print("feeApr", pool['feeApr'])
         except ZeroDivisionError:
             pool['feeApr'] = 0
 
@@ -239,35 +185,7 @@ def _fetch_pools(debug):
         # lp apr estimate uses current tick +-5%, +-0.5%, or +-0.1%
         position_usd = 0
         if (pool['price'] > 0):
-            token0 = tokens[pool['token0']['id']]
-            token1 = tokens[pool['token1']['id']]
-
-            # get range delta
-            pool_type = token0['type'] * token1['type']
-            range_delta = 0
-            # case: LSD and WETH
-            if pool_type == Token_Type['LSD'] and (token0['id'] == weth_address or token1['id'] == weth_address):
-                range_delta = 50  # +-0.5%
-
-            # case: neadRAM
-            if pool_type == Token_Type['NEAD'] and (token0['id'] == RAM_ADDRESS or token1['id'] == RAM_ADDRESS):
-                range_delta = 50  # +-0.5%
-
-            # case: STABLE-STABLE
-            elif pool_type == 9:
-                range_delta = 10  # +-0.1%
-
-            # case: STABLE-LOOSE_STABLE
-            elif pool_type >= 4:
-                range_delta = 50  # +-0.5%
-
-            # case: all other cases
-            else:
-                range_delta = 500  # +-5%
-
-            [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], range_delta, pool['liquidity'])
-            position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
-
+            position_usd = range_tvl(tokens, pool, pool['liquidity'])
             # make position_usd smaller if it's greater than tvl
             if (position_usd > pool['tvl']):
                 position_usd = pool['tvl']
