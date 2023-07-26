@@ -10,18 +10,20 @@ from utils import db
 constant_prices = {
 
     'slsd': 0.999,
-    'grain': 0.0125,
+    'fba': 0.69,
+    'bdei': 0.00,
 
     # TODO: FILTER THESE TOKENS OUT
 
-    'smartai': 0,
-    'test': 0,
-    'flyshares': 0,
-    'liveram': 0,
-    'ttk': 0,
-    'teth': 0,
-    'tusdc': 0,
-    'aaa': 0
+    'smartai': 0.00,
+    'test': 0.00,
+    'flyshares': 0.00,
+    'liveram': 0.00,
+    'ttk': 0.00,
+    'teth': 0.00,
+    'tusdc': 0.00,
+    'aaa': 0.00,
+    'ankr': 0.00
 }
 
 coingecko_coins = {
@@ -41,8 +43,8 @@ coingecko_coins = {
     'sfrxeth': 'staked-frax-ether',
     'grain': 'granary',
     'ageur': 'ageur',
-    'fba': 'firebird-aggregator',
     'euroe': 'euroe-stablecoin',
+    'lqdr': 'liquiddriver',
     'gnd': 'gnd-protocol',
     'play': 'xcad-network-play',
     'vela': 'vela-token',
@@ -55,13 +57,14 @@ coingecko_coins = {
     'scanto': 'liquid-staked-canto',
     'qi': 'qi-dao',
     'grai': 'grai',
-    'neadram': 'the-ennead'
+    'neadram': 'the-ennead',
+    'dmt': 'dream-machine-token',
+    'grain': 'granary'
 }
 
 defillama_coins = {
     'DAO': 'ethereum:0x0f51bb10119727a7e5eA3538074fb341F56B09Ad',
     'DEUS': 'fantom:0xde5ed76e7c05ec5e4572cfc88d1acea165109e44',
-    'FBA': 'fantom:0x0e249130b3545a2a287de9f27d805cab95f03db9',
     'FTM': 'fantom:0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
     'PLAY': 'bsc:0xd069599e718f963bd84502b49ba8f8657faf5b3a',
     'UNIDX': 'ethereum:0x95b3497bbcccc46a8f45f5cf54b0878b39f8d96c',
