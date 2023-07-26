@@ -12,9 +12,6 @@ constant_prices = {
     'slsd': 0.999,
     'fba': 0.69,
     'bdei': 0.00,
-
-    # TODO: FILTER THESE TOKENS OUT
-
     'smartai': 0.00,
     'test': 0.00,
     'flyshares': 0.00,
@@ -59,7 +56,8 @@ coingecko_coins = {
     'grai': 'grai',
     'neadram': 'the-ennead',
     'dmt': 'dream-machine-token',
-    'grain': 'granary'
+    'grain': 'granary',
+    'shrp': 'xshrap'
 }
 
 defillama_coins = {
@@ -75,6 +73,7 @@ defillama_coins = {
     'OHM': 'arbitrum:0xf0cb2dc0db5e6c66B9a70Ac27B06b878da017028',
     'gOHM': 'arbitrum:0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1',
     'gDAI': 'arbitrum:0xd85E038593d7A098614721EaE955EC2022B9B91B',
+    'GRAIN': 'arbitrum:0x80bB30D62a16e1F2084dEAE84dc293531c3AC3A1',
 
     'DAI': 'arbitrum:0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
     'USDC.e': 'arbitrum:0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
