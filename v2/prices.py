@@ -57,7 +57,8 @@ coingecko_coins = {
     'neadram': 'the-ennead',
     'dmt': 'dream-machine-token',
     'grain': 'granary',
-    'shrp': 'xshrap'
+    'shrp': 'xshrap',
+    'tarot': 'tarot'
 }
 
 defillama_coins = {
