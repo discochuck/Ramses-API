@@ -20,7 +20,8 @@ constant_prices = {
     'teth': 0.00,
     'tusdc': 0.00,
     'aaa': 0.00,
-    'ankr': 0.00
+    'ankr': 0.00,
+    'nfte' : 0.00001
 }
 
 coingecko_coins = {
