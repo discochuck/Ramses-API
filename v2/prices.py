@@ -10,7 +10,7 @@ from utils import db
 constant_prices = {
 
     'slsd': 0.999,
-    'fba': 0.69,
+    'fba': 0.608,
     'bdei': 0.00,
     'smartai': 0.00,
     'test': 0.00,
@@ -59,7 +59,8 @@ coingecko_coins = {
     'dmt': 'dream-machine-token',
     'grain': 'granary',
     'shrp': 'xshrap',
-    'tarot': 'tarot'
+    'tarot': 'tarot',
+    'alusd': 'alchemix-usd'
 }
 
 defillama_coins = {
