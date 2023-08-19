@@ -57,6 +57,11 @@ def dev_pairs():
     return jsonify(get_pairs_v2())
 
 
+@app.route("/dev/cl-pools")
+def dev_cl_pools():
+    return jsonify(get_cl_pools(True))
+
+
 @app.route("/voterClaimableRewards")
 def voter_claimable_rewards():
     token_id = request.args.get('token_id')
