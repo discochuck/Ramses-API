@@ -9,6 +9,7 @@ from utils import db
 
 constant_prices = {
 
+    'stern': 1.03,
     'slsd': 0.999,
     'star': 1.00,
     'fba': 0.608,
