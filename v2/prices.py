@@ -180,16 +180,16 @@ def get_prices(tokens, debug=False):
         print("Error in defillama")
 
     # fetch prices from coingecko
-    try:
-        coingecko_prices = get_prices_from_coingecko([
-            token['symbol'] for token in tokens if prices[token['symbol']] == 0
-        ])
-        prices.update(coingecko_prices)
-    except Exception as e:
-        exception_happened = True
-        if debug:
-            raise e
-        print("Error in coingecko")
+    # try:
+    #     coingecko_prices = get_prices_from_coingecko([
+    #         token['symbol'] for token in tokens if prices[token['symbol']] == 0
+    #     ])
+    #     prices.update(coingecko_prices)
+    # except Exception as e:
+    #     exception_happened = True
+    #     if debug:
+    #         raise e
+    #     print("Error in coingecko")
 
     # set neadRAM price
     prices['xRAM'] = prices['RAM']
@@ -208,5 +208,5 @@ def get_prices(tokens, debug=False):
 
 
 if __name__ == '__main__':
-    get_prices(json.loads(db.get('v2_subgraph_tokens')), debug=False)
+    get_prices(json.loads(db.get('v2_subgraph_tokens')), debug=True)
     # pprint(get_prices(json.loads(db.get('v2_subgraph_tokens'))))
