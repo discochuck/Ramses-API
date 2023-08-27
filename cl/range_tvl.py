@@ -28,7 +28,7 @@ def range_tvl(tokens, pool, liquidity):
 
     # case: all other cases
     else:
-        range_delta = 500  # +-5%
+        range_delta = 750  # +-7.5% (15%)
 
     [position_token0_amount, position_token1_amount] = token_amounts_from_current_price(pool['sqrtPrice'], range_delta, liquidity)
     position_usd = (position_token0_amount * token0['price'] / 10**token0['decimals']) + (position_token1_amount * token1['price'] / 10**token1['decimals'])
