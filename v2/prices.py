@@ -66,6 +66,7 @@ coingecko_coins = {
 }
 
 defillama_coins = {
+    'swETH': 'ethereum:0xf951e335afb289353dc249e82926178eac7ded78',
     'DAO': 'ethereum:0x0f51bb10119727a7e5eA3538074fb341F56B09Ad',
     'DEUS': 'fantom:0xde5ed76e7c05ec5e4572cfc88d1acea165109e44',
     'FTM': 'fantom:0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
