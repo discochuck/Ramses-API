@@ -80,6 +80,7 @@ defillama_coins = {
     'gOHM': 'arbitrum:0x8D9bA570D6cb60C7e3e0F31343Efe75AB8E65FB1',
     'gDAI': 'arbitrum:0xd85E038593d7A098614721EaE955EC2022B9B91B',
     'GRAIN': 'arbitrum:0x80bB30D62a16e1F2084dEAE84dc293531c3AC3A1',
+    'plsRDNT': 'arbitrum:0x1605bbdab3b38d10fa23a7ed0d0e8f4fea5bff59',
 
     'DAI': 'arbitrum:0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
     'USDC.e': 'arbitrum:0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
