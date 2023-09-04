@@ -3,7 +3,7 @@ import os
 from web3 import Web3
 import redis
 
-w3 = Web3(Web3.HTTPProvider('https://arbi.arbitrum.io/rpc'))
+w3 = Web3(Web3.HTTPProvider('https://arb1.arbitrum.io/rpc'))
 
 RAM_ADDRESS = '0xAAA6C1E32C55A7Bfa8066A6FAE9b42650F262418'.lower()
 VOTER_ADDRESS = '0xAAA2564DEb34763E3d05162ed3f5C2658691f499'.lower()
