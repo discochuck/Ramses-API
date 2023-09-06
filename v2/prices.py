@@ -1,18 +1,14 @@
 import json
 import os
 import pathlib
-from pprint import pprint
 
 import requests
 
 from utils import db
 
 constant_prices = {
-
-    'stern': 1.03,
-    'slsd': 0.999,
-    'star': 1.00,
-    'fba': 0.608,
+    'slsd': 1.00,
+    'fba': 0.5691,
     'bdei': 0.00,
     'smartai': 0.00,
     'test': 0.00,
@@ -26,13 +22,8 @@ constant_prices = {
 }
 
 coingecko_coins = {
-    'spa': 'sperax',
-    'ldo': 'lido-dao',
     'ring': 'onering',
-    'lqdr': 'liquiddriver',
     'dei': 'dei-token',
-    'lusd': 'liquity-usd',
-    'usds': 'sperax-usd',
     'mim': 'magic-internet-money',
     'shrp': 'xshrap',
     'tarot': 'tarot',
@@ -40,8 +31,9 @@ coingecko_coins = {
 
 defillama_coins = {
     'swETH': 'ethereum:0xf951e335afb289353dc249e82926178eac7ded78',
+    'OATH': 'arbitrum:0x00e1724885473b63bce08a9f0a52f35b0979e35a',
     'DAO': 'ethereum:0x0f51bb10119727a7e5eA3538074fb341F56B09Ad',
-    'DEUS': 'fantom:0xde5ed76e7c05ec5e4572cfc88d1acea165109e44',
+    'DEUS': 'arbitrum:0xDE5ed76E7c05eC5e4572CfC88d1ACEA165109E44',
     'FTM': 'fantom:0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83',
     'PLAY': 'bsc:0xd069599e718f963bd84502b49ba8f8657faf5b3a',
     'UNIDX': 'ethereum:0x95b3497bbcccc46a8f45f5cf54b0878b39f8d96c',
@@ -72,8 +64,13 @@ defillama_coins = {
     'EUROe': 'ethereum:0x820802Fa8a99901F52e39acD21177b0BE6EE2974',
     'fBOMB': 'optimism:0x74ccbe53F77b08632ce0CB91D3A545bF6B8E0979',
     'ANKR': 'bsc:0xf307910A4c7bbc79691fD374889b36d8531B08e3',
+    'Lqdr': 'arbitrum:0x816E21c33fa5F8440EBcDF6e01D39314541BEA72',
+    'SPA': '0x5575552988A3A80504bBaeB1311674fCFd40aD4B',
+    'LDO': 'arbitrum:0x13Ad51ed4F1B7e9Dc168d8a00cB3f4dDD85EfA60',
 
     'DAI': 'arbitrum:0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
+    'LUSD': 'arbitrum:0x93b346b6BC2548dA6A1E7d98E9a421B42541425b',
+    'stERN': 'arbitrum:0xf7a0dd3317535ec4f4d29adf9d620b3d8d5d5069',
     'alUSD': 'optimism:0xCB8FA9a76b8e203D8C3797bF438d8FB81Ea3326A',
     'GRAI': 'arbitrum:0x894134a25a5faC1c2C26F1d8fBf05111a3CB9487',
     'USDC.e': 'arbitrum:0xff970a61a04b1ca14834a43f5de4533ebddb5cc8',
@@ -82,7 +79,9 @@ defillama_coins = {
     'USDT': 'arbitrum:0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9',
     'MAI': 'arbitrum:0x3F56e0c36d275367b8C502090EDF38289b3dEa0d',
     'USD+': 'arbitrum:0xe80772eaf6e2e18b651f160bc9158b2a5cafca65',
-    'DAI+': 'arbitrum:0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8'
+    'DAI+': 'arbitrum:0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8',
+    'STAR': 'arbitrum:0xC19669A405067927865B40Ea045a2baabbbe57f5',
+    'USDs': 'arbitrum:0xD74f5255D557944cf7Dd0E45FF521520002D5748'
 
 }
 
