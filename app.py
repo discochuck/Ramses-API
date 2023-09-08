@@ -4,15 +4,24 @@ import requests
 from flask import Flask, jsonify, request
 from flask_caching import Cache
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
+from cl.pools import get_cl_pools, get_mixed_pairs
 from claimable_rewards import get_voter_claimable_rewards
-from get_apr import get_apr, get_pairs, _fetch_pairs
-from utils import db, cache_config
+from get_apr import _fetch_pairs, get_apr, get_pairs
+from utils import cache_config, db
 from v2.pairs import get_pairs_v2
 from v2.tokenlist import get_tokenlist
-from cl.pools import get_cl_pools, get_mixed_pairs
 
 app = Flask(__name__)
+
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=[],
+    storage_uri="memory://",
+)
 
 CORS(app)
 cache = Cache(app, config=cache_config)
@@ -26,7 +35,7 @@ def apr():
         apr = get_apr()
         # todo notify admin
     except:
-        apr = json.loads(db.get('apr'))
+        apr = json.loads(db.get("apr"))
 
     return jsonify(apr)
 
@@ -35,8 +44,9 @@ def apr():
 @app.route("/pairs")
 @cache.cached(60 * 5)
 def pairs():
-    print('function call')
+    print("function call")
     from get_apr import get_pairs
+
     return jsonify(get_pairs())
 
 
@@ -64,10 +74,8 @@ def dev_cl_pools():
 
 @app.route("/voterClaimableRewards")
 def voter_claimable_rewards():
-    token_id = request.args.get('token_id')
-    return jsonify(
-        get_voter_claimable_rewards(int(token_id))
-    )
+    token_id = request.args.get("token_id")
+    return jsonify(get_voter_claimable_rewards(int(token_id)))
 
 
 @app.route("/unlimited-lge-chart")
@@ -79,13 +87,11 @@ def get_unlimited_lge_chart():
         query = f"{{ buys(skip: {skip}, limit: {limit}, orderBy: totalRaised) {{user timestamp amount totalRaised}} }}"
         response = requests.post(
             url="https://api.thegraph.com/subgraphs/name/sullivany/unlimited-lge",
-            json={
-                "query": query
-            }
+            json={"query": query},
         )
 
         if response.status_code == 200:
-            new_data = response.json()['data']['buys']
+            new_data = response.json()["data"]["buys"]
             data += new_data
 
             if len(new_data) < limit:
@@ -93,9 +99,9 @@ def get_unlimited_lge_chart():
             else:
                 skip += limit
         else:
-            return json.loads(db.get('unlimited-lge-chart'))
+            return json.loads(db.get("unlimited-lge-chart"))
 
-    db.set('unlimited-lge-chart', json.dumps(data))
+    db.set("unlimited-lge-chart", json.dumps(data))
 
     return data
 
@@ -107,6 +113,7 @@ def cl_pools():
 
 
 @app.route("/mixed-pairs")
+@limiter.limit("1/second", override_defaults=True)
 @cache.cached(60 * 5)
 def mixed_pairs():
     return jsonify(get_mixed_pairs())
