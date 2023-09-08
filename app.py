@@ -16,7 +16,12 @@ from v2.tokenlist import get_tokenlist
 from cl.pools import get_cl_pools, get_mixed_pairs
 
 app = Flask(__name__)
-limiter = Limiter(app, key_func=get_remote_address, default_limits=["5 per second"])
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["5 per second"],
+    storage_uri="memory://",
+)
 
 CORS(app)
 cache = Cache(app, config=cache_config)
@@ -30,7 +35,7 @@ def apr():
         apr = get_apr()
         # todo notify admin
     except:
-        apr = json.loads(db.get('apr'))
+        apr = json.loads(db.get("apr"))
 
     return jsonify(apr)
 
@@ -39,8 +44,9 @@ def apr():
 @app.route("/pairs")
 @cache.cached(60 * 5)
 def pairs():
-    print('function call')
+    print("function call")
     from get_apr import get_pairs
+
     return jsonify(get_pairs())
 
 
@@ -68,10 +74,8 @@ def dev_cl_pools():
 
 @app.route("/voterClaimableRewards")
 def voter_claimable_rewards():
-    token_id = request.args.get('token_id')
-    return jsonify(
-        get_voter_claimable_rewards(int(token_id))
-    )
+    token_id = request.args.get("token_id")
+    return jsonify(get_voter_claimable_rewards(int(token_id)))
 
 
 @app.route("/unlimited-lge-chart")
@@ -82,14 +86,11 @@ def get_unlimited_lge_chart():
     while True:
         query = f"{{ buys(skip: {skip}, limit: {limit}, orderBy: totalRaised) {{user timestamp amount totalRaised}} }}"
         response = requests.post(
-            url="https://api.thegraph.com/subgraphs/name/sullivany/unlimited-lge",
-            json={
-                "query": query
-            }
+            url="https://api.thegraph.com/subgraphs/name/sullivany/unlimited-lge", json={"query": query}
         )
 
         if response.status_code == 200:
-            new_data = response.json()['data']['buys']
+            new_data = response.json()["data"]["buys"]
             data += new_data
 
             if len(new_data) < limit:
@@ -97,9 +98,9 @@ def get_unlimited_lge_chart():
             else:
                 skip += limit
         else:
-            return json.loads(db.get('unlimited-lge-chart'))
+            return json.loads(db.get("unlimited-lge-chart"))
 
-    db.set('unlimited-lge-chart', json.dumps(data))
+    db.set("unlimited-lge-chart", json.dumps(data))
 
     return data
 
