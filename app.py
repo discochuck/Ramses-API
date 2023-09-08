@@ -4,6 +4,9 @@ import requests
 from flask import Flask, jsonify, request
 from flask_caching import Cache
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 
 from claimable_rewards import get_voter_claimable_rewards
 from get_apr import get_apr, get_pairs, _fetch_pairs
@@ -13,6 +16,7 @@ from v2.tokenlist import get_tokenlist
 from cl.pools import get_cl_pools, get_mixed_pairs
 
 app = Flask(__name__)
+limiter = Limiter(app, key_func=get_remote_address, default_limits=["5 per second"])
 
 CORS(app)
 cache = Cache(app, config=cache_config)

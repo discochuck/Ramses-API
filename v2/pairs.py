@@ -201,14 +201,9 @@ def _fetch_pairs(debug):
 
 
 def get_pairs_v2(debug=False):
-    try:
-        pairs = _fetch_pairs(debug)
-        db.set('v2_pairs', json.dumps(pairs))
-    except Exception as e:
-        if debug:
-            raise e
-        log("Error on get_pairs")
-        pairs = json.loads(db.get('v2_pairs'))
+    pairs = _fetch_pairs(debug)
+    # db.set('v2_pairs', json.dumps(pairs))
+ 
 
     return pairs
 

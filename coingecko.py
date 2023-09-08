@@ -112,11 +112,10 @@ def get_prices_from_coingecko(symbols):
     ids_array = list([v for v in ids.values() if v]) + ['ethereum', 'ramses-exchange']
 
     response = requests.get(
-        url="https://pro-api.coingecko.com/api/v3/simple/price",
+        url="https://api.coingecko.com/api/v3/simple/price",
         params={
             'ids': ','.join(ids_array),
             'vs_currencies': 'usd',
-            'x_cg_pro_api_key': 'CG-AyFXDTk59MkkPukojFceCjTo'
         }
     ).json()
 
@@ -129,6 +128,9 @@ def get_prices_from_coingecko(symbols):
 
     prices['GND'] = response.get('gnd-protocol', {'usd': 0}).get('usd', 0)
     prices['xGND'] = prices['GND'] * 0.4
+    prices['ANKR'] = prices['ETH']
+    prices['ankrETH'] = prices['ETH']
+    
 
     return prices
 

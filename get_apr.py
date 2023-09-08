@@ -7,6 +7,7 @@ import requests
 from coingecko import get_prices_from_coingecko
 from multicall import Call, Multicall
 from utils import w3, db
+from v2.prices import get_prices_from_defillama
 
 
 def get_apr():
@@ -136,7 +137,8 @@ def get_subgraph_tokens(catch_errors):
     symbols = list(set([token['symbol'] for token in tokens]))
     try:
         prices = get_prices_from_coingecko(symbols)
-        db.set('v2_prices', json.dumps(prices))
+        # prices = get_prices_from_defillama(symbols)
+        # db.set('v2_prices', json.dumps(prices))
     except Exception as e:
         if not catch_errors:
             raise e
@@ -146,7 +148,7 @@ def get_subgraph_tokens(catch_errors):
         token['price'] = prices[token['symbol']]
 
     # cache tokens
-    db.set('v2_apr_tokens', json.dumps(tokens))
+    # db.set('v2_apr_tokens', json.dumps(tokens))
 
     return tokens
 
@@ -177,7 +179,7 @@ def get_subgraph_pairs():
             return json.loads(db.get('v2_apr_subgraph_pairs'))
 
     # cache pairs
-    db.set('v2_apr_subgraph_pairs', json.dumps(pairs))
+    # db.set('v2_apr_subgraph_pairs', json.dumps(pairs))
 
     return pairs
 
@@ -505,12 +507,12 @@ def _fetch_pairs(catch_errors):
 
     try:
         prices = get_prices_from_coingecko(symbols)
-        db.set('v2_prices', json.dumps(prices))
+        # db.set('v2_prices', json.dumps(prices))
     except Exception as e:
         if not catch_errors:
             raise e
         log("Error on prices")
-        prices = json.loads(db.get('v2_prices'))
+        # prices = json.loads(db.get('v2_prices'))
 
     current_bribe_tokens = {}
     calls = []
