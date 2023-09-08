@@ -12,19 +12,19 @@ def range_tvl(tokens, pool, liquidity):
     range_delta = 0
     # case: LSD and WETH
     if pool_type == Token_Type['LSD'] and (token0['id'] == weth_address or token1['id'] == weth_address):
-        range_delta = 30  # +-0.3%
+        range_delta = 40  # +-0.4%
 
     # case: STABLE-STABLE
     elif pool_type == 9:
-        range_delta = 20  # +-0.2%
+        range_delta = 40  # +-0.4%
     
     # case: LST-LST
     elif pool_type == 1:
-        range_delta = 20 # +-0.2%
+        range_delta = 40 # +-0.4%
 
     # case: STABLE-LOOSE_STABLE
     elif pool_type >= 4:
-        range_delta = 50  # +-0.5%
+        range_delta = 75  # +-0.75%
 
     # case: all other cases
     else:
