@@ -241,14 +241,14 @@ def _fetch_pools(debug):
 
 
 def get_cl_pools(debug=False):
-    # try:
-    pools = _fetch_pools(debug)
-        # db.set('cl_pools', json.dumps(pools))
-    # except Exception as e:
-    #     if debug:
-    #         raise e
-    #     log("Error on get_cl_pools")
-    #     # pools = json.loads(db.get('cl_pools'))
+    try:
+        pools = _fetch_pools(debug)
+        db.set('cl_pools', json.dumps(pools))
+    except Exception as e:
+        if debug:
+            raise e
+        log("Error on get_cl_pools")
+        pools = json.loads(db.get('cl_pools'))
 
     return pools
 

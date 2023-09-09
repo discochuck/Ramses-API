@@ -53,7 +53,7 @@ def get_subgraph_tokens(debug):
         token['price'] = prices[token['symbol']]
 
     # cache tokens
-    # db.set('v2_subgraph_tokens', json.dumps(tokens))
+    db.set('v2_subgraph_tokens', json.dumps(tokens))
 
     return tokens
 
@@ -115,7 +115,7 @@ def get_subgraph_pairs(debug):
             return json.loads(db.get('v2_subgraph_pairs'))
 
     # cache pairs
-    # db.set('v2_subgraph_pairs', json.dumps(pairs))
+    db.set('v2_subgraph_pairs', json.dumps(pairs))
 
     return pairs
 
@@ -179,7 +179,7 @@ def get_subgraph_pair_day_data(pair_count=100, debug=False):
         pair_day_data[data['pairAddress']].append(data)
 
     # cache pairs
-    # db.set('v2_subgraph_pair_day_data', json.dumps(pair_day_data))
+    db.set('v2_subgraph_pair_day_data', json.dumps(pair_day_data))
 
     return pair_day_data
 
