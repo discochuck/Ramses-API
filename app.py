@@ -1,5 +1,6 @@
 import json
 
+import os
 import requests
 from flask import Flask, jsonify, request
 from flask_caching import Cache
@@ -19,8 +20,8 @@ app = Flask(__name__)
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["5 per second"],
-    storage_uri="memory://",
+    default_limits=["3 per second"],
+    storage_uri=os.environ.get('DATABASE_URL'),
 )
 
 CORS(app)
