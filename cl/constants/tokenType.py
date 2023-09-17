@@ -1,10 +1,10 @@
 # Not using enum because it's not json serializable
 Token_Type = {
+    "RAM": -10,
     "LSD": -1,
     "NEAD": -2,
     "OTHERS": 0,
     "WETH": 1,
-    "RAM": 1,
     "LOOSE_STABLE": 2,
     "STABLE": 3,
 }
