@@ -182,7 +182,7 @@ def _fetch_pools(debug):
             totalUSD += _reward_rates[pool_address][token_address] * 24 * 60 * 60 * tokens[token_address]['price'] / 10 ** tokens[token_address][
                 'decimals']
 
-        # lp apr estimate uses current tick +-5%, +-0.5%, or +-0.1%
+        # lp apr estimate uses current tick (+-)7.5%, (+-)0.5%, or (+-)0.25%
         position_usd = 0
         if (pool['price'] > 0):
             position_usd = range_tvl(tokens, pool, pool['liquidity'])
