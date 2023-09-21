@@ -99,6 +99,7 @@ def get_cl_subgraph_pools(debug):
                         liquidity
                         sqrtPrice
                         tick
+                        tickSpacing
                         totalValueLockedUSD
                         totalValueLockedToken0
                         totalValueLockedToken1
