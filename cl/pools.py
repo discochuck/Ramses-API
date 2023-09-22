@@ -155,7 +155,7 @@ def _fetch_pools(debug):
             Call(
                 w3,
                 pool_address,
-                ["fee()(int24)"],
+                ["fee()(uint24)"],
                 [[key, lambda v: v[0]]]
             )
         )
