@@ -148,6 +148,21 @@ def _fetch_pools(debug):
         if value > 0:
             pools[pool_address]['voteBribes'][token_address] = value
 
+    calls = []
+    for pool_address, pool in pools.items():
+        key = pool_address
+        calls.append(
+            Call(
+                w3,
+                pool_address,
+                ["fee()(int24)"],
+                [[key, lambda v: v[0]]]
+            )
+        )
+    for key, value in Multicall(w3, calls)().items():
+        pool_address = key
+        pools[pool_address]['initialFee'] = str(int(value))
+
     # fetch pair's lp reward rates
     _reward_rates = {}
     _period_finish = {}
