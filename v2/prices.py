@@ -82,7 +82,8 @@ defillama_coins = {
     'DAI+': 'arbitrum:0xeb8e93a0c7504bffd8a8ffa56cd754c63aaebfe8',
     'STAR': 'arbitrum:0xC19669A405067927865B40Ea045a2baabbbe57f5',
     'USDs': 'arbitrum:0xD74f5255D557944cf7Dd0E45FF521520002D5748',
-    'DUSD': 'arbitrum:0x8EC1877698ACF262Fe8Ad8a295ad94D6ea258988'
+    'DUSD': 'arbitrum:0x8EC1877698ACF262Fe8Ad8a295ad94D6ea258988',
+    'axlUSDC': 'arbitrum:0xEB466342C4d449BC9f53A865D5Cb90586f405215'
 
 }
 
