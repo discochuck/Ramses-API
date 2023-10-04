@@ -26,7 +26,6 @@ coingecko_coins = {
     'dei': 'dei-token',
     'mim': 'magic-internet-money',
     'shrp': 'xshrap',
-    'tarot': 'tarot',
 }
 
 defillama_coins = {
@@ -67,6 +66,7 @@ defillama_coins = {
     'Lqdr': 'arbitrum:0x816E21c33fa5F8440EBcDF6e01D39314541BEA72',
     'SPA': '0x5575552988A3A80504bBaeB1311674fCFd40aD4B',
     'LDO': 'arbitrum:0x13Ad51ed4F1B7e9Dc168d8a00cB3f4dDD85EfA60',
+    'TAROT': 'base:0xF544251D25f3d243A36B07e7E7962a678f952691',
 
     'DAI': 'arbitrum:0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
     'LUSD': 'arbitrum:0x93b346b6BC2548dA6A1E7d98E9a421B42541425b',
