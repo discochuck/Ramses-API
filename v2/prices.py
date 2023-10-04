@@ -25,7 +25,7 @@ coingecko_coins = {
     'ring': 'onering',
     'dei': 'dei-token',
     'mim': 'magic-internet-money',
-    'shrp': 'xshrap',
+    'shrp': 'xshrap'
 }
 
 defillama_coins = {
