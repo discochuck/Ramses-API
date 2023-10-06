@@ -53,14 +53,13 @@ def pairs():
 
 
 # apr backtest
-@app.route("/apr_backtest", methods=["POST"])
+@app.route("/apr_backtest", methods=["GET"])
 def get_apr_backtest():
-    # Extract nft_ids from the POST request's JSON body
-    data = request.get_json()
-    nft_ids = data.get("nft_ids")
-
+    nft_ids = request.args.get("nft_ids")
     if not nft_ids:
         return jsonify({"error": "nft_ids not provided"}), 400
+
+    nft_ids = [int(nft_id) for nft_id in nft_ids.split(",")]
 
     # Call get_cl_data with the nft_ids
     cl_data = get_backtested_cl_data(nft_ids)
