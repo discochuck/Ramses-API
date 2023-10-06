@@ -137,5 +137,5 @@ def get_backtested_cl_data(nft_ids):
 
     return result
 
-
-print(get_backtested_cl_data([8571]))
+if __name__ == "__main__":
+    print(get_backtested_cl_data([8571]))
