@@ -10,6 +10,7 @@ from flask_limiter.util import get_remote_address
 
 
 from claimable_rewards import get_voter_claimable_rewards
+from apr_backtest import get_backtested_cl_data
 from get_apr import get_apr, get_pairs, _fetch_pairs
 from utils import db, cache_config
 from v2.pairs import get_pairs_v2
@@ -21,7 +22,7 @@ limiter = Limiter(
     get_remote_address,
     app=app,
     default_limits=["20 per second"],
-    storage_uri=os.environ.get('DATABASE_URL'),
+    storage_uri=os.environ.get("DATABASE_URL"),
 )
 
 CORS(app)
@@ -49,6 +50,23 @@ def pairs():
     from get_apr import get_pairs
 
     return jsonify(get_pairs())
+
+
+# apr backtest
+@app.route("/apr_backtest", methods=["POST"])
+def get_apr_backtest():
+    # Extract nft_ids from the POST request's JSON body
+    data = request.get_json()
+    nft_ids = data.get("nft_ids")
+
+    if not nft_ids:
+        return jsonify({"error": "nft_ids not provided"}), 400
+
+    # Call get_cl_data with the nft_ids
+    cl_data = get_backtested_cl_data(nft_ids)
+
+    # Return the data as a JSON response
+    return jsonify(cl_data)
 
 
 @app.route("/v2/pairs")
