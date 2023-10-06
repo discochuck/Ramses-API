@@ -21,7 +21,7 @@ app = Flask(__name__)
 limiter = Limiter(
     get_remote_address,
     app=app,
-    default_limits=["20 per second"],
+    default_limits=["100 per second"],
     storage_uri=os.environ.get("DATABASE_URL"),
 )
 
