@@ -68,6 +68,7 @@ defillama_coins = {
     'LDO': 'arbitrum:0x13Ad51ed4F1B7e9Dc168d8a00cB3f4dDD85EfA60',
     'TAROT': 'base:0xF544251D25f3d243A36B07e7E7962a678f952691',
     'FXS': 'ethereum:0x3432b6a60d23ca0dfca7761b7ab56459d9c964d0',
+    'ALCX': 'ethereum:0xdbdb4d16eda451d0503b854cf79d55697f90c8df',
 
     'DAI': 'arbitrum:0xda10009cbd5d07dd0cecc66161fc93d7c9000da1',
     'LUSD': 'arbitrum:0x93b346b6BC2548dA6A1E7d98E9a421B42541425b',
