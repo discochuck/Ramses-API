@@ -27,11 +27,11 @@ limiter = Limiter(
 
 CORS(app)
 cache = Cache(app, config=cache_config)
-
+CACHE_DEFAULT_TIMEOUT = 60 * 0.5
 
 # Deprecated
 @app.route("/")
-@cache.cached(60 * 60)
+@cache.cached(CACHE_DEFAULT_TIMEOUT)
 def apr():
     try:
         apr = get_apr()
@@ -44,7 +44,7 @@ def apr():
 
 # Deprecated
 @app.route("/pairs")
-@cache.cached(60 * 5)
+@cache.cached(CACHE_DEFAULT_TIMEOUT)
 def pairs():
     print("function call")
     from get_apr import get_pairs
@@ -69,13 +69,13 @@ def get_apr_backtest():
 
 
 @app.route("/v2/pairs")
-@cache.cached(60 * 5)
+@cache.cached(CACHE_DEFAULT_TIMEOUT)
 def v2_pairs():
     return jsonify(get_pairs_v2())
 
 
 @app.route("/v2/tokenlist")
-@cache.cached(60 * 5)
+@cache.cached(CACHE_DEFAULT_TIMEOUT)
 def tokenlist():
     return jsonify(get_tokenlist())
 
@@ -124,13 +124,13 @@ def get_unlimited_lge_chart():
 
 
 @app.route("/cl-pools")
-@cache.cached(60 * 5)
+@cache.cached(CACHE_DEFAULT_TIMEOUT)
 def cl_pools():
     return jsonify(get_cl_pools())
 
 
 @app.route("/mixed-pairs")
-@cache.cached(60 * 5)
+@cache.cached(CACHE_DEFAULT_TIMEOUT)
 def mixed_pairs():
     return jsonify(get_mixed_pairs())
 
