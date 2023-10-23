@@ -56,7 +56,7 @@ def _fetch_pools(debug):
             pools[pool['id']] = pool
 
     today = time.time() // 86400 * 86400
-    cutoff = today - 86400 * 7
+    cutoff = today - 86400 * 3
     x96 = int(2**96)
 
     # process tvl
