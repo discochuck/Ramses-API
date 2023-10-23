@@ -27,7 +27,7 @@ limiter = Limiter(
 
 CORS(app)
 cache = Cache(app, config=cache_config)
-CACHE_DEFAULT_TIMEOUT = 60 * 0.5
+CACHE_DEFAULT_TIMEOUT = 60 * 2
 
 # Deprecated
 @app.route("/")
