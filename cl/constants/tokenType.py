@@ -2,7 +2,6 @@
 Token_Type = {
     "RAM": -10,
     "LSD": -1,
-    "NEAD": -2,
     "OTHERS": 0,
     "WETH": 1,
     "LOOSE_STABLE": 2,
@@ -19,6 +18,8 @@ token_type_dict = {
     "GRAI": Token_Type['LOOSE_STABLE'],
     "jEUR": Token_Type["LOOSE_STABLE"],
     "STAR": Token_Type["LOOSE_STABLE"],
+    "alUSD": Token_Type["LOOSE_STABLE"],
+    "DUSD": Token_Type["LOOSE_STABLE"],
 
     "USDC": Token_Type['STABLE'],
     "USDC.e": Token_Type['STABLE'],
@@ -28,11 +29,8 @@ token_type_dict = {
 
     "frxETH": Token_Type['LSD'],
     "sfrxETH": Token_Type['LSD'],
-    "stETH": Token_Type['LSD'],
     "wstETH": Token_Type["LSD"],
     "swETH": Token_Type["LSD"],
-
-    "neadRAM": Token_Type['NEAD'],
 }
 
 weth_address = "0x82af49447d8a07e3bd95bd0d56f35241523fbab1".lower()
