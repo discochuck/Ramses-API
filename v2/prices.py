@@ -46,6 +46,7 @@ defillama_coins = {
     'GRAIN': 'optimism:0xfD389Dc9533717239856190F42475d3f263a270d',
     'plsRDNT': 'arbitrum:0x1605bbdab3b38d10fa23a7ed0d0e8f4fea5bff59',
     'ARB': 'arbitrum:0x912CE59144191C1204E64559FE8253a0e49E6548',
+    'WETH': 'arbitrum:0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
     'sfrxETH': 'arbitrum:0x95aB45875cFFdba1E5f451B950bC2E42c0053f39',
     'YFX': 'arbitrum:0xaaE0c3856e665ff9b3E2872B6D75939D810b7E40',
     'GMD': 'arbitrum:0x4945970EfeEc98D393b4b979b9bE265A3aE28A8B',
