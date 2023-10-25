@@ -20,6 +20,9 @@ token_type_dict = {
     "STAR": Token_Type["LOOSE_STABLE"],
     "alUSD": Token_Type["LOOSE_STABLE"],
     "DUSD": Token_Type["LOOSE_STABLE"],
+    "jEUR": Token_Type["LOOSE_STABLE"],
+    "agEUR": Token_Type["LOOSE_STABLE"],
+    "stEUR": Token_Type["LOOSE_STABLE"],
 
     "USDC": Token_Type['STABLE'],
     "USDC.e": Token_Type['STABLE'],
