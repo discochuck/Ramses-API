@@ -23,6 +23,7 @@ token_type_dict = {
     "jEUR": Token_Type["LOOSE_STABLE"],
     "agEUR": Token_Type["LOOSE_STABLE"],
     "stEUR": Token_Type["LOOSE_STABLE"],
+    "alUSD": Token_Type["LOOSE_STABLE"],
 
     "USDC": Token_Type['STABLE'],
     "USDC.e": Token_Type['STABLE'],
