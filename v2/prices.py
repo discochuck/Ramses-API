@@ -8,8 +8,10 @@ from utils import db
 
 constant_prices = {
     'slsd': 1.00,
-    'fba': 0.5691,
+    'fba': 0.3849,
+    'steur': 1.057,
     'bdei': 0.00,
+    'dei': 0.00,
     'smartai': 0.00,
     'test': 0.00,
     'flyshares': 0.00,
@@ -23,7 +25,6 @@ constant_prices = {
 
 coingecko_coins = {
     'ring': 'onering',
-    'dei': 'dei-token',
     'mim': 'magic-internet-money',
     'shrp': 'xshrap'
 }
